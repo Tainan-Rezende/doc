@@ -14,8 +14,10 @@ Este endpoint permite que você troque seu `email` e `senha` por um **Bearer Tok
 
 ## Endpoint
 
-**Método:** `POST`  
-**URL:** `https://api.xgateglobal.com/auth/token`
+- **Método:** `POST`
+```bash title="URL do Endpoint"
+https://api.xgateglobal.com/auth/token
+```
 
 ---
 
@@ -39,9 +41,9 @@ Envie um objeto JSON no corpo (`body`) da requisição com as seguintes propried
 
 ---
 
-## Respostas
+## Respostas (Responses)
 
-#### Success (200 OK)
+#### Sucesso (200 OK)
 
 Em caso de sucesso, a API retornará um objeto JSON contendo o seu token de acesso:
 
@@ -51,7 +53,7 @@ Em caso de sucesso, a API retornará um objeto JSON contendo o seu token de aces
 }
 ```
 
-#### Error (401 Unauthorized)
+#### Erro (401 Unauthorized)
 
 Se o `email` ou `password` estiverem incorretos, a API retornará um erro:
 
@@ -68,7 +70,7 @@ Após receber o token, você deve armazená-lo de forma segura e enviá-lo em to
 O token deve ser enviado no cabeçalho `Authorization` usando o prefixo `Bearer` (seguido de um espaço).
 
 **Exemplo de Header**
-```js
+```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 Content-Type: application/json
 ```
