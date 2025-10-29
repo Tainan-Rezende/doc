@@ -2,46 +2,109 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Introdução
 
-Let's discover **Docusaurus in less than 5 minutes**.
+## O que é a XGate?
 
-## Getting Started
+XGate é uma solução moderna e poderosa para pagamentos e conversões financeiras, projetada para facilitar e automatizar transações via PIX e criptomoedas. Com uma API robusta, é perfeita para desenvolvedores que desejam integrar rapidamente funcionalidades financeiras às suas aplicações.
 
-Get started by **creating a new site**.
+## Funcionalidades
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+- Processamento instantâneo via PIX;
+- Conversão automática de moeda FIAT para cripto
+- Depósitos e saques com suporte a Bitcoin, Ethereum, SHIBA INU, USDT, USDC, BNB e MATIC
+- Monitoramento em tempo real com dashboard avançado
 
-### What you'll need
+## Pacotes Oficiais
+Para simplificar e acelerar sua integração com a API da XGATE, nós oferecemos Pacotes de Desenvolvimento (SDKs) oficiais.
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+Em vez de você precisar montar manualmente cada requisição HTTP, gerenciar tokens de autenticação e formatar o `body` de cada chamada, nossos pacotes fazem todo o trabalho pesado para você.
 
-## Generate a new site
+Basta instalar o pacote correspondente à sua linguagem e chamar as funções já prontas.
 
-Generate a new Docusaurus site using the **classic template**.
+---
 
-The classic template will automatically be added to your project after you run the command:
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+<Tabs groupId="sdk-explicacao">
+  <TabItem value="npm" label="NPM (para JavaScript/Node.js)" default>
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+    ### O que é o pacote NPM?
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+    **NPM** (Node Package Manager) é o gerenciador de pacotes padrão do ecossistema JavaScript. 
 
-## Start your site
+    Nosso pacote NPM (`xgate-client`) é uma biblioteca que "envolve" todas as rotas da nossa API em funções JavaScript fáceis de usar. Ele é ideal para:
 
-Run the development server:
+    * **Backend:** Aplicações feitas em **Node.js** (como Express, NestJS, etc.).
+    * **Frontend:** Aplicações modernas como **React**, **Angular** ou **Vue**.
 
-```bash
-cd my-website
-npm run start
-```
+    #### Principais Vantagens:
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+    * **Autenticação Automática:** Ele cuida da chamada de `login` e armazena o token para as próximas requisições.
+    * **Funções Claras:** Em vez de `POST /deposit`, você simplesmente chama `xgate.criarDeposito({ ... })`.
+    * **Tipagem (TypeScript):** Se você usa TypeScript, o pacote já informa os tipos corretos para cada função.
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+    A instalação dele é feita pela linha de comando e adiciona o pacote ao seu arquivo `package.json`.
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+  </TabItem>
+  <TabItem value="composer" label="Composer (para PHP)">
+
+    ### O que é o pacote Composer?
+
+    **Composer** é o gerenciador de dependências padrão do ecossistema PHP.
+
+    Nosso pacote Composer (`xgate/php-client`) é uma biblioteca que segue os padrões do PHP (PSR) e permite que você instancie um "Cliente" da nossa API dentro do seu projeto. Ele é ideal para:
+
+    * **Frameworks Modernos:** Projetos em **Laravel**, **Symfony**, etc.
+    * **PHP Puro:** Qualquer aplicação PHP que utilize o `autoload` do Composer.
+
+    #### Principais Vantagens:
+
+    * **Autenticação Simplificada:** Instancie o cliente com suas credenciais e ele gerencia o token para você.
+    * **Métodos Organizados:** Em vez de configurar o cURL manualmente, você simplesmente chama `$xgate->criarDeposito([ ... ])`.
+    * **Tratamento de Erros:** O pacote captura erros da API e os transforma em `Exceptions` do PHP, que você pode tratar facilmente com `try...catch`.
+
+    A instalação dele é feita pela linha de comando e adiciona o pacote ao seu arquivo `composer.json`.
+
+  </TabItem>
+</Tabs>
+
+## Instalação
+
+<Tabs groupId="installation">
+  <TabItem value="npm" label="NPM" default>
+
+    ### Instalação NPM
+
+    :::warning[Atenção]
+      Este pacote é compatível com **JavaScript** e **TypeScript**, oferecendo tipagens completas para melhor experiência de desenvolvimento em aplicações modernas.
+    :::
+
+    ```bash
+    npm install xgate
+    ```
+
+    Consulte o manual para instruções completas de instalação e uso:
+
+    <a href="https://www.npmjs.com/package/xgate" class="button button--primary button--block"><i class="fa-solid fa-book-open"></i> Checar manual NPM</a>
+
+  </TabItem>
+  <TabItem value="composer" label="Composer">
+
+    ### Instalação Composer
+
+    :::warning[Atenção]
+      Este pacote é compatível com PHP, oferecendo tipagens e orientação a objetos completas para melhor experiência de desenvolvimento em aplicações modernas.
+    :::
+
+    ```bash
+    composer require xgate/xgate-integration dev-production
+    ```
+
+    Consulte o manual para instruções completas de instalação e uso:
+
+    <a href="https://packagist.org/packages/xgate/xgate-integration" class="button button--primary button--block"><i class="fa-solid fa-book-open"></i> Checar manual Composer</a>
+
+  </TabItem>
+</Tabs>
