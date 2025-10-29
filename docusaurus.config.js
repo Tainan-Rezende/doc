@@ -109,12 +109,6 @@ const config = {
             position: 'left',
             label: 'Documentação',
           },
-          // { to: '/blog', label: 'Blog', position: 'left' },
-          // {
-          //   href: 'https://github.com/facebook/docusaurus',
-          //   label: 'GitHub',
-          //   position: 'right',
-          // },
         ],
       },
       footer: {
@@ -124,41 +118,29 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Documentação',
+                label: 'Introdução',
                 to: '/docs/intro',
               },
+              {
+                label: 'Autenticação',
+                to: '/docs/autenticacao/login'
+              }
             ],
           },
           {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Instagram',
+                href: 'https://www.instagram.com/xgateglobal/',
               },
               {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'X',
-                href: 'https://x.com/docusaurus',
+                label: 'Facebook',
+                href: 'https://www.facebook.com/profile.php?id=61572816952485',
               },
             ],
           },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
+          {}
         ],
         copyright: `Copyright © ${new Date().getFullYear()} XGate, Inc.`,
       },
