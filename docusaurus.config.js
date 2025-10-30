@@ -20,7 +20,7 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://api.xgateglobal.com/',
+  url: 'https://api.xgateglobal.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -63,8 +63,8 @@ const config = {
           sidebarPath: './sidebars.js',
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl:
+          //   'https://github.com/Tainan-Rezende/doc',
         },
         blog: {
           showReadingTime: true,
@@ -74,8 +74,8 @@ const config = {
           },
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+          // editUrl:
+          //   'https://github.com/Tainan-Rezende/doc',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -92,7 +92,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/logo.png',
       colorMode: {
         respectPrefersColorScheme: true,
       },
@@ -100,7 +100,8 @@ const config = {
         // title: 'XGate',
         logo: {
           alt: 'XGate',
-          src: 'img/logo.png',
+          src: 'img/logo-xgate-dark.png',
+          srcDark: 'img/logo-xgate-white.png'
         },
         items: [
           {
@@ -113,35 +114,6 @@ const config = {
       },
       footer: {
         style: 'dark',
-        links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Introdução',
-                to: '/docs/intro',
-              },
-              {
-                label: 'Autenticação',
-                to: '/docs/autenticacao/login'
-              }
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Instagram',
-                href: 'https://www.instagram.com/xgateglobal/',
-              },
-              {
-                label: 'Facebook',
-                href: 'https://www.facebook.com/profile.php?id=61572816952485',
-              },
-            ],
-          },
-          {}
-        ],
         copyright: `Copyright © ${new Date().getFullYear()} XGate, Inc.`,
       },
       prism: {
