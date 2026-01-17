@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-    # Opcional: só roda se houver mudanças nestas pastas
-    paths:
-      - 'docs/**'
-      - 'src/**'
-      - 'docusaurus.config.js'
-      - 'package.json'
 
 permissions:
   contents: read
