@@ -13,12 +13,18 @@ Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta
 
 ---
 ## Endpoint
-- **Método:** `GET`
+- **Método:** <span className="badge badge--success">GET</span>
 ```bash title="URL do Endpoint"
 https://api.xgateglobal.com/pix/customer/CLIENT_ID/key
 ```
 
 **Importante:** O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da rota de Criação de Clientes.
+
+---
+
+## Testar Integração
+
+Utilize o formulário abaixo para simular a listagem de chaves pix.
 
 <PixKeysTester />
 
@@ -39,7 +45,7 @@ A requisição não requer corpo (`body`), apenas os **Headers** de autenticaç�
 
 ## Respostas (Responses)
 
-#### Sucesso (200 OK)
+### Sucesso (200 OK)
 
 Retorna uma lista (array) de objetos, onde cada objeto é uma chave cadastrada.
 
@@ -53,12 +59,12 @@ Retorna uma lista (array) de objetos, onde cada objeto é uma chave cadastrada.
 ]
 ```
 
-#### Erros Comuns
+### Erros Comuns
 
 | Status  | Mensagem                | Motivo Provável                                                                                   |
 | :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP Não permitido. |
-| **404** | `Not Found`             | Cliente não encontrado                                                                            |
+| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
+| **404** | `Not Found`             | Cliente não encontrado.                                                                           |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
 
 ---
@@ -71,17 +77,17 @@ A resposta deste endpoint fornece o **Objeto Completo** da chave, que é obrigat
 
 ### O Fluxo de Integração
 
-1.  **Liste as chaves:** Chame este endpoint (`GET /fiat/pix/keys`).
-2.  **Seleção:** O usuário escolhe qual chave quer usar (ex: a primeira da lista).
-3.  **Envio:** Você deve passar o **objeto inteiro** dentro da propriedade `pixKey` no endpoint de saque.
+1.  **Liste as chaves:** Chame este endpoint (`GET /pix/customer/CLIENT_ID/key`).
+2.  **Seleção:** Escolha qual chave quer usar, se houver mais de uma (ex: a primeira da lista).
+3.  **Envio:** Você deve passar o **objeto inteiro** dentro da propriedade `pixKey` no payload de saque.
 
 :::warning[Atenção ao Formato]
-Não envie apenas o número da chave (string). O endpoint de saque espera o **objeto JSON completo** contendo `key`, `type` e `_id`.
+Não envie apenas o número da chave (string). O payload de saque espera o **objeto JSON completo** contendo `key`, `type` e `_id`.
 :::
 
 ### Exemplo Prático
 
-**1. O que você recebe aqui (Listar Chaves):**
+**1. O que você recebe ao listar as chaves pix:**
 ```json
 [
   {
@@ -115,7 +121,7 @@ Você vai pegar o objeto acima e injetá-lo dentro de pixKey:
     }
 }
 ```
-Cada informação desse JSON será explicado na página de saques.
+Cada informação desse JSON será explicado na <a href="/docs/fiat/saques" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de saques</a>.
 
 ---
 

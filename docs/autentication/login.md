@@ -18,7 +18,7 @@ Este endpoint permite que você troque seu `email` e `senha` por um **Bearer Tok
 
 ## Endpoint
 
-- **Método:** `POST`
+- **Método:** <span className="badge badge--info">POST</span>
 ```bash title="URL do Endpoint"
 https://api.xgateglobal.com/auth/token
 ```
@@ -53,25 +53,23 @@ Envie um objeto JSON no corpo (`body`) da requisição com as seguintes propried
 
 ## Respostas (Responses)
 
-#### Sucesso (200 OK)
+### Sucesso (200 OK)
 
 Em caso de sucesso, a API retornará um objeto JSON contendo o seu token de acesso:
 
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsIn6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2jE1MTc1MzUwMjJ9.SflKxwRJSMeKKF2QT4f"
+  "token": "eyJhbGciOiJIUzI1NiIsIn6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibm******************************"
 }
 ```
 
-#### Erro (401 Unauthorized)
+### Erros Comuns
 
-Se o `email` ou `password` estiverem incorretos, a API retornará um erro:
+| Status  | Mensagem                | Motivo Provável                                                                                   |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • E-mail ou senha incorretos. |
+| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
 
-```json
-{
-  "message":"Credenciais inválidas!"
-}
-```
 ---
 ## Como usar
 

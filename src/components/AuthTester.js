@@ -67,7 +67,7 @@ export default function AuthTester() {
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', borderBottom: '1px solid var(--ifm-color-emphasis-200)', paddingBottom: '10px' }}>
         <span style={{ fontSize: '1.5rem' }}>🔐</span>
-        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Testar Autenticação</h3>
+        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Testar: Autenticação</h3>
       </div>
 
       <form onSubmit={handleLogin}>

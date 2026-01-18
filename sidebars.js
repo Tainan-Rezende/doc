@@ -7,7 +7,7 @@ const sidebars = {
       label: 'Autenticação',
       collapsed: true,
       items: [
-        'autenticacao/login',
+        'autentication/login',
       ]
     },
     {
@@ -18,7 +18,8 @@ const sidebars = {
           type: 'category',
           label: 'Pix - Cliente',
           items: [
-            'fiat/pix-cliente/chaves-pix'
+            'fiat/pix/keys',
+            'fiat/pix/add'
           ]
         }
       ]
