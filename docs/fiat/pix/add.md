@@ -5,6 +5,7 @@ sidebar_position: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import AddPixKeyTester from '@site/src/components/AddPixKeyTester';
 
 # Adicionar Chave Pix
@@ -22,7 +23,9 @@ O sistema valida automaticamente se o formato da chave corresponde ao `type` inf
 https://api.xgateglobal.com/pix/customer/CLIENT_ID/key
 ```
 
-**Importante:** O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href="/docs/fiat/saques" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
+:::warning[Importante]
+O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
+:::
 
 ---
 
@@ -133,15 +136,15 @@ Você vai pegar o objeto acima e injetá-lo dentro de pixKey:
     }
 }
 ```
-Cada informação desse JSON será explicado na <a href="/docs/fiat/saques" target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de saques</a>.
+Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de saques</a>.
 
 ---
 
-## Exemplos
+## Integração
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo utiliza a biblioteca <code>Axios</code> em Node.js.
+    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
 
     **Instalando `Axios`:**
     ```bash
@@ -178,7 +181,7 @@ const axios = require("axios");
     ```
   </TabItem>
   <TabItem value="python" label="Python">
-    O exemplo utiliza a biblioteca <code>requests</code>.
+    O exemplo de integração utiliza a biblioteca <code>requests</code>.
 
     **Instalando `requests`:**
     ```bash

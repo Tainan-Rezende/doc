@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CodeBlock from '@theme/CodeBlock';
 
 export default function AuthTester() {
   const [email, setEmail] = useState('');
@@ -71,7 +72,7 @@ export default function AuthTester() {
       </div>
 
       <form onSubmit={handleLogin}>
-        <div>
+        <div style={{ marginBottom: '10px' }}>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', fontSize: '0.85rem' }}>Email</label>
           <input
             type="email"
@@ -83,9 +84,9 @@ export default function AuthTester() {
           />
         </div>
 
-        <div>
+        <div style={{ marginBottom: '15px' }}>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', fontSize: '0.85rem' }}>Senha</label>
-          <div style={{ position: 'relative', marginBottom: '15px' }}>
+          <div style={{ position: 'relative' }}>
             <input
               type={showPassword ? "text" : "password"}
               required
@@ -109,7 +110,6 @@ export default function AuthTester() {
           type="submit"
           disabled={loading}
           className="button button--primary button--block"
-          style={{ marginBottom: '10px' }}
         >
           {loading ? 'Autenticando...' : 'Obter Token'}
         </button>
@@ -127,19 +127,9 @@ export default function AuthTester() {
             </span>
           </div>
           
-          <div style={{
-            position: 'relative',
-            backgroundColor: 'var(--ifm-pre-background)',
-            borderRadius: 'var(--ifm-global-radius)',
-            padding: '10px',
-            border: '1px solid var(--ifm-color-emphasis-200)',
-            overflowX: 'auto',
-            maxHeight: '300px',
-          }}>
-            <pre style={{ margin: 0, background: 'transparent', fontSize: '0.75rem' }}>
-              {JSON.stringify(resultado.body || resultado, null, 2)}
-            </pre>
-          </div>
+          <CodeBlock language="json">
+             {JSON.stringify(resultado.body || resultado, null, 2)}
+          </CodeBlock>
         </div>
       )}
     </div>

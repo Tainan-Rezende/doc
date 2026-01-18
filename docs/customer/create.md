@@ -5,6 +5,7 @@ sidebar_position: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
 
 # Criar Cliente
@@ -71,9 +72,10 @@ O cliente foi criado com sucesso e já pode ser utilizado.
 }
 ```
 
-### Já existe (200 OK)
+### Cliente já cadastrado (200 OK)
 
-Já existe um cliente cadastrado com o mesmo nome.
+Já existe um cliente cadastrado com o mesmo nome e/ou documento. Ao obter essa resposta do servidor, o mesmo retorna o `_id` do cliente que possuí esses dados.
+
 ```json
 {
     "message": "Cliente já está cadastrado na base de dados",
@@ -103,7 +105,12 @@ Você precisará deste ID obrigatoriamente para:
 2. **Chaves Pix:** Criar, listar ou remover chaves vinculadas ao cliente.
 3. **Gestão:** Atualizar dados cadastrais do cliente.
 
-### Exemplo Prático: Criando um Depósito
+### O Fluxo de Integração
+
+1. **Gerar token:** Obtenha um token na <a href={useBaseUrl('/docs/authentication/login')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>rota de autenticação</a> (POST /auth/token) para ter a permissão de criar o cliente.
+2. **Crie o cliente:** Envie o payload de requisição para a rota (POST /customer) enviando obrigatóriamente os campos `name` e `document`.
+
+### Exemplo Prático
 
 Para creditar valores (Depósito), você deve passar o ID do cliente dentro do campo `customerId` do payload.
 
@@ -148,7 +155,50 @@ Para creditar valores (Depósito), você deve passar o ID do cliente dentro do c
 ```
 O ID do cliente é passado como `customerId` para criar um pedido de depósito.
 
-:::tip[Dica de Integração]
+:::warning[Dica de Integração]
 Sempre armazene o `_id` do cliente logo após a criação. Você vai usá-lo em **100%** das chamadas futuras relacionadas a este usuário.
 :::
+
 ---
+
+### Integração
+
+<Tabs groupId="sdk-examples">
+  <TabItem value="js" label="Node.js">
+    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+
+    **Instalando `Axios`:**
+    ```bash
+    npm install axios
+    ```
+
+    **Exemplo Javascript:**
+    ```js
+const axios = require("axios");
+
+(async () => {
+    const email = "your_email@domain.com";
+    const password = "**********";
+    const customer = {
+        name: "Name client",
+        phone: "119*******",
+        email: "your_email@domain.com",
+        document: "000000*******"
+    }
+
+    try {
+        const url_api = "https://api.xgateglobal.com"
+        const login = await axios.post(`${url_api}/auth/token`, { email, password });
+        const { data } = await axios.post(`${url_api}/customer`, customer, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
+            }
+        });
+        console.log(data); // Response
+    } catch (error) {
+        console.log(error.response.data.message) // Error
+    }
+})()
+    ```
+  </TabItem>
+</Tabs>

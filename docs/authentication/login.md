@@ -88,11 +88,11 @@ O token expira em 15 dias. Se você começar a receber erros 401 Unauthorized em
 
 ---
 
-## Exemplos
+## Integração
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo utiliza a biblioteca <code>Axios</code> em Node.js.
+    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
 
     **Instalando `Axios`:**
     ```bash
@@ -124,7 +124,7 @@ O token expira em 15 dias. Se você começar a receber erros 401 Unauthorized em
     ```
   </TabItem>
   <TabItem value="python" label="Python">
-    O exemplo utiliza a biblioteca <code>requests</code>.
+    O exemplo de integração utiliza a biblioteca <code>requests</code>.
 
     **Instalando `requests`:**
     ```bash

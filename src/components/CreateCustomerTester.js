@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CodeBlock from '@theme/CodeBlock';
 
 export default function CreateCustomerTester() {
   const [adminEmail, setAdminEmail] = useState('');
@@ -99,7 +100,6 @@ export default function CreateCustomerTester() {
       </div>
 
       <form onSubmit={handleCreateCustomer}>
-        {/* AREA DE LOGIN */}
         <div style={{ marginBottom: '10px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>1. Suas Credenciais (Admin)</div>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '15px' }}>
             <div>
@@ -169,9 +169,10 @@ export default function CreateCustomerTester() {
               {resultado.status ? `${resultado.status} ${resultado.status === 201 ? 'Created' : ''}` : 'Erro'}
             </span>
           </div>
-          <div style={{ backgroundColor: 'var(--ifm-pre-background)', borderRadius: '5px', padding: '10px', overflowX: 'auto', maxHeight: '300px' }}>
-            <pre style={{ margin: 0, fontSize: '0.75rem' }}>{JSON.stringify(resultado.body || resultado, null, 2)}</pre>
-          </div>
+          
+          <CodeBlock language="json">
+             {JSON.stringify(resultado.body || resultado, null, 2)}
+          </CodeBlock>
         </div>
       )}
     </div>

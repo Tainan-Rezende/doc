@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import CodeBlock from '@theme/CodeBlock';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function PixKeysTester() {
-    // Estados para os inputs
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [clientId, setClientId] = useState('');
 
-    // Controle de visualização
     const [showPassword, setShowPassword] = useState(false);
     const [resultado, setResultado] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [etapa, setEtapa] = useState(''); // Para mostrar ao usuário o que está acontecendo
+    const [etapa, setEtapa] = useState('');
 
     const handleFullTest = async (e) => {
         e.preventDefault();
@@ -19,7 +19,6 @@ export default function PixKeysTester() {
         setEtapa('Autenticando...');
 
         try {
-            // --- PASSO 1: AUTENTICAÇÃO ---
             const authResponse = await fetch('https://api.xgateglobal.com/auth/token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -35,8 +34,6 @@ export default function PixKeysTester() {
             const token = authData.token;
             setEtapa('Buscando Chaves...');
 
-            // --- PASSO 2: BUSCAR CHAVES DO CLIENTE ---
-            // Nota: Ajustei a URL conforme seu pedido: /pix/customer/CLIENT_ID/key
             const keysResponse = await fetch(`https://api.xgateglobal.com/pix/customer/${clientId}/key`, {
                 method: 'GET',
                 headers: {
@@ -56,7 +53,6 @@ export default function PixKeysTester() {
         }
     };
 
-    // Estilos (idênticos ao AuthTester para manter padrão)
     const inputStyle = {
         width: '100%',
         padding: '10px',
@@ -65,7 +61,6 @@ export default function PixKeysTester() {
         backgroundColor: 'var(--ifm-background-surface-color)',
         color: 'var(--ifm-font-color-base)',
         fontSize: '0.9rem',
-        // marginBottom removido, controlado pela div wrapper
     };
 
     const toggleButtonStyle = {
@@ -151,7 +146,7 @@ export default function PixKeysTester() {
                     <div style={{ marginTop: '-10px', marginBottom: '15px', fontSize: '0.8rem', color: 'var(--ifm-color-emphasis-700)' }}>
                         Não possui cliente?{' '}
                         <a
-                            href="#"
+                            href={useBaseUrl('/docs/customer/create')}
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ fontWeight: 'bold', textDecoration: 'underline' }}
@@ -188,19 +183,9 @@ export default function PixKeysTester() {
                         </div>
                     )}
 
-                    <div style={{
-                        position: 'relative',
-                        backgroundColor: 'var(--ifm-pre-background)',
-                        borderRadius: 'var(--ifm-global-radius)',
-                        padding: '10px',
-                        border: '1px solid var(--ifm-color-emphasis-200)',
-                        overflowX: 'auto',
-                        maxHeight: '400px',
-                    }}>
-                        <pre style={{ margin: 0, background: 'transparent', fontSize: '0.75rem' }}>
-                            {JSON.stringify(resultado.body || resultado, null, 2)}
-                        </pre>
-                    </div>
+                    <CodeBlock language="json">
+                        {JSON.stringify(resultado.body || resultado, null, 2)}
+                    </CodeBlock>
                 </div>
             )}
         </div>

@@ -112,6 +112,10 @@ const config = {
             position: 'left',
             label: 'Documentação',
           },
+          {
+            type: 'localeDropdown',
+            position: 'right',
+          },
         ],
       },
       footer: {

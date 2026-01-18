@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CodeBlock from '@theme/CodeBlock';
 
 export default function AddPixKeyTester() {
     const [email, setEmail] = useState('');
@@ -190,9 +191,10 @@ export default function AddPixKeyTester() {
                             {resultado.status ? `${resultado.status} ${resultado.status === 201 ? 'Created' : ''}` : 'Erro'}
                         </span>
                     </div>
-                    <div style={{ backgroundColor: 'var(--ifm-pre-background)', borderRadius: '5px', padding: '10px', overflowX: 'auto', maxHeight: '300px' }}>
-                        <pre style={{ margin: 0, fontSize: '0.75rem' }}>{JSON.stringify(resultado.body || resultado, null, 2)}</pre>
-                    </div>
+                    
+                    <CodeBlock language="json">
+                        {JSON.stringify(resultado.body || resultado, null, 2)}
+                    </CodeBlock>
                 </div>
             )}
         </div>

@@ -1,34 +1,31 @@
 ---
-sidebar_label: 'Chaves Pix'
+sidebar_label: 'Moedas FIAT'
 sidebar_position: 1
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import PixKeysTester from '@site/src/components/PixKeysTester';
+import ListDepositCurrenciesTester from '@site/src/components/ListDepositCurrenciesTester';
 
-# Listar Chaves Pix
+# Listar Moedas
 
-Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.
+Este endpoint retorna todas as moédas fiduciárias disponíveis para a sua conta. Use esta rota para consultar e criar a requisição para pedido de depósito.
 
 ---
 ## Endpoint
 - **Método:** <span className="badge badge--success">GET</span>
 ```bash title="URL do Endpoint"
-https://api.xgateglobal.com/pix/customer/CLIENT_ID/key
+https://api.xgateglobal.com/deposit/company/currencies
 ```
-:::warning[Importante]
-O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
-:::
 
 ---
 
 ## Testar Integração
 
-Utilize o formulário abaixo para simular a listagem de chaves pix.
+Utilize o formulário abaixo para simular a listagem de moedas fiduciárias.
 
-<PixKeysTester />
+<ListDepositCurrenciesTester />
 
 ---
 
