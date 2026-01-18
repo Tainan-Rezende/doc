@@ -11,7 +11,7 @@ XGate é uma solução moderna e poderosa para pagamentos e conversões financei
 ## Funcionalidades
 
 - Processamento instantâneo via PIX;
-- Conversão automática de moeda FIAT para cripto
+- Conversão automática de moeda FIAT para Crypto
 - Depósitos e saques com suporte a Bitcoin, Ethereum, SHIBA INU, USDT, USDC, BNB e MATIC
 - Monitoramento em tempo real com dashboard avançado
 
