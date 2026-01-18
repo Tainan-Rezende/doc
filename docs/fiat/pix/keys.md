@@ -82,7 +82,7 @@ A resposta deste endpoint fornece o **Objeto Completo** da chave, que é obrigat
 3.  **Envio:** Você deve passar o **objeto inteiro** dentro da propriedade `pixKey` no payload de saque.
 
 :::warning[Atenção ao Formato]
-Não envie apenas o número da chave (string). O payload de saque espera o **objeto JSON completo** contendo `key`, `type` e `_id`.
+Não envie os dados da chave pix incompleto. O payload de saque espera o **objeto JSON completo** contendo `key`, `type` e `_id`.
 :::
 
 ### Exemplo Prático
@@ -196,7 +196,7 @@ except requests.exceptions.RequestException as error:
     ```
   </TabItem>
   <TabItem value="php" label="PHP (cURL)">
-    <p>Exemplo de como obter o token usando cURL nativo do PHP.</p>
+    <p>Exemplo de como obter a lista de chaves pix usando cURL nativo do PHP.</p>
     ```php
     $email = "your_email@domain.com";
 $password = "**********";

@@ -23,7 +23,14 @@ const sidebars = {
           ]
         }
       ]
-    }
+    },
+    {
+      type: 'category',
+      label: 'Clientes',
+      items: [
+        'customer/create'
+      ]
+    },
   ]
 };
 
