@@ -2,6 +2,10 @@
 sidebar_label: 'Login'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import AuthTester from '@site/src/components/AuthTester';
+
 # Fazer login
 
 Toda a interação com a API XGATE é protegida e exige autenticação. O primeiro passo para qualquer integração é obter seu token de acesso.
@@ -18,6 +22,12 @@ Este endpoint permite que você troque seu `email` e `senha` por um **Bearer Tok
 ```bash title="URL do Endpoint"
 https://api.xgateglobal.com/auth/token
 ```
+
+:::tip Teste em Tempo Real
+Utilize o formulário abaixo para gerar um token válido diretamente pelo navegador.
+:::
+
+<AuthTester />
 
 ---
 
@@ -63,7 +73,7 @@ Se o `email` ou `password` estiverem incorretos, a API retornará um erro:
 }
 ```
 ---
-## Como usar o Token
+## Como usar
 
 Após receber o token, você deve armazená-lo de forma segura e enviá-lo em todas as requisições subsequentes para rotas protegidas.
 
@@ -81,9 +91,6 @@ O token expira em 15 dias. Se você começar a receber erros 401 Unauthorized em
 ---
 
 ## Exemplos
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Javascript (Axios)">
@@ -153,7 +160,6 @@ import TabItem from '@theme/TabItem';
   <TabItem value="php" label="PHP (cURL)">
     <p>Exemplo de como obter o token usando cURL nativo do PHP.</p>
     ```php
-    <?php
 
     $apiUrl = "https://api.xgateglobal.com";
     $credentials = [
