@@ -91,7 +91,7 @@ O token expira em 15 dias. Se você começar a receber erros 401 Unauthorized em
 ## Exemplos
 
 <Tabs groupId="sdk-examples">
-  <TabItem value="js" label="Javascript (Axios)">
+  <TabItem value="js" label="Node.js">
     O exemplo utiliza a biblioteca <code>Axios</code> em Node.js.
 
     **Instalando `Axios`:**
@@ -155,7 +155,7 @@ O token expira em 15 dias. Se você começar a receber erros 401 Unauthorized em
             print(f"Connection error: {error}")
     ```
   </TabItem>
-  <TabItem value="php" label="PHP (cURL)">
+  <TabItem value="php" label="PHP">
     <p>Exemplo de como obter o token usando cURL nativo do PHP.</p>
     ```php
 

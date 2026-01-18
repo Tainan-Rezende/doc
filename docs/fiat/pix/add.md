@@ -140,7 +140,7 @@ Cada informação desse JSON será explicado na <a href="/docs/fiat/saques" targ
 ## Exemplos
 
 <Tabs groupId="sdk-examples">
-  <TabItem value="js" label="Javascript (Axios)">
+  <TabItem value="js" label="Node.js">
     O exemplo utiliza a biblioteca <code>Axios</code> em Node.js.
 
     **Instalando `Axios`:**
@@ -217,7 +217,7 @@ except requests.exceptions.RequestException as error:
         print("Erro ao processar a requisição.")
     ```
   </TabItem>
-  <TabItem value="php" label="PHP (cURL)">
+  <TabItem value="php" label="PHP">
     <p>Exemplo de como adicionar chave pix usando cURL nativo do PHP.</p>
     ```php
     $email = "your_email@domain.com";
