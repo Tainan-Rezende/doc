@@ -27,7 +27,8 @@ const sidebars = {
           type: 'category',
           label: 'Depósitos',
           items: [
-            'fiat/deposit/currency'
+            'fiat/deposit/currency',
+            'fiat/deposit/create'
           ]
         }
       ]

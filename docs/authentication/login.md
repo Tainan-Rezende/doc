@@ -12,7 +12,9 @@ Toda a interação com a API XGATE é protegida e exige autenticação. O primei
 
 Este endpoint permite que você troque seu `email` e `senha` por um **Bearer Token** (no formato [JWT](https://jwt.io/)). Este token deverá ser enviado em todas as futuras requisições no cabeçalho (header) `Authorization`.
 
-**Importante:** O token gerado é válido por **15 dias**. Após esse período, você precisará gerar um novo token usando esta mesma rota.
+:::warning[Importante]
+O token gerado é válido por **15 dias**. Após esse período, você precisará gerar um novo token usando esta mesma rota.
+:::
 
 ---
 
@@ -23,9 +25,11 @@ Este endpoint permite que você troque seu `email` e `senha` por um **Bearer Tok
 https://api.xgateglobal.com/auth/token
 ```
 
-:::tip Teste em Tempo Real
+---
+
+## Testar Integração
+
 Utilize o formulário abaixo para gerar um token válido diretamente pelo navegador.
-:::
 
 <AuthTester />
 

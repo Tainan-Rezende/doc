@@ -5,7 +5,7 @@ export default function ListDepositCurrenciesTester() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const [resultado, setResultado] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +30,7 @@ export default function ListDepositCurrenciesTester() {
       // 2. GET CURRENCIES
       const response = await fetch('https://api.xgateglobal.com/deposit/company/currencies', {
         method: 'GET',
-        headers: { 
+        headers: {
           'Authorization': `Bearer ${authData.token}`
         }
       });
@@ -81,30 +81,30 @@ export default function ListDepositCurrenciesTester() {
 
       <form onSubmit={handleList} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
-            <div style={{ flex: 1 }}>
-                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="Admin Email" />
-            </div>
+          <div style={{ flex: 1 }}>
+            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="email@..." />
+          </div>
 
-            <div style={{ flex: 1, position: 'relative' }}>
-                <input 
-                    type={showPassword ? "text" : "password"} 
-                    required 
-                    value={password} 
-                    onChange={e => setPassword(e.target.value)} 
-                    style={{ ...inputStyle, paddingRight: '40px' }} 
-                    placeholder="Admin Senha" 
-                />
-                <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    style={toggleButtonStyle}
-                    title={showPassword ? "Ocultar senha" : "Mostrar senha"}
-                >
-                    {showPassword ? '🙈' : '👁️'}
-                </button>
-            </div>
+          <div style={{ flex: 1, position: 'relative' }}>
+            <input
+              type={showPassword ? "text" : "password"}
+              required
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              style={{ ...inputStyle, paddingRight: '40px' }}
+              placeholder="••••••"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={toggleButtonStyle}
+              title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </button>
+          </div>
         </div>
-        
+
         <button type="submit" disabled={loading} className="button button--primary button--block">
           {loading ? 'Carregando...' : 'Listar Moedas Disponíveis'}
         </button>
@@ -112,14 +112,18 @@ export default function ListDepositCurrenciesTester() {
 
       {resultado && (
         <div style={{ marginTop: '15px' }}>
-           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px' }}>
-              <strong>Resposta:</strong>
-              <span className="badge badge--success">{resultado.status} OK</span>
-           </div>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+            <strong>Status:&nbsp;</strong>
+            {resultado.erro ? (
+              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-danger)' }}>Falha</span>
+            ) : (
+              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-success)' }}>{resultado.status} OK</span>
+            )}
+          </div>
 
-           <CodeBlock language="json">
-             {JSON.stringify(resultado.body || resultado, null, 2)}
-           </CodeBlock>
+          <CodeBlock language="json">
+            {JSON.stringify(resultado.body || resultado, null, 2)}
+          </CodeBlock>
         </div>
       )}
     </div>

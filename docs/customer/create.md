@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criar'
+sidebar_label: 'Criar Cliente'
 sidebar_position: 2
 ---
 
