@@ -32,7 +32,7 @@ export default function Home() {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`${siteConfig.title} - Sua plataforma de pagamentos para conquistar o mundo!`}
+      title={`${siteConfig.title} | API Documentation`}
       description="XGate é uma solução moderna e poderosa para pagamentos e conversões financeiras, projetada para facilitar e automatizar transações via PIX e criptomoedas. Com uma API robusta, é perfeita para desenvolvedores que desejam integrar rapidamente funcionalidades financeiras às suas aplicações.">
       <HomepageHeader />
       <main>

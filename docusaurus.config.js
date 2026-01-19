@@ -11,7 +11,7 @@ import { themes as prismThemes } from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'XGate',
-  tagline: 'Sua plataforma de pagamentos para conquistar o mundo!',
+  tagline: 'API Documentation',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
