@@ -5,17 +5,16 @@ import styles from './styles.module.css';
 const FeatureList = [
   {
     title: 'Comece por Aqui',
-    ImgSrc: '/img/programming.png', 
+    ImgSrc: 'img/programming.png',
     description: (
       <>
-        Aprenda o básico da nossa API: como se autenticar, obter seu token
-        e fazer sua primeira chamada em menos de 5 minutos.
+        Aprenda o básico da nossa API: como se autenticar e fazer sua primeira chamada em menos de 5 minutos.
       </>
     ),
   },
   {
     title: 'Referência da API',
-    ImgSrc: '/img/gear.png', 
+    ImgSrc: 'img/gear.png',
     description: (
       <>
         Explore todos os endpoints. Veja detalhes sobre Depósitos, Saques,
@@ -25,7 +24,7 @@ const FeatureList = [
   },
   {
     title: 'SDKs e Pacotes',
-    ImgSrc: '/img/software-development.png',
+    ImgSrc: 'img/software-development.png',
     description: (
       <>
         Integre mais rápido com nossos pacotes. Temos exemplos prontos em
