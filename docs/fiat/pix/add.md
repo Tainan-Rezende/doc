@@ -44,7 +44,6 @@ Utilize o formulário abaixo para simular o cadastro de uma chave real.
 | Header          | Valor                | Descrição                       |
 | :-------------- | :------------------- | :------------------------------ |
 | `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação.      |
-| `Content-Type`  | `application/json`   | Formato do corpo da requisição. |
 
 ### Corpo da Requisição (Body)
 

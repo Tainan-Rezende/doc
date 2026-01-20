@@ -41,7 +41,6 @@ A requisição não requer corpo (`body`), apenas os **Headers** de autenticaç�
 | Header          | Valor                | Descrição                    |
 | :-------------- | :------------------- | :--------------------------- |
 | `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
-| `Content-Type`  | `application/json`   | Tipo do conteúdo.            |
 
 ---
 

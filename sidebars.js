@@ -30,6 +30,14 @@ const sidebars = {
             'fiat/deposit/currency',
             'fiat/deposit/create'
           ]
+        },
+        {
+          type: 'category',
+          label: 'Saques',
+          items: [
+            'fiat/withdraw/currency',
+            'fiat/withdraw/create'
+          ]
         }
       ]
     },

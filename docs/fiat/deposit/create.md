@@ -19,7 +19,7 @@ Todo pedido é obrigatoriamente associado a um usuário. Isso garante que o valo
 - **Método:** <span className="badge badge--info">POST</span>
 
 ```bash title="URL do Endpoint"
-https://api.xgateglobal.com/deposit/company/order
+https://api.xgateglobal.com/deposit
 ```
 
 ---
@@ -41,7 +41,6 @@ Utilize o formulário abaixo para simular a criação de um pedido e gerar o QR 
 | Header          | Valor                | Descrição                    |
 | :-------------- | :------------------- | :--------------------------- |
 | `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
-| `Content-Type`  | `application/json`   | Tipo do conteúdo.            |
 
 #### Body (Corpo da Requisição)
 
@@ -88,9 +87,8 @@ Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o u
 
 | Status  | Mensagem                | Motivo Provável                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **400** | `Bad Request`           | Body inválido (faltou customer, amount ou currency).                                             |
 | **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **404** | `Not Found`             | Cliente informado no campo `customer` não existe.                                                |
+| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                                |
 | **409** | `Conflict`              | • Nome do cliente informado já está cadastrado.<br />• Documento informado já está cadastrado.   |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
 
