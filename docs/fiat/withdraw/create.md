@@ -52,7 +52,7 @@ Utilize o formulário abaixo para simular a criação de um pedido de saque.
 | `externalId` | `string` |   **Não**   | Idempotência                                       |
 
 :::warning[Importante]
-Recomendamos a inclusão dado de `externalId` na requisição pois a mesma evita o envio do pedido mais de uma vez, que pode acontecer acidentalmente.
+Recomendamos a inclusão dado de `externalId` na requisição pois o mesmo evita o envio do pedido mais de uma vez, que pode acontecer acidentalmente.
 :::
 
 ---
