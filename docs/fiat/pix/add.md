@@ -45,6 +45,12 @@ Utilize o formulário abaixo para simular o cadastro de uma chave real.
 | :-------------- | :------------------- | :------------------------------ |
 | `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação.      |
 
+#### Parâmetros de URL
+
+| Parâmetro   | Tipo     | Obrigatório | Descrição |
+| :---------- | :------- | :---------: | :-------- |
+| `CLIENT_ID` | `string` | **Sim** | O `_id` do cliente que você deseja adicionar a chave pix. |
+
 ### Corpo da Requisição (Body)
 
 | Campo  | Tipo     | Obrigatório | Descrição                                                                 |

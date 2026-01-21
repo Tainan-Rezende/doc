@@ -44,9 +44,16 @@ Utilize o formulário abaixo para simular a remoção de uma chave real.
 
 ### Headers Obrigatórios
 
-| Header          | Valor                | Descrição                       |
-| :-------------- | :------------------- | :------------------------------ |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação.      |
+| Header          | Valor                | Descrição                  |
+| :-------------- | :------------------- | :------------------------- |
+| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
+
+#### Parâmetros de URL
+
+| Parâmetro   | Tipo     | Obrigatório | Descrição                                               |
+| :---------- | :------- | :---------: | :------------------------------------------------------ |
+| `CLIENT_ID` | `string` |   **Sim**   | O `_id` do cliente que você deseja deletar a chave pix. |
+| `KEY_ID`    | `string` |   **Sim**   | O `_id` da chave pix que deseja remover.                |
 
 ---
 
@@ -91,7 +98,7 @@ A remoção é permanente. Se o usuário tentar realizar um saque enviando o obj
 ### Exemplo Prático
 
 **1. Encontrando o ID na Listagem:**
-Ao listar as chaves, você verá o campo `_id`. É ele que precisamos.
+Ao listar as chaves, você verá o campo `_id`.
 
 ```json {5}
 [
@@ -107,7 +114,7 @@ Ao listar as chaves, você verá o campo `_id`. É ele que precisamos.
 
 Você deve inserir o ID do cliente e o ID da chave na rota:
 ```url
-DELETE /pix/customer/CLIENT_ID/key/remove/68fa5d54004*************
+DELETE /pix/customer/68e7b8f0db*************/key/remove/68fa5d54004*************
 ```
 
 **3. A resposta:**

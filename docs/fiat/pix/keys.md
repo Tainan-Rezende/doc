@@ -42,6 +42,12 @@ A requisição não requer corpo (`body`), apenas os **Headers** de autenticaç�
 | :-------------- | :------------------- | :--------------------------- |
 | `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
 
+#### Parâmetros de URL
+
+| Parâmetro   | Tipo     | Obrigatório | Descrição |
+| :---------- | :------- | :---------: | :-------- |
+| `CLIENT_ID` | `string` | **Sim** | O `_id` do cliente que você deseja consultar a lista de chaves. |
+
 ---
 
 ## Respostas (Responses)

@@ -43,6 +43,19 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Crypto',
+      items: [
+        {
+          type: 'category',
+          label: 'Cliente',
+          items: [
+            'crypto/customer/wallet'
+          ]
+        }
+      ]
+    },
+    {
+      type: 'category',
       label: 'Clientes',
       items: [
         'customer/create'
