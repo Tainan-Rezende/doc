@@ -77,8 +77,9 @@ Retorna um array com a carteira gerada e a rede que deve ser utilizada para rece
 Depósitos de origem crypto não aparecem na aba depósitos da Dashboard até que sejam concluídas (Pagas).
 :::
 
-:::danger[Importante]
-Atualmente, a XGate trabalha apenas com **USDT, todo depósito de origem crypto devem ser dessa criptomoeda**.
+:::danger[Risco de Perda de Fundos]
+1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) para este endereço resultará na **perda irreversível** do valor.
+2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas no retorno da API (ex: `ERC-20`, `BEP-20` ou `Polygon`). O uso de redes não suportadas impedirá o recebimento do valor.
 :::
 
 ### Erros Comuns
@@ -90,6 +91,35 @@ Atualmente, a XGate trabalha apenas com **USDT, todo depósito de origem crypto 
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
 
 ---
+
+## Como usar
+
+As informações entregues nesta rota são o **Endereço (publicKey)** e as **Redes (blockchainNetworks)**. Elas serão utilizadas sempre que você ou seu cliente final desejar realizar um depósito em **USDT**.
+
+O fluxo para o usuário final deve ser:
+1.  O sistema exibe o endereço (`publicKey`).
+2.  O sistema informa quais redes são aceitas (`blockchainNetworks`).
+3.  O usuário vai até a corretora ou carteira dele e envia **USDT** usando uma das redes listadas para o endereço informado.
+
+### ⚠️ Regras Críticas de Depósito
+
+Para garantir a segurança dos fundos, o desenvolvedor deve exibir avisos claros no front-end para o usuário final:
+
+:::danger[Risco de Perda de Fundos]
+1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) para este endereço resultará na **perda irreversível** do valor.
+2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas no retorno da API (ex: `ERC-20`, `BEP-20` ou `Polygon`). O uso de redes não suportadas impedirá o recebimento do valor.
+:::
+
+### Exemplo de Aplicação (UX)
+
+Ao integrar essa rota, recomendamos que sua interface mostre as informações da seguinte maneira:
+
+> **Deposite apenas USDT**
+>
+> **Redes Aceitas:** Ethereum (ERC-20), Binance Smart Chain (BEP-20), Polygon.
+>
+> **Endereço de Depósito:**
+> `0xf898b006511848B7************************` (Botão Copiar)
 
 ## Integração
 
