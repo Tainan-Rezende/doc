@@ -88,7 +88,7 @@ Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o u
 | Status  | Mensagem                | Motivo Provável                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
 | **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                                |
+| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
 | **409** | `Conflict`              | • Nome do cliente informado já está cadastrado.<br />• Documento informado já está cadastrado.   |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
 
@@ -109,7 +109,7 @@ O retorno mais importante aqui é o campo `code`. Ele contém a string do "Pix C
 
 ### Exemplo Prático
 
-Para criar pedidos de depósito Pix, você deve ter 2 dados:
+Para criar pedidos de depósito Pix, você deve seguir esses 2 passos:
 
 
 **1. Passo:** Aqui você tem as opções de criar o pedido de depósito sem um cliente ainda criado pela rota (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) ou com um já criado.
@@ -121,17 +121,17 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 :::
 <Tabs>
     <TabItem value="with-client" label="Com Cliente">
-**1. Passe o `_id` do cliente como `customerId`, igual no campo destacado:**
+**1.1. Passe o `_id` do cliente como `customerId`, igual no campo destacado:**
 ```json {3}
 {
     "amount": 0.2,
     "customerId": "696d1f3331117************",
     "currency": {
-        "_id": "6728f0a2cba3**************",
+        "_id": "6722ba**************",
         "name": "BRL",
         "type": "PIX",
-        "createdDate": "2024-11-04T16:04:50.019Z",
-        "updatedDate": "2024-11-07T02:23:38.606Z",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
     }
@@ -139,7 +139,7 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 ```
     </TabItem>
     <TabItem value="no-client" label="Sem Cliente">
-    **1. Você deve passar o objeto `customer` que irá criar o cliente ao mesmo tempo em que cria o pedido de depósito:**
+    **1.1. Você deve passar o objeto `customer` que irá criar o cliente ao mesmo tempo em que cria o pedido de depósito:**
     ```json {3-8}
     {
     "amount": 0.2,
@@ -150,11 +150,11 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
         "email": "client@domain.com"
     },
     "currency": {
-        "_id": "6728f0a2cba3**************",
+        "_id": "6722ba**************",
         "name": "BRL",
         "type": "PIX",
-        "createdDate": "2024-11-04T16:04:50.019Z",
-        "updatedDate": "2024-11-07T02:23:38.606Z",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
     }
@@ -175,11 +175,11 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/deposit/currency'
     "amount": 0.2,
     "customerId": "696d1f3331117************",
     "currency": {
-        "_id": "6728f0a2cba3**************",
+        "_id": "6722ba**************",
         "name": "BRL",
         "type": "PIX",
-        "createdDate": "2024-11-04T16:04:50.019Z",
-        "updatedDate": "2024-11-07T02:23:38.606Z",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
     }
@@ -198,7 +198,7 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
 | `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
 | `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
 | `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `number` |   **Sim**   | Símbolo da moeda.                                           |
+| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
 
 ---
 

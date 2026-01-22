@@ -8,11 +8,11 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreatePixDepositTester from '@site/src/components/CreatePixDepositTester';
 
-# Criar Pedido de Depósito
+# Criar Pedido de Depósito (Fiat → Crypto)
 
-Este endpoint permite gerar uma ordem de depósito (intenção de pagamento) para um cliente específico. Ao criar a ordem, o sistema retorna os dados necessários para que o usuário final realize o pagamento via Pix.
+Este endpoint gera uma ordem de depósito com **conversão automática**. O cliente realiza o pagamento em moeda fiduciária (Pix/BRL) e o valor é creditado em criptomoeda (ex: USDT) na carteira dele.
 
-Todo pedido é obrigatoriamente associado a um usuário. Isso garante que o valor seja creditado para o cliente correto em sua plataforma, além de **facilitar a conciliação automática** e manter um **histórico organizado** de todas as transações.
+Todo pedido é obrigatoriamente associado a um usuário. Isso garante que o saldo convertido seja entregue corretamente, além de **facilitar a conciliação** e manter um **histórico organizado** de todas as operações de câmbio.
 
 ---
 ## Endpoint
@@ -88,7 +88,7 @@ Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o u
 | Status  | Mensagem                | Motivo Provável                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
 | **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                                |
+| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
 | **409** | `Conflict`              | • Nome do cliente informado já está cadastrado.<br />• Documento informado já está cadastrado.   |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
 
@@ -109,7 +109,7 @@ O retorno mais importante aqui é o campo `code`. Ele contém a string do "Pix C
 
 ### Exemplo Prático
 
-Para criar pedidos de depósito Pix, você deve ter 2 dados:
+Para criar pedidos de depósito Pix, você deve seguir esses 3 passos:
 
 
 **1. Passo:** Aqui você tem as opções de criar o pedido de depósito sem um cliente ainda criado pela rota (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) ou com um já criado.
@@ -124,40 +124,60 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 **1. Passe o `_id` do cliente como `customerId`, igual no campo destacado:**
 ```json {3}
 {
-    "amount": 0.2,
-    "customerId": "696d1f3331117************",
+    "amount": 2,
+    "customerId": "672f40**************",
     "currency": {
-        "_id": "6728f0a2cba3**************",
+        "_id": "6722ba**************",
         "name": "BRL",
         "type": "PIX",
-        "createdDate": "2024-11-04T16:04:50.019Z",
-        "updatedDate": "2024-11-07T02:23:38.606Z",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "cryptocurrency": {
+        "_id": "67ce09d**************",
+        "name": "USDT",
+        "symbol": "USDT",
+        "coinGecko": "usdt",
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0
+    },
+    "externalId": "67ce09d**************"
 }
 ```
     </TabItem>
     <TabItem value="no-client" label="Sem Cliente">
     **1. Você deve passar o objeto `customer` que irá criar o cliente ao mesmo tempo em que cria o pedido de depósito:**
-    ```json {3-8}
-    {
-    "amount": 0.2,
+```json {3-8}
+{
+    "amount": 2,
     "customer": {
-        "name": "Client Name",
-        "document": "12345678900",
-        "phone": "+55123456789",
-        "email": "client@domain.com"
-    },
+        "name": "Name",
+        "phone": "92*********",
+        "email": "email@example.com",
+        "document": "123*********"
+    }, 
     "currency": {
-        "_id": "6728f0a2cba3**************",
+        "_id": "6722c8f***************",
         "name": "BRL",
         "type": "PIX",
-        "createdDate": "2024-11-04T16:04:50.019Z",
-        "updatedDate": "2024-11-07T02:23:38.606Z",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "cryptocurrency": {
+        "_id": "67ca33*********************",
+        "name": "USDT",
+        "symbol": "USDT",
+        "coinGecko": "usdt",
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0
+    },
+    "externalId": "67ce09d**************"
 }
     ```
     :::warning[Importante]
@@ -172,17 +192,57 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/deposit/currency'
 
 ```json {4-12}
 {
-    "amount": 0.2,
-    "customerId": "696d1f3331117************",
+    "amount": 2,
+    "customerId": "672f40**************",
     "currency": {
-        "_id": "6728f0a2cba3**************",
+        "_id": "6722ba**************",
         "name": "BRL",
         "type": "PIX",
-        "createdDate": "2024-11-04T16:04:50.019Z",
-        "updatedDate": "2024-11-07T02:23:38.606Z",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "cryptocurrency": {
+        "_id": "67ce09d**************",
+        "name": "USDT",
+        "symbol": "USDT",
+        "coinGecko": "usdt",
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0
+    },
+    "externalId": "67ce09d**************"
+}
+```
+
+**3. Passo:** Você deve obter a criptomoeda para realizar a conversão. 
+
+Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/deposit/cryptocurrency')} target="_blank">clicando aqui</a>.
+
+```json {13-21}
+{
+    "amount": 2,
+    "customerId": "672f40**************",
+    "currency": {
+        "_id": "6722ba**************",
+        "name": "BRL",
+        "type": "PIX",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
+        "__v": 0,
+        "symbol": "R$"
+    },
+    "cryptocurrency": {
+        "_id": "67ce09d**************",
+        "name": "USDT",
+        "symbol": "USDT",
+        "coinGecko": "usdt",
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0
+    },
+    "externalId": "67ce09d**************"
 }
 ```
 
@@ -198,7 +258,20 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
 | `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
 | `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
 | `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `number` |   **Sim**   | Símbolo da moeda.                                           |
+| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
+
+
+Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
+
+| Campo         | Tipo     | Obrigatório | Descrição                                                  |
+| :------------ | :------- | :---------: | :--------------------------------------------------------- |
+| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
+| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
+| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
+| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
+| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
+| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
+| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
 
 ---
 
@@ -214,8 +287,8 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
     ```
 
     **Exemplo Javascript:**
-    ```js
-    const axios = require("axios");
+```js
+const axios = require("axios");
 
 (async () => {
     const email = "your_email@domain.com";
@@ -231,10 +304,16 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
                 "Authorization": `Bearer ${login.data.token}`
             }
         });
+        const cryptocurrencies = await axios.get(`${url_api}/deposit/company/cryptocurrencies`, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
+            }
+        });
         const { data } = await axios.post(`${url_api}/deposit`, {
             amount,
             customerId,
-            currency: currencies.data[0]
+            currency: currencies.data[0],
+            cryptocurrency: cryptocurrencies.data[0]
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`
@@ -245,6 +324,6 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
         console.log(error.response.data.message) // Error
     }
 })()
-    ```
+```
   </TabItem>
 </Tabs>

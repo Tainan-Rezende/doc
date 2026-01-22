@@ -49,15 +49,15 @@ Retorna uma lista (array) de objetos, onde cada objeto é uma moeda.
 
 ```json
 [
-  {
-    "_id": "6728f0a2cba****************",
-    "name": "BRL",
-    "type": "PIX",
-    "createdDate": "2024-1**********",
-    "updatedDate": "2024-1**********",
-    "__v": 0,
-    "symbol": "R$"
-  }
+    {
+        "_id": "6722ba**************",
+        "name": "BRL",
+        "type": "PIX",
+        "createdDate": "202*********************",
+        "updatedDate": "202*********************",
+        "__v": 0,
+        "symbol": "R$"
+    }
 ]
 ```
 

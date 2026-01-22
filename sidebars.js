@@ -51,6 +51,16 @@ const sidebars = {
           items: [
             'crypto/customer/wallet'
           ]
+        },
+        {
+          type: 'category',
+          label: 'Depósito',
+          items: [
+            'crypto/deposit/cryptocurrency',
+            'crypto/deposit/create',
+            'crypto/deposit/network',
+            'crypto/deposit/price'
+          ]
         }
       ]
     },
