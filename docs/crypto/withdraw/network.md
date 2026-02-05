@@ -12,14 +12,14 @@ import ListBlockchainNetworksTester from '@site/src/components/ListBlockchainNet
 
 Este endpoint retorna todas as redes blockchain suportadas pela plataforma (ex: Ethereum, BSC, Polygon). 
 
-Esta listagem é **fundamental para realizar saques de criptomoedas** para carteiras externas. Como o USDT existe em várias blockchains diferentes, você precisa especificar em qual rede a transferência deve ocorrer para que o depósito chegue corretamente.
+Esta listagem é **fundamental para realizar saques de criptomoedas** para carteiras externas. Como o USDT existe em várias blockchains diferentes, você precisa especificar em qual rede a transferência deve ocorrer para montar o payload de saque corretamente.
 
 ---
 ## Endpoint
 - **Método:** <span className="badge badge--success">GET</span>
 
 ```bash title="URL do Endpoint"
-https://api.xgateglobal.com/deposit/company/blockchain-networks
+https://api.xgateglobal.com/withdraw/company/blockchain-networks
 ```
 
 ---

@@ -154,6 +154,7 @@ export default function AddPixKeyTester() {
                     >
                         <option value="EMAIL">E-mail</option>
                         <option value="CPF">CPF</option>
+                        <option value="CNPJ">CNPJ</option>
                         <option value="PHONE">Telefone</option>
                         <option value="RANDOM">Chave Aleatória</option>
                     </select>

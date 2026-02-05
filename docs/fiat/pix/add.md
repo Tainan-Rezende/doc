@@ -10,7 +10,7 @@ import AddPixKeyTester from '@site/src/components/AddPixKeyTester';
 
 # Adicionar Chave Pix
 
-Este endpoint permite cadastrar uma nova chave Pix (E-mail, CPF, Telefone ou Aleatória) para seu cliente final.
+Este endpoint permite cadastrar uma nova chave Pix (E-mail, CPF, CNPJ, Telefone ou Aleatória) para seu cliente final.
 
 <!-- :::info[Nota sobre Validação]
 O sistema valida automaticamente se o formato da chave corresponde ao `type` informado (ex: se o CPF tem 11 dígitos, se o e-mail é válido, etc).
@@ -41,22 +41,22 @@ Utilize o formulário abaixo para simular o cadastro de uma chave real.
 
 ### Headers Obrigatórios
 
-| Header          | Valor                | Descrição                       |
-| :-------------- | :------------------- | :------------------------------ |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação.      |
+| Header          | Valor                | Descrição                  |
+| :-------------- | :------------------- | :------------------------- |
+| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
 
 #### Parâmetros de URL
 
-| Parâmetro   | Tipo     | Obrigatório | Descrição |
-| :---------- | :------- | :---------: | :-------- |
-| `CLIENT_ID` | `string` | **Sim** | O `_id` do cliente que você deseja adicionar a chave pix. |
+| Parâmetro   | Tipo     | Obrigatório | Descrição                                                 |
+| :---------- | :------- | :---------: | :-------------------------------------------------------- |
+| `CLIENT_ID` | `string` |   **Sim**   | O `_id` do cliente que você deseja adicionar a chave pix. |
 
 ### Corpo da Requisição (Body)
 
-| Campo  | Tipo     | Obrigatório | Descrição                                                                 |
-| :----- | :------- | :---------- | :------------------------------------------------------------------------ |
-| `key`  | `string` | Sim         | O valor da chave Pix (ex: `seu@email.com`, `+551199...`).                 |
-| `type` | `string` | Sim         | O tipo da chave.<br />Valores aceitos: `EMAIL`, `CPF`, `PHONE`, `RANDOM`. |
+| Campo  | Tipo     | Obrigatório | Descrição                                                                         |
+| :----- | :------- | :---------- | :-------------------------------------------------------------------------------- |
+| `key`  | `string` | Sim         | O valor da chave Pix (ex: `seu@email.com`, `+551199...`).                         |
+| `type` | `string` | Sim         | O tipo da chave.<br />Valores aceitos: `EMAIL`, `CPF`, `CNPJ`, `PHONE`, `RANDOM`. |
 
 ---
 

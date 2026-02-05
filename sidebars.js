@@ -61,6 +61,16 @@ const sidebars = {
             'crypto/deposit/network',
             'crypto/deposit/price'
           ]
+        },
+        {
+          type: 'category',
+          label: 'Saques',
+          items: [
+            'crypto/withdraw/cryptocurrency',
+            'crypto/withdraw/create',
+            'crypto/withdraw/network',
+            'crypto/withdraw/create-external'
+          ]
         }
       ]
     },
