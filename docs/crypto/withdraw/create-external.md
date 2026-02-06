@@ -6,7 +6,7 @@ sidebar_position: 4
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import WithdrawFiatToCryptoTester from '@site/src/components/CreateWithdrawConversion';
+import WithdrawCryptoToWalletTester from '@site/src/components/WithdrawCryptoToWalletTester';
 
 # Criar Pedido de Saque para Carteira Externa
 
@@ -26,7 +26,7 @@ https://api.xgateglobal.com/withdraw
 
 Utilize o formulário abaixo para simular a criação de um pedido de saque crypto para carteira externa.
 
-<WithdrawFiatToCryptoTester />
+<WithdrawCryptoToWalletTester />
 
 ---
 
@@ -48,7 +48,7 @@ Utilize o formulário abaixo para simular a criação de um pedido de saque cryp
 | `customerId`        | `string` |   **Sim**   | O ID único (`_id`) do cliente que fará o saque. |
 | `cryptocurrency`    | `object` |   **Sim**   | A criptomoeda da transação (ex: `USDT`).        |
 | `blockchainNetwork` | `object` |   **Sim**   | Informações sobre a rede blockchain.            |
-| `wallet`            | `string` |   **Sim**   | A carteira para onde os valores serão enviados  |
+| `wallet`            | `string` |   **Sim**   | A carteira para onde os valores serão enviados. |
 | `externalId`        | `string` |   **Não**   | Idempotência.                                   |
 
 ---
@@ -84,14 +84,14 @@ A finalidade deste endpoint é iniciar o fluxo de saída de dinheiro com convers
 ### O Fluxo de Integração
 
 1.  **Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) e tenha o `_id` dele.
-2.  **Cadastre uma Chave Pix:** Após criar o cliente, é necessário estar cadastrando uma chave pix para o mesmo em <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">Adicionar Chave Pix</a>.
-3.  **Dados de moeda:** Será necessário buscar os dados da moeda e criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">Moedas FIAT</a> e <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Criptomoedas</a>.
-4.  **Crie o Pedido:** Chame este endpoint enviando os dados de amount, customerId, currency, cryptocurrency e pixKey.
-5.  **Aguarde o Pagamento:** O status inicial será `PENDING`.
+2.  **Dados da Criptomoeda:** Será necessário buscar os dados da criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Criptomoedas</a>.
+3.  **Dados da rede:** Será necessário buscar os dados da rede (network), você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">Redes Blockchain</a>.
+4.  **Destino:** Adicione a chave pública da carteira de quem receberá o saque na carteira externa.
+5.  **Envie o pedido:** Envie a solicitação para a XGate, o tempo de aprovação pode variar dependendo da rede.
 
 ### Exemplo Prático
 
-Para criar pedidos de saque convertendo Crypto para BRL, você deve seguir esses 4 passos:
+Para criar pedidos de saque para carteira externa, você deve seguir esses 4 passos:
 
 :::tip[Recomendação]
 É necessário criar um cliente antes de processeguir para criação de saque.
@@ -99,144 +99,172 @@ Para criar pedidos de saque convertendo Crypto para BRL, você deve seguir esses
 Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank">clicando aqui</a>** para ir para a página de documentação de criação de cliente.
 :::
 >
-**1. Passe o `_id` do cliente como `customerId`, igual no campo destacado:**
-```json {3}
+**1. Passo:** Informe o valor em USDT em `amount` e o `_id` do cliente como `customerId`, igual nos campos destacados:
+```json {2-3}
 {
     "amount": 2,
     "customerId": "672f40**************",
-    "currency": {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
-    },
     "cryptocurrency": {
-        "_id": "67ce09d**************",
+        "_id": "67c0dd903***************",
         "name": "USDT",
         "symbol": "USDT",
-        "coinGecko": "usdt",
+        "coinGecko": "tether",
         "updatedDate": "202*********************",
         "createdDate": "202*********************",
         "__v": 0
     },
-    "pixKey": {
-        "key": "123**************",
-        "type": "CPF",
-        "_id": "152535**************"
+    "blockchainNetwork": {
+        "_id": "6dd37763a2***************",
+        "name": "BEP-20",
+        "chainId": "56",
+        "cryptocurrencies": [],
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0,
+        "chain": "BSC",
+        "symbol": "BNB"
     },
-    "externalId": "67ce09d**************"
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
 }
 ```
 
-**2. Passo:** Você deve obter a moeda fiduciária com os dados para saque. 
+**2. Passo:** Você deve obter a criptomoeda com os dados para saque. 
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">clicando aqui</a>.
+Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
 
 ```json {4-12}
 {
     "amount": 2,
     "customerId": "672f40**************",
-    "currency": {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
-    },
     "cryptocurrency": {
-        "_id": "67ce09d**************",
+        "_id": "67c0dd903***************",
         "name": "USDT",
         "symbol": "USDT",
-        "coinGecko": "usdt",
+        "coinGecko": "tether",
         "updatedDate": "202*********************",
         "createdDate": "202*********************",
         "__v": 0
     },
-    "pixKey": {
-        "key": "123**************",
-        "type": "CPF",
-        "_id": "152535**************"
+    "blockchainNetwork": {
+        "_id": "6dd37763a2***************",
+        "name": "BEP-20",
+        "chainId": "56",
+        "cryptocurrencies": [],
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0,
+        "chain": "BSC",
+        "symbol": "BNB"
     },
-    "externalId": "67ce09d**************"
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
 }
 ```
 
-**3. Passo:** Você deve obter a criptomoeda para realizar a conversão de saque. 
+:::tip[Criptomoeda]
+Os dados de `cryptocurrency` também podem ser retirados da resposta vinda da listagem de redes blockchain, o exemplo de integração em **Node.Js** mostra como funciona.
+:::
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
+#### Detalhes do Objeto
 
-```json {13-21}
+Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
+
+| Campo         | Tipo     | Obrigatório | Descrição                                                  |
+| :------------ | :------- | :---------: | :--------------------------------------------------------- |
+| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
+| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
+| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
+| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
+| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
+| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
+| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
+
+**3. Passo:** Você deve obter os dados da rede blockchain. 
+
+Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">clicando aqui</a>.
+
+```json {13-23}
 {
     "amount": 2,
     "customerId": "672f40**************",
-    "currency": {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
-    },
     "cryptocurrency": {
-        "_id": "67ce09d**************",
+        "_id": "67c0dd903***************",
         "name": "USDT",
         "symbol": "USDT",
-        "coinGecko": "usdt",
+        "coinGecko": "tether",
         "updatedDate": "202*********************",
         "createdDate": "202*********************",
         "__v": 0
     },
-    "pixKey": {
-        "key": "123**************",
-        "type": "CPF",
-        "_id": "152535**************"
+    "blockchainNetwork": {
+        "_id": "6dd37763a2***************",
+        "name": "BEP-20",
+        "chainId": "56",
+        "cryptocurrencies": [],
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0,
+        "chain": "BSC",
+        "symbol": "BNB"
     },
-    "externalId": "67ce09d**************"
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
 }
 ```
 
-**3. Passo:** Você deve obter os dados da chave pix e informar no payload para o saque ser realizado. 
+:::warning[Recomendação]
+Caso sua integração utilize uma rede fixa para todas as operações de saque, recomendamos enviar os valores obrigatórios via **hard-code**. Isso otimiza a performance da sua aplicação, evitando chamadas repetitivas ao endpoint de listagem de redes, que possui um volume de dados elevado.
+:::
 
-Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/fiat/pix/keys')} target="_blank">clicando aqui</a> ou então  <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">adicionar uma nova chave pix</a>.
+#### Detalhes do Objeto
 
-```json {22-26}
+Veja os detalhes de cada informação no objeto `blockchainNetwork` para montar sua requisição.
+
+| Campo              | Tipo     | Obrigatório | Descrição                                               |
+| :----------------- | :------- | :---------: | :------------------------------------------------------ |
+| `_id`              | `string` |   **Sim**   | Identificador único da rede blockchain no sistema.      |
+| `name`             | `string` |   **Sim**   | Nome técnico do padrão da rede (ex: BEP-20, ERC-20).    |
+| `chainId`          | `string` |   **Sim**   | ID numérico da rede (ex: 56 para BSC, 1 para Ethereum). |
+| `cryptocurrencies` | `array`  |   **Não**   | Lista de IDs das criptomoedas suportadas nesta rede.    |
+| `updatedDate`      | `string` |   **Não**   | Data da última atualização dos parâmetros da rede.      |
+| `createdDate`      | `string` |   **Não**   | Data de criação do registro da rede no sistema.         |
+| `__v`              | `number` |   **Não**   | Versão interna do registro no banco de dados.           |
+| `chain`            | `string` |   **Sim**   | Nome simplificado da blockchain (ex: BSC, ETH).         |
+| `symbol`           | `string` |   **Sim**   | Símbolo da moeda nativa da rede (ex: BNB, ETH).         |
+
+**3. Passo:** Você deve obter a chave publica da carteira para onde será enviado os valores do saque.
+
+```json {24}
 {
     "amount": 2,
     "customerId": "672f40**************",
-    "currency": {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
-    },
     "cryptocurrency": {
-        "_id": "67ce09d**************",
+        "_id": "67c0dd903***************",
         "name": "USDT",
         "symbol": "USDT",
-        "coinGecko": "usdt",
+        "coinGecko": "tether",
         "updatedDate": "202*********************",
         "createdDate": "202*********************",
         "__v": 0
     },
-    "pixKey": {
-        "key": "123**************",
-        "type": "CPF",
-        "_id": "152535**************"
+    "blockchainNetwork": {
+        "_id": "6dd37763a2***************",
+        "name": "BEP-20",
+        "chainId": "56",
+        "cryptocurrencies": [],
+        "updatedDate": "202*********************",
+        "createdDate": "202*********************",
+        "__v": 0,
+        "chain": "BSC",
+        "symbol": "BNB"
     },
-    "externalId": "67ce09d**************"
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
 }
 ```
 
-**5. Passo (Opcional):** Adicione o `externalId` ao final do código, ele irá evitar que o cliente envie mais de 1 (uma) vez a solicitação de saque, **evitando duplicidade**.
+**4. Passo (Opcional):** Adicione o `externalId` ao final do código, ele irá evitar que o cliente envie mais de 1 (uma) vez a solicitação de saque, **evitando duplicidade**.
 ```json {27}
 {
     "amount": 2,
@@ -268,33 +296,6 @@ Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/f
 }
 ```
 
-#### Detalhes do Objeto
-
-Veja os detalhes de cada informação no objeto `currency` para montar sua requisição.
-
-| Campo         | Tipo     | Obrigatório | Descrição                                                   |
-| :------------ | :------- | :---------: | :---------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da moeda.                               |
-| `name`        | `string` |   **Sim**   | Nome da moeda.                                              |
-| `type`        | `string` |   **Sim**   | Tipo do método de pagamento ou transação associado à moeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
-| `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
-
-
-Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
-
-| Campo         | Tipo     | Obrigatório | Descrição                                                  |
-| :------------ | :------- | :---------: | :--------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
-| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
-| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
-| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
-| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
-
 ---
 
 ## Integração
@@ -315,33 +316,24 @@ const axios = require("axios");
 (async () => {
     const email = "your_email@domain.com";
     const password = "**********";
-    const customerId = "************";
     const amount = 10.90;
+    const wallet = "0x*****************";
+    const customerId = "**************";
 
     try {
         const url_api = "https://api.xgateglobal.com"
         const login = await axios.post(`${url_api}/auth/token`, { email, password });
-        const cryptocurrencies = await axios.get(`${url_api}/withdraw/company/cryptocurrencies`, {
+        const blockchains = await axios.get(`${url_api}//withdraw/company/blockchain-networks`, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`
             }
         });
-        const currencies = await axios.get(`${url_api}/withdraw/company/currencies`, {
-            headers: {
-                "Authorization": `Bearer ${login.data.token}`
-            }
-        });
-        const pixKey = await axios.get(`${url_api}/pix/customer/${customerId}/key`, {
-            headers: {
-                "Authorization": `Bearer ${login.data.token}`
-            }
-        });
-        const { data } = await axios.post(`${url_api}/withdraw/conversion/brl/pix`, {
+        const { data } = await axios.post(`${url_api}/withdraw`, {
             amount,
+            wallet,
             customerId,
-            currency: currencies.data[0],
-            cryptocurrency: cryptocurrencies.data[0],
-            pixKey: pixKey.data[0]
+            cryptocurrency: blockchains.data[0].cryptocurrencies[1].cryptocurrency, // USDT
+            blockchainNetwork: blockchains.data[0], // BEP-20
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

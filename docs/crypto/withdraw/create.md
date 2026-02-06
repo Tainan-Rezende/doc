@@ -91,7 +91,7 @@ A finalidade deste endpoint é iniciar o fluxo de saída de dinheiro com convers
 
 ### Exemplo Prático
 
-Para criar pedidos de saque convertendo Crypto para BRL, você deve seguir esses 4 passos:
+Para criar pedidos de saque convertendo Crypto para BRL, você deve seguir esses 5 passos:
 
 :::tip[Recomendação]
 É necessário criar um cliente antes de processeguir para criação de saque.
@@ -99,8 +99,8 @@ Para criar pedidos de saque convertendo Crypto para BRL, você deve seguir esses
 Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank">clicando aqui</a>** para ir para a página de documentação de criação de cliente.
 :::
 >
-**1. Passe o `_id` do cliente como `customerId`, igual no campo destacado:**
-```json {3}
+**1. Passo:** Passe o valor em USDT no campo `amount` e o `_id` do cliente como `customerId`, igual nos campos destacados:
+```json {2-3}
 {
     "amount": 2,
     "customerId": "672f40**************",
@@ -166,6 +166,20 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/withdraw/currency
 }
 ```
 
+#### Detalhes do Objeto
+
+Veja os detalhes de cada informação no objeto `currency` para montar sua requisição.
+
+| Campo         | Tipo     | Obrigatório | Descrição                                                   |
+| :------------ | :------- | :---------: | :---------------------------------------------------------- |
+| `_id`         | `string` |   **Sim**   | Identificador único da moeda.                               |
+| `name`        | `string` |   **Sim**   | Nome da moeda.                                              |
+| `type`        | `string` |   **Sim**   | Tipo do método de pagamento ou transação associado à moeda. |
+| `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
+| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
+| `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
+| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
+
 **3. Passo:** Você deve obter a criptomoeda para realizar a conversão de saque. 
 
 Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
@@ -201,7 +215,21 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/crypto
 }
 ```
 
-**3. Passo:** Você deve obter os dados da chave pix e informar no payload para o saque ser realizado. 
+#### Detalhes do Objeto
+
+Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
+
+| Campo         | Tipo     | Obrigatório | Descrição                                                  |
+| :------------ | :------- | :---------: | :--------------------------------------------------------- |
+| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
+| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
+| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
+| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
+| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
+| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
+| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
+
+**4. Passo:** Você deve obter os dados da chave pix e informar no payload para o saque ser realizado. 
 
 Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/fiat/pix/keys')} target="_blank">clicando aqui</a> ou então  <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">adicionar uma nova chave pix</a>.
 
@@ -268,32 +296,7 @@ Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/f
 }
 ```
 
-#### Detalhes do Objeto
 
-Veja os detalhes de cada informação no objeto `currency` para montar sua requisição.
-
-| Campo         | Tipo     | Obrigatório | Descrição                                                   |
-| :------------ | :------- | :---------: | :---------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da moeda.                               |
-| `name`        | `string` |   **Sim**   | Nome da moeda.                                              |
-| `type`        | `string` |   **Sim**   | Tipo do método de pagamento ou transação associado à moeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
-| `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
-
-
-Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
-
-| Campo         | Tipo     | Obrigatório | Descrição                                                  |
-| :------------ | :------- | :---------: | :--------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
-| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
-| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
-| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
-| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
 
 ---
 
