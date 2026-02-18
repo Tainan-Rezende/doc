@@ -67,9 +67,11 @@ const sidebars = {
           label: 'Saques',
           items: [
             'crypto/withdraw/cryptocurrency',
-            'crypto/withdraw/create',
             'crypto/withdraw/network',
-            'crypto/withdraw/create-external'
+            'crypto/withdraw/create',
+            'crypto/withdraw/create-external',
+            'crypto/withdraw/price-usdt',
+            'crypto/withdraw/price-external'
           ]
         }
       ]
