@@ -80,9 +80,44 @@ const sidebars = {
       type: 'category',
       label: 'Clientes',
       items: [
-        'customer/create'
+        'customer/search',
+        'customer/create',
+        'customer/update'
       ]
     },
+    {
+      type: 'category',
+      label: 'Webhooks',
+      items: [
+        'webhooks/receive',
+        {
+          type: 'category',
+          label: 'Saques',
+          items: [
+            'webhooks/withdraw/status',
+            'webhooks/withdraw/resend'
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Depósitos',
+          items: [
+            'webhooks/deposit/status',
+            'webhooks/deposit/resend'
+          ]
+        }
+      ]
+    },
+    {
+      type: 'category',
+      label: 'Empresa',
+      items: [
+        'company/get-balance',
+        'company/sub-account',
+        'company/sub-account-webhook',
+        'company/sub-account-ip'
+      ]
+    }
   ]
 };
 

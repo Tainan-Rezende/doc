@@ -39,10 +39,9 @@ Simule a criação de um cliente agora mesmo. O resultado mostrará o `_id` gera
 
 ### Headers Obrigatórios
 
-| Header          | Valor                | Descrição                       |
-| :-------------- | :------------------- | :------------------------------ |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação.      |
-| `Content-Type`  | `application/json`   | Formato do corpo da requisição. |
+| Header          | Valor                | Descrição                  |
+| :-------------- | :------------------- | :------------------------- |
+| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
 
 ### Corpo da Requisição (Body)
 
@@ -50,7 +49,8 @@ Simule a criação de um cliente agora mesmo. O resultado mostrará o `_id` gera
 | :--------- | :------- | :---------- | :----------------------------------- |
 | `name`     | `string` | Sim         | Nome completo do cliente.            |
 | `document` | `string` | Sim         | CPF ou CNPJ (apenas números).        |
-| `email`    | `string` | Sim         | E-mail do cliente para notificações. |
+| `email`    | `string` | Não         | E-mail do cliente para notificações. |
+| `phone`    | `string` | Não         | Telefone do cliente.                 |
 
 ---
 
@@ -161,7 +161,7 @@ Sempre armazene o `_id` do cliente logo após a criação. Você vai usá-lo em 
 
 ---
 
-### Integração
+## Integração
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
