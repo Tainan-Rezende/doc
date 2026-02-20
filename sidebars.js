@@ -6,9 +6,7 @@ const sidebars = {
       type: 'category',
       label: 'Autenticação',
       collapsed: true,
-      items: [
-        'authentication/login',
-      ]
+      items: ['authentication/login']
     },
     {
       type: 'category',
@@ -17,27 +15,17 @@ const sidebars = {
         {
           type: 'category',
           label: 'Pix - Cliente',
-          items: [
-            'fiat/pix/keys',
-            'fiat/pix/add',
-            'fiat/pix/delete'
-          ]
+          items: ['fiat/pix/keys', 'fiat/pix/add', 'fiat/pix/delete']
         },
         {
           type: 'category',
-          label: 'Depósitos',
-          items: [
-            'fiat/deposit/currency',
-            'fiat/deposit/create'
-          ]
+          label: 'Depósitos FIAT',
+          items: ['fiat/deposit/currency', 'fiat/deposit/create']
         },
         {
           type: 'category',
-          label: 'Saques',
-          items: [
-            'fiat/withdraw/currency',
-            'fiat/withdraw/create'
-          ]
+          label: 'Saques FIAT',
+          items: ['fiat/withdraw/currency', 'fiat/withdraw/create']
         }
       ]
     },
@@ -48,13 +36,11 @@ const sidebars = {
         {
           type: 'category',
           label: 'Cliente',
-          items: [
-            'crypto/customer/wallet'
-          ]
+          items: ['crypto/customer/wallet']
         },
         {
           type: 'category',
-          label: 'Depósito',
+          label: 'Depósitos Crypto',
           items: [
             'crypto/deposit/cryptocurrency',
             'crypto/deposit/create',
@@ -64,7 +50,7 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Saques',
+          label: 'Saques Crypto',
           items: [
             'crypto/withdraw/cryptocurrency',
             'crypto/withdraw/network',
@@ -79,11 +65,7 @@ const sidebars = {
     {
       type: 'category',
       label: 'Clientes',
-      items: [
-        'customer/search',
-        'customer/create',
-        'customer/update'
-      ]
+      items: ['customer/search', 'customer/create', 'customer/update']
     },
     {
       type: 'category',
@@ -92,19 +74,13 @@ const sidebars = {
         'webhooks/receive',
         {
           type: 'category',
-          label: 'Saques',
-          items: [
-            'webhooks/withdraw/status',
-            'webhooks/withdraw/resend'
-          ]
+          label: 'Saques Webhook',
+          items: ['webhooks/withdraw/status', 'webhooks/withdraw/resend']
         },
         {
           type: 'category',
-          label: 'Depósitos',
-          items: [
-            'webhooks/deposit/status',
-            'webhooks/deposit/resend'
-          ]
+          label: 'Depósitos Webhook',
+          items: ['webhooks/deposit/status', 'webhooks/deposit/resend']
         }
       ]
     },

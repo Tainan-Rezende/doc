@@ -1,0 +1,62 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Autenticação": {
+    "message": "Authentication",
+    "description": "The label for category 'Autenticação' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.FIAT": {
+    "message": "Fiat",
+    "description": "The label for category 'FIAT' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Pix - Cliente": {
+    "message": "Pix - Customer",
+    "description": "The label for category 'Pix - Cliente' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos FIAT": {
+    "message": "Deposits",
+    "description": "The label for category 'Depósitos FIAT' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques FIAT": {
+    "message": "Withdrawals",
+    "description": "The label for category 'Saques FIAT' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Crypto": {
+    "message": "Crypto",
+    "description": "The label for category 'Crypto' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Cliente": {
+    "message": "Customer",
+    "description": "The label for category 'Cliente' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos Crypto": {
+    "message": "Deposits",
+    "description": "The label for category 'Depósitos Crypto' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques Crypto": {
+    "message": "Withdrawals",
+    "description": "The label for category 'Saques Crypto' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Clientes": {
+    "message": "Customers",
+    "description": "The label for category 'Clientes' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Webhooks": {
+    "message": "Webhooks",
+    "description": "The label for category 'Webhooks' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques Webhook": {
+    "message": "Withdrawals",
+    "description": "The label for category 'Saques Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos Webhook": {
+    "message": "Deposits",
+    "description": "The label for category 'Depósitos Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Empresa": {
+    "message": "Company",
+    "description": "The label for category 'Empresa' in sidebar 'tutorialSidebar'"
+  }
+}

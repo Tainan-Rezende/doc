@@ -1,0 +1,737 @@
+{
+  "theme.ErrorPageContent.title": {
+    "message": "This page crashed.",
+    "description": "The title of the fallback page when the page crashed"
+  },
+  "theme.BackToTopButton.buttonAriaLabel": {
+    "message": "Scroll back to top",
+    "description": "The ARIA label for the back to top button"
+  },
+  "theme.blog.archive.title": {
+    "message": "Archive",
+    "description": "The page & hero title of the blog archive page"
+  },
+  "theme.blog.archive.description": {
+    "message": "Archive",
+    "description": "The page & hero description of the blog archive page"
+  },
+  "theme.blog.paginator.navAriaLabel": {
+    "message": "Blog list page navigation",
+    "description": "The ARIA label for the blog pagination"
+  },
+  "theme.blog.paginator.newerEntries": {
+    "message": "Newer entries",
+    "description": "The label used to navigate to the newer blog posts page (previous page)"
+  },
+  "theme.blog.paginator.olderEntries": {
+    "message": "Older entries",
+    "description": "The label used to navigate to the older blog posts page (next page)"
+  },
+  "theme.blog.post.paginator.navAriaLabel": {
+    "message": "Blog post page navigation",
+    "description": "The ARIA label for the blog posts pagination"
+  },
+  "theme.blog.post.paginator.newerPost": {
+    "message": "Newer post",
+    "description": "The blog post button label to navigate to the newer/previous post"
+  },
+  "theme.blog.post.paginator.olderPost": {
+    "message": "Older post",
+    "description": "The blog post button label to navigate to the older/next post"
+  },
+  "theme.tags.tagsPageLink": {
+    "message": "View all tags",
+    "description": "The label of the link targeting the tag list page"
+  },
+  "theme.colorToggle.ariaLabel.mode.system": {
+    "message": "system mode",
+    "description": "The name for the system color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "light mode",
+    "description": "The name for the light color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "dark mode",
+    "description": "The name for the dark color mode"
+  },
+  "theme.colorToggle.ariaLabel": {
+    "message": "Switch between dark and light mode (currently {mode})",
+    "description": "The ARIA label for the color mode toggle"
+  },
+  "theme.docs.breadcrumbs.navAriaLabel": {
+    "message": "Breadcrumbs",
+    "description": "The ARIA label for the breadcrumbs"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "1 item|{count} items",
+    "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "Docs pages",
+    "description": "The ARIA label for the docs pagination"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "Previous",
+    "description": "The label used to navigate to the previous doc"
+  },
+  "theme.docs.paginator.next": {
+    "message": "Next",
+    "description": "The label used to navigate to the next doc"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "One doc tagged|{count} docs tagged",
+    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "{nDocsTagged} with \"{tagName}\"",
+    "description": "The title of the page for a docs tag"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "This is unreleased documentation for {siteTitle} {versionLabel} version.",
+    "description": "The label used to tell the user that he's browsing an unreleased doc version"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "This is documentation for {siteTitle} {versionLabel}, which is no longer actively maintained.",
+    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "For up-to-date documentation, see the {latestVersionLink} ({versionLabel}).",
+    "description": "The label used to tell the user to check the latest version"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "latest version",
+    "description": "The label used for the latest version suggestion link label"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "Version: {versionLabel}"
+  },
+  "theme.common.editThisPage": {
+    "message": "Edit this page",
+    "description": "The link label to edit the current page"
+  },
+  "theme.common.headingLinkTitle": {
+    "message": "Direct link to {heading}",
+    "description": "Title for link to heading"
+  },
+  "theme.lastUpdated.atDate": {
+    "message": " on {date}",
+    "description": "The words used to describe on which date a page has been last updated"
+  },
+  "theme.lastUpdated.byUser": {
+    "message": " by {user}",
+    "description": "The words used to describe by who the page has been last updated"
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "Last updated{atDate}{byUser}",
+    "description": "The sentence used to display when a page has been last updated, and by who"
+  },
+  "theme.navbar.mobileVersionsDropdown.label": {
+    "message": "Versions",
+    "description": "The label for the navbar versions dropdown on mobile view"
+  },
+  "theme.NotFound.title": {
+    "message": "Page Not Found",
+    "description": "The title of the 404 page"
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "Tags:",
+    "description": "The label alongside a tag list"
+  },
+  "theme.admonition.caution": {
+    "message": "caution",
+    "description": "The default label used for the Caution admonition (:::caution)"
+  },
+  "theme.admonition.danger": {
+    "message": "danger",
+    "description": "The default label used for the Danger admonition (:::danger)"
+  },
+  "theme.admonition.info": {
+    "message": "info",
+    "description": "The default label used for the Info admonition (:::info)"
+  },
+  "theme.admonition.note": {
+    "message": "note",
+    "description": "The default label used for the Note admonition (:::note)"
+  },
+  "theme.admonition.tip": {
+    "message": "tip",
+    "description": "The default label used for the Tip admonition (:::tip)"
+  },
+  "theme.admonition.warning": {
+    "message": "warning",
+    "description": "The default label used for the Warning admonition (:::warning)"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "Close",
+    "description": "The ARIA label for close button of announcement bar"
+  },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "Blog recent posts navigation",
+    "description": "The ARIA label for recent posts in the blog sidebar"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "Expand sidebar category '{label}'",
+    "description": "The ARIA label to expand the sidebar category"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "Collapse sidebar category '{label}'",
+    "description": "The ARIA label to collapse the sidebar category"
+  },
+  "theme.IconExternalLink.ariaLabel": {
+    "message": "(opens in new tab)",
+    "description": "The ARIA label for the external link icon"
+  },
+  "theme.NavBar.navAriaLabel": {
+    "message": "Main",
+    "description": "The ARIA label for the main navigation"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "Languages",
+    "description": "The label for the mobile language switcher dropdown"
+  },
+  "theme.NotFound.p1": {
+    "message": "We could not find what you were looking for.",
+    "description": "The first paragraph of the 404 page"
+  },
+  "theme.NotFound.p2": {
+    "message": "Please contact the owner of the site that linked you to the original URL and let them know their link is broken.",
+    "description": "The 2nd paragraph of the 404 page"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "On this page",
+    "description": "The label used by the button on the collapsible TOC component"
+  },
+  "theme.blog.post.readMore": {
+    "message": "Read more",
+    "description": "The label used in blog post item excerpts to link to full blog posts"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "Read more about {title}",
+    "description": "The ARIA label for the link to full blog posts from excerpts"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "One min read|{readingTime} min read",
+    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.CodeBlock.copy": {
+    "message": "Copy",
+    "description": "The copy button label on code blocks"
+  },
+  "theme.CodeBlock.copied": {
+    "message": "Copied",
+    "description": "The copied button label on code blocks"
+  },
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "Copy code to clipboard",
+    "description": "The ARIA label for copy code blocks button"
+  },
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "Toggle word wrap",
+    "description": "The title attribute for toggle word wrapping button of code block lines"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "Home page",
+    "description": "The ARIA label for the home page in the breadcrumbs"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "Collapse sidebar",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "Collapse sidebar",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "Docs sidebar",
+    "description": "The ARIA label for the sidebar navigation"
+  },
+  "theme.docs.sidebar.closeSidebarButtonAriaLabel": {
+    "message": "Close navigation bar",
+    "description": "The ARIA label for close button of mobile sidebar"
+  },
+  "theme.navbar.mobileSidebarSecondaryMenu.backButtonLabel": {
+    "message": "← Back to main menu",
+    "description": "The label of the back button to return to main menu, inside the mobile navbar sidebar secondary menu (notably used to display the docs sidebar)"
+  },
+  "theme.docs.sidebar.toggleSidebarButtonAriaLabel": {
+    "message": "Toggle navigation bar",
+    "description": "The ARIA label for hamburger menu button of mobile navigation"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.expandAriaLabel": {
+    "message": "Expand the dropdown",
+    "description": "The ARIA label of the button to expand the mobile dropdown navbar item"
+  },
+  "theme.navbar.mobileDropdown.collapseButton.collapseAriaLabel": {
+    "message": "Collapse the dropdown",
+    "description": "The ARIA label of the button to collapse the mobile dropdown navbar item"
+  },
+  "theme.docs.sidebar.expandButtonTitle": {
+    "message": "Expand sidebar",
+    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.docs.sidebar.expandButtonAriaLabel": {
+    "message": "Expand sidebar",
+    "description": "The ARIA label and title attribute for expand button of doc sidebar"
+  },
+  "theme.blog.post.plurals": {
+    "message": "One post|{count} posts",
+    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.blog.tagTitle": {
+    "message": "{nPosts} tagged with \"{tagName}\"",
+    "description": "The title of the page for a blog tag"
+  },
+  "theme.blog.author.pageTitle": {
+    "message": "{authorName} - {nPosts}",
+    "description": "The title of the page for a blog author"
+  },
+  "theme.blog.authorsList.pageTitle": {
+    "message": "Authors",
+    "description": "The title of the authors page"
+  },
+  "theme.blog.authorsList.viewAll": {
+    "message": "View all authors",
+    "description": "The label of the link targeting the blog authors page"
+  },
+  "theme.blog.author.noPosts": {
+    "message": "This author has not written any posts yet.",
+    "description": "The text for authors with 0 blog post"
+  },
+  "theme.contentVisibility.unlistedBanner.title": {
+    "message": "Unlisted page",
+    "description": "The unlisted content banner title"
+  },
+  "theme.contentVisibility.unlistedBanner.message": {
+    "message": "This page is unlisted. Search engines will not index it, and only users having a direct link can access it.",
+    "description": "The unlisted content banner message"
+  },
+  "theme.contentVisibility.draftBanner.title": {
+    "message": "Draft page",
+    "description": "The draft content banner title"
+  },
+  "theme.contentVisibility.draftBanner.message": {
+    "message": "This page is a draft. It will only be visible in dev and be excluded from the production build.",
+    "description": "The draft content banner message"
+  },
+  "theme.ErrorPageContent.tryAgain": {
+    "message": "Try again",
+    "description": "The label of the button to try again rendering when the React error boundary captures an error"
+  },
+  "theme.common.skipToMainContent": {
+    "message": "Skip to main content",
+    "description": "The skip to content label used for accessibility, allowing to rapidly navigate to main content with keyboard tab/enter navigation"
+  },
+  "theme.tags.tagsPageTitle": {
+    "message": "Tags",
+    "description": "The title of the tag list page"
+  },
+  "homepage.hero.button": {
+    "message": "Read the Documentation"
+  },
+  "homepage.faq.title": {
+    "message": "Frequently Asked Questions"
+  },
+  "homepage.faq.q1.title": {
+    "message": "How to make a fiat currency deposit?"
+  },
+  "homepage.faq.q1.step1.title": {
+    "message": "Authentication"
+  },
+  "homepage.faq.q1.step1.desc": {
+    "message": "Log in to get your access token. This token should be sent in the"
+  },
+  "homepage.faq.q1.step1.desc2": {
+    "message": "of all subsequent requests."
+  },
+  "homepage.faq.q1.step2.title": {
+    "message": "Create or Identify the Customer"
+  },
+  "homepage.faq.q1.step2.desc": {
+    "message": "Send the payer's data to the route"
+  },
+  "homepage.faq.q1.step2.desc2": {
+    "message": "If the customer already exists, the API will return the record with the current ID."
+  },
+  "homepage.faq.q1.step3.title": {
+    "message": "Select Fiat Currency"
+  },
+  "homepage.faq.q1.step3.desc": {
+    "message": "Check the currencies available for your account at"
+  },
+  "homepage.faq.q1.step3.desc2": {
+    "message": "and use the returned object."
+  },
+  "homepage.faq.q1.step4.title": {
+    "message": "Generate Deposit Request"
+  },
+  "homepage.faq.q1.step4.desc": {
+    "message": "Send the amount, customer ID and currency object to"
+  },
+  "homepage.faq.q1.step4.desc2": {
+    "message": "to receive the Pix QR Code."
+  },
+  "homepage.faq.q1.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q1.footer.link": {
+    "message": "Create Pix Deposit"
+  },
+  "homepage.faq.q2.title": {
+    "message": "How to make a fiat currency withdrawal?"
+  },
+  "homepage.faq.q2.step1.title": {
+    "message": "Identify the Customer and Currency"
+  },
+  "homepage.faq.q2.step1.desc": {
+    "message": "After creating the customer, check the currencies allowed for withdrawal at"
+  },
+  "homepage.faq.q2.step2.title": {
+    "message": "Create the withdrawal request"
+  },
+  "homepage.faq.q2.step2.desc": {
+    "message": "Send the data to the route"
+  },
+  "homepage.faq.q2.step2.desc2": {
+    "message": "For Pix, it is mandatory to enter the destination CPF/CNPJ in the field"
+  },
+  "homepage.faq.q2.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q2.footer.link": {
+    "message": "Create Pix Withdrawal"
+  },
+  "homepage.faq.q3.title": {
+    "message": "How to make a cryptocurrency deposit?"
+  },
+  "homepage.faq.q3.intro": {
+    "message": "This flow refers to direct wallet-to-wallet deposit (Crypto to Crypto)."
+  },
+  "homepage.faq.q3.step1.title": {
+    "message": "Customer Creation"
+  },
+  "homepage.faq.q3.step1.desc": {
+    "message": "Register the end user at"
+  },
+  "homepage.faq.q3.step1.desc2": {
+    "message": "to get your unique identifier."
+  },
+  "homepage.faq.q3.step2.title": {
+    "message": "Get Wallet PublicKey"
+  },
+  "homepage.faq.q3.step2.desc": {
+    "message": "Request the public keys (wallets) linked to the customer at"
+  },
+  "homepage.faq.q3.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q3.footer.link": {
+    "message": "Create Crypto Deposit"
+  },
+  "homepage.faq.q4.title.part1": {
+    "message": "How to make a"
+  },
+  "homepage.faq.q4.title.bold1": {
+    "message": "withdrawal"
+  },
+  "homepage.faq.q4.title.part2": {
+    "message": "of"
+  },
+  "homepage.faq.q4.title.bold2": {
+    "message": "cryptocurrency"
+  },
+  "homepage.faq.q4.intro": {
+    "message": "This flow allows you to send cryptocurrencies from your XGate balance directly to an external wallet (Ex: Metamask, Ledger or Exchange)."
+  },
+  "homepage.faq.q4.step1.title": {
+    "message": "Create or Identify the Customer"
+  },
+  "homepage.faq.q4.step1.desc": {
+    "message": "Make sure the receiving customer is registered at the route"
+  },
+  "homepage.faq.q4.step1.desc2": {
+    "message": "to get the"
+  },
+  "homepage.faq.q4.step2.title": {
+    "message": "Get Available Networks and Cryptocurrencies"
+  },
+  "homepage.faq.q4.step2.desc": {
+    "message": "Check the blockchain networks and currencies enabled for withdrawal at"
+  },
+  "homepage.faq.q4.step3.title": {
+    "message": "Create the withdrawal request"
+  },
+  "homepage.faq.q4.step3.desc": {
+    "message": "Send the payload to"
+  },
+  "homepage.faq.q4.step3.desc2": {
+    "message": "Note that the"
+  },
+  "homepage.faq.q4.step3.bold": {
+    "message": "wallet"
+  },
+  "homepage.faq.q4.step3.desc3": {
+    "message": "destination is informed at the end of the object, after the network definitions."
+  },
+  "homepage.faq.q4.step3.note": {
+    "message": "The response will confirm the status as"
+  },
+  "homepage.faq.q4.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q4.footer.link": {
+    "message": "Create External Withdrawal"
+  },
+  "homepage.faq.q5.title.part1": {
+    "message": "How to make a"
+  },
+  "homepage.faq.q5.title.bold1": {
+    "message": "deposit"
+  },
+  "homepage.faq.q5.title.part2": {
+    "message": "with"
+  },
+  "homepage.faq.q5.title.bold2": {
+    "message": "fiat currency"
+  },
+  "homepage.faq.q5.title.part3": {
+    "message": "e"
+  },
+  "homepage.faq.q5.title.bold3": {
+    "message": "convert"
+  },
+  "homepage.faq.q5.title.part4": {
+    "message": "para"
+  },
+  "homepage.faq.q5.title.bold4": {
+    "message": "cryptocurrency"
+  },
+  "homepage.faq.q5.intro": {
+    "message": "This flow is ideal for gateways that want to receive Pix payments (BRL) and have the balance automatically credited in Cryptocurrencies (ex: USDT) in your XGate account."
+  },
+  "homepage.faq.q5.step1.title": {
+    "message": "Authentication and Customer"
+  },
+  "homepage.faq.q5.step1.desc": {
+    "message": "Make sure you are authenticated and have the"
+  },
+  "homepage.faq.q5.step1.desc2": {
+    "message": "of the payer generated at the route"
+  },
+  "homepage.faq.q5.step2.title": {
+    "message": "Get Fiat Currency (Origin)"
+  },
+  "homepage.faq.q5.step2.desc": {
+    "message": "Check the currency that the customer will use to pay at"
+  },
+  "homepage.faq.q5.step2.desc2": {
+    "message": "and save the object (ex: BRL/PIX)."
+  },
+  "homepage.faq.q5.step3.title": {
+    "message": "Get Cryptocurrency (Destination)"
+  },
+  "homepage.faq.q5.step3.desc": {
+    "message": "Check the cryptocurrency you want to receive at"
+  },
+  "homepage.faq.q5.step3.desc2": {
+    "message": "and save the object (ex: USDT)."
+  },
+  "homepage.faq.q5.step4.title": {
+    "message": "Create the deposit and conversion request"
+  },
+  "homepage.faq.q5.step4.desc": {
+    "message": "Send the amount, customer ID and"
+  },
+  "homepage.faq.q5.step4.bold": {
+    "message": "both currency objects"
+  },
+  "homepage.faq.q5.step4.desc2": {
+    "message": "to the route"
+  },
+  "homepage.faq.q5.step4.note.bold": {
+    "message": "Response:"
+  },
+  "homepage.faq.q5.step4.note": {
+    "message": "The API will return the status"
+  },
+  "homepage.faq.q5.step4.note2": {
+    "message": "and the"
+  },
+  "homepage.faq.q5.step4.note3": {
+    "message": "Pix code for the customer to pay. As soon as it's cleared, the conversion to Crypto is instantaneous."
+  },
+  "homepage.faq.q5.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q5.footer.link": {
+    "message": "Create Deposit converting to Crypto"
+  },
+  "homepage.faq.q6.title.part1": {
+    "message": "How to make a"
+  },
+  "homepage.faq.q6.title.bold1": {
+    "message": "withdrawal"
+  },
+  "homepage.faq.q6.title.part2": {
+    "message": "with"
+  },
+  "homepage.faq.q6.title.bold2": {
+    "message": "cryptocurrency"
+  },
+  "homepage.faq.q6.title.part3": {
+    "message": "e"
+  },
+  "homepage.faq.q6.title.bold3": {
+    "message": "convert"
+  },
+  "homepage.faq.q6.title.part4": {
+    "message": "para"
+  },
+  "homepage.faq.q6.title.bold4": {
+    "message": "fiat currency"
+  },
+  "homepage.faq.q6.intro": {
+    "message": "This flow allows you to use your balance in Cryptocurrencies (ex: USDT) to make a payment via Pix (BRL) to a customer, with automatic exchange rate conversion."
+  },
+  "homepage.faq.q6.step1.title": {
+    "message": "Identify the Customer and Create Pix Key"
+  },
+  "homepage.faq.q6.step1.desc": {
+    "message": "Make sure you have the"
+  },
+  "homepage.faq.q6.step1.desc2": {
+    "message": "and register the destination Pix key for this customer at the route"
+  },
+  "homepage.faq.q6.step1.note.bold": {
+    "message": "IMPORTANT:"
+  },
+  "homepage.faq.q6.step1.note": {
+    "message": "The return of this route will provide the"
+  },
+  "homepage.faq.q6.step1.note2": {
+    "message": "of the Pix key, required for the final step."
+  },
+  "homepage.faq.q6.step2.title": {
+    "message": "Simulate the Conversion (Optional)"
+  },
+  "homepage.faq.q6.step2.desc": {
+    "message": "To find out the exact amount in BRL before finalizing the withdrawal, send the complete cryptocurrency object to"
+  },
+  "homepage.faq.q6.step2.response.bold": {
+    "message": "Server Response:"
+  },
+  "homepage.faq.q6.step3.title": {
+    "message": "Create the withdrawal request with conversion"
+  },
+  "homepage.faq.q6.step3.desc": {
+    "message": "Send the payload to"
+  },
+  "homepage.faq.q6.step3.desc2": {
+    "message": "including mandatory"
+  },
+  "homepage.faq.q6.step3.bold": {
+    "message": "_id"
+  },
+  "homepage.faq.q6.step3.desc3": {
+    "message": "of each resource retrieved in the previous steps."
+  },
+  "homepage.faq.q6.step3.note": {
+    "message": "XGate will charge 10 USDT from your balance and send R$ 51.72 via Pix to the key provided."
+  },
+  "homepage.faq.q6.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q6.footer.link": {
+    "message": "Create Crypto Withdrawal converting to FIAT"
+  },
+  "homepage.faq.q7.title.part1": {
+    "message": "How to create a"
+  },
+  "homepage.faq.q7.title.bold1": {
+    "message": "partner"
+  },
+  "homepage.faq.q7.title.part2": {
+    "message": "in the"
+  },
+  "homepage.faq.q7.title.bold2": {
+    "message": "admin panel"
+  },
+  "homepage.faq.q7.intro": {
+    "message": "If you prefer not to use the API to create sub-accounts, you can perform the process manually through the XGate Backoffice."
+  },
+  "homepage.faq.q7.step1.title": {
+    "message": "Access the Partners Menu"
+  },
+  "homepage.faq.q7.step1.desc": {
+    "message": "In the left sidebar of your panel, locate and click on the option"
+  },
+  "homepage.faq.q7.step1.bold": {
+    "message": "Partners"
+  },
+  "homepage.faq.q7.step2.title": {
+    "message": "Access the List"
+  },
+  "homepage.faq.q7.step2.desc": {
+    "message": "Within the section, click on the button"
+  },
+  "homepage.faq.q7.step2.bold": {
+    "message": "View partners list"
+  },
+  "homepage.faq.q7.step2.desc2": {
+    "message": "located at the top of the page."
+  },
+  "homepage.faq.q7.step3.title": {
+    "message": "Start Registration"
+  },
+  "homepage.faq.q7.step3.desc": {
+    "message": "On the list screen, click the blue button"
+  },
+  "homepage.faq.q7.step3.bold": {
+    "message": "+ Register partner"
+  },
+  "homepage.faq.q7.step4.title": {
+    "message": "Configuration and Saving"
+  },
+  "homepage.faq.q7.step4.desc": {
+    "message": "A form will be displayed. Fill in all the data of the new company (Sub-account) and especially the fee rules (Fees) that you want to apply. When finished, click the button"
+  },
+  "homepage.faq.q7.step4.bold": {
+    "message": "Save"
+  },
+  "homepage.faq.q7.step4.desc2": {
+    "message": "at the end of the form."
+  },
+  "homepage.faq.q7.step4.note.bold": {
+    "message": "Result:"
+  },
+  "homepage.faq.q7.step4.note": {
+    "message": "The partner will receive credentials from your email and you will be able to track the volume transacted by them in real time."
+  },
+  "homepage.faq.q7.footer": {
+    "message": "Learn how to automate this at"
+  },
+  "homepage.faq.q7.footer.link": {
+    "message": "Create Sub-account"
+  },
+  "homepage.faq.step.label": {
+    "message": "STEP"
+  },
+  "homepage.features.feature1.title": {
+    "message": "Comece por Aqui"
+  },
+  "homepage.features.feature1.description": {
+    "message": "Aprenda o básico da nossa API: como se autenticar e fazer sua primeira chamada em menos de 5 minutos."
+  },
+  "homepage.features.feature2.title": {
+    "message": "Referência da API"
+  },
+  "homepage.features.feature2.description": {
+    "message": "Explore todos os endpoints. Veja detalhes sobre Depósitos, Saques, Clientes, PIX e muito mais."
+  },
+  "homepage.features.feature3.title": {
+    "message": "SDKs e Pacotes"
+  },
+  "homepage.features.feature3.description": {
+    "message": "Integre mais rápido com nossos pacotes. Temos exemplos prontos em Javascript (NPM), Python (Pip) e PHP (Composer)."
+  }
+}

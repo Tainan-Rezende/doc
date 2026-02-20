@@ -113,6 +113,12 @@ const config = {
             label: 'Documentação',
           },
           {
+            href: '/#faq',
+            label: 'FAQ',
+            position: 'left',
+            activeBaseRegex: '^$',
+          },
+          {
             type: 'localeDropdown',
             position: 'right',
           },

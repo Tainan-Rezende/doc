@@ -1,11 +1,15 @@
+import React from 'react';
 import clsx from 'clsx';
 import Heading from '@theme/Heading';
+import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
 
 const FeatureList = [
   {
     title: 'Comece por Aqui',
     ImgSrc: 'img/programming.png',
+    link: '/docs/intro',
     description: (
       <>
         Aprenda o básico da nossa API: como se autenticar e fazer sua primeira chamada em menos de 5 minutos.
@@ -25,6 +29,7 @@ const FeatureList = [
   {
     title: 'SDKs e Pacotes',
     ImgSrc: 'img/software-development.png',
+    link: '/docs/intro#pacotes-oficiais', 
     description: (
       <>
         Integre mais rápido com nossos pacotes. Temos exemplos prontos em
@@ -34,18 +39,18 @@ const FeatureList = [
   },
 ];
 
-
-function Feature({ ImgSrc, title, description }) {
+function Feature({ ImgSrc, title, description, link }) {
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        {/* 👇 Troque <Svg> por uma tag <img> padrão */}
-        <img className={styles.featureSvg} src={ImgSrc} alt={title} />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
+      <Link to={useBaseUrl(link)} className={styles.featureCard}>
+        <div className="text--center">
+          <img className={styles.featureSvg} src={useBaseUrl(ImgSrc)} alt={title} />
+        </div>
+        <div className="text--center padding-horiz--md">
+          <Heading as="h3" className={styles.featureTitle}>{title}</Heading>
+          <p className={styles.featureDescription}>{description}</p>
+        </div>
+      </Link>
     </div>
   );
 }
