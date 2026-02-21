@@ -339,7 +339,7 @@
     "message": "Authentication"
   },
   "homepage.faq.q1.step1.desc": {
-    "message": "Log in to get your access token. This token should be sent in the"
+    "message": "Log in to get your access token. This token must be sent in the"
   },
   "homepage.faq.q1.step1.desc2": {
     "message": "of all subsequent requests."
@@ -377,23 +377,29 @@
   "homepage.faq.q1.footer.link": {
     "message": "Create Pix Deposit"
   },
+  "homepage.faq.q2.step3.title": {
+    "message": "Create the withdrawal request"
+  },
+  "homepage.faq.q2.step3.desc": {
+    "message": "Send the data to the route"
+  },
+  "homepage.faq.q2.step3.desc2": {
+    "message": "providing the amount, customerId, currency data and Pix key in the object"
+  },
   "homepage.faq.q2.title": {
     "message": "How to make a fiat currency withdrawal?"
   },
   "homepage.faq.q2.step1.title": {
-    "message": "Identify the Customer and Currency"
+    "message": "Authentication"
   },
   "homepage.faq.q2.step1.desc": {
-    "message": "After creating the customer, check the currencies allowed for withdrawal at"
+    "message": "Log in to get your access token. It is mandatory in the Header to generate the withdrawal."
   },
   "homepage.faq.q2.step2.title": {
-    "message": "Create the withdrawal request"
+    "message": "Search for Withdrawal Currencies"
   },
   "homepage.faq.q2.step2.desc": {
-    "message": "Send the data to the route"
-  },
-  "homepage.faq.q2.step2.desc2": {
-    "message": "For Pix, it is mandatory to enter the destination CPF/CNPJ in the field"
+    "message": "Check the currencies enabled for your account via the route"
   },
   "homepage.faq.q2.footer": {
     "message": "For field details and errors, see the page"
@@ -428,60 +434,6 @@
   "homepage.faq.q3.footer.link": {
     "message": "Create Crypto Deposit"
   },
-  "homepage.faq.q4.title.part1": {
-    "message": "How to make a"
-  },
-  "homepage.faq.q4.title.bold1": {
-    "message": "withdrawal"
-  },
-  "homepage.faq.q4.title.part2": {
-    "message": "of"
-  },
-  "homepage.faq.q4.title.bold2": {
-    "message": "cryptocurrency"
-  },
-  "homepage.faq.q4.intro": {
-    "message": "This flow allows you to send cryptocurrencies from your XGate balance directly to an external wallet (Ex: Metamask, Ledger or Exchange)."
-  },
-  "homepage.faq.q4.step1.title": {
-    "message": "Create or Identify the Customer"
-  },
-  "homepage.faq.q4.step1.desc": {
-    "message": "Make sure the receiving customer is registered at the route"
-  },
-  "homepage.faq.q4.step1.desc2": {
-    "message": "to get the"
-  },
-  "homepage.faq.q4.step2.title": {
-    "message": "Get Available Networks and Cryptocurrencies"
-  },
-  "homepage.faq.q4.step2.desc": {
-    "message": "Check the blockchain networks and currencies enabled for withdrawal at"
-  },
-  "homepage.faq.q4.step3.title": {
-    "message": "Create the withdrawal request"
-  },
-  "homepage.faq.q4.step3.desc": {
-    "message": "Send the payload to"
-  },
-  "homepage.faq.q4.step3.desc2": {
-    "message": "Note that the"
-  },
-  "homepage.faq.q4.step3.bold": {
-    "message": "wallet"
-  },
-  "homepage.faq.q4.step3.desc3": {
-    "message": "destination is informed at the end of the object, after the network definitions."
-  },
-  "homepage.faq.q4.step3.note": {
-    "message": "The response will confirm the status as"
-  },
-  "homepage.faq.q4.footer": {
-    "message": "For field details and errors, see the page"
-  },
-  "homepage.faq.q4.footer.link": {
-    "message": "Create External Withdrawal"
-  },
   "homepage.faq.q5.title.part1": {
     "message": "How to make a"
   },
@@ -495,13 +447,13 @@
     "message": "fiat currency"
   },
   "homepage.faq.q5.title.part3": {
-    "message": "e"
+    "message": "and"
   },
   "homepage.faq.q5.title.bold3": {
     "message": "convert"
   },
   "homepage.faq.q5.title.part4": {
-    "message": "para"
+    "message": "to"
   },
   "homepage.faq.q5.title.bold4": {
     "message": "cryptocurrency"
@@ -579,13 +531,13 @@
     "message": "cryptocurrency"
   },
   "homepage.faq.q6.title.part3": {
-    "message": "e"
+    "message": "and"
   },
   "homepage.faq.q6.title.bold3": {
     "message": "convert"
   },
   "homepage.faq.q6.title.part4": {
-    "message": "para"
+    "message": "to"
   },
   "homepage.faq.q6.title.bold4": {
     "message": "fiat currency"
@@ -751,5 +703,62 @@
   },
   "homepage.features.sdksPackages.description": {
     "message": "Integrate faster with our packages. We have ready-made examples in Javascript (NPM), Python (Pip) and PHP (Composer)."
+  },
+  "homepage.faq.q4.title.part1": {
+    "message": "How to make a"
+  },
+  "homepage.faq.q4.title.bold1": {
+    "message": "withdrawal"
+  },
+  "homepage.faq.q4.title.part2": {
+    "message": "of"
+  },
+  "homepage.faq.q4.title.bold2": {
+    "message": "cryptocurrency"
+  },
+  "homepage.faq.q4.intro": {
+    "message": "This flow allows you to send cryptocurrencies from your XGate balance directly to an external wallet (e.g., Metamask, Ledger, or Exchange)."
+  },
+  "homepage.faq.q4.step1.title": {
+    "message": "Create or Identify the Customer"
+  },
+  "homepage.faq.q4.step1.desc": {
+    "message": "Make sure the receiving customer is registered at the route"
+  },
+  "homepage.faq.q4.step1.desc2": {
+    "message": "to get the"
+  },
+  "homepage.faq.q4.step2.title": {
+    "message": "Get Available Networks and Cryptocurrencies"
+  },
+  "homepage.faq.q4.step2.desc.network": {
+    "message": "Check the blockchain networks enabled for withdrawal at"
+  },
+  "homepage.faq.q4.step2.desc.crypto": {
+    "message": "And fetch the desired cryptocurrency data at the route"
+  },
+  "homepage.faq.q4.step3.title": {
+    "message": "Create the withdrawal request"
+  },
+  "homepage.faq.q4.step3.desc": {
+    "message": "Send the payload to"
+  },
+  "homepage.faq.q4.step3.desc2": {
+    "message": "Note that the"
+  },
+  "homepage.faq.q4.step3.bold": {
+    "message": "wallet"
+  },
+  "homepage.faq.q4.step3.desc3": {
+    "message": "destination is provided at the end of the object, after the network definitions."
+  },
+  "homepage.faq.q4.step3.note": {
+    "message": "The response will confirm the status as"
+  },
+  "homepage.faq.q4.footer": {
+    "message": "For field details and errors, see the page"
+  },
+  "homepage.faq.q4.footer.link": {
+    "message": "Create External Withdrawal"
   }
 }
