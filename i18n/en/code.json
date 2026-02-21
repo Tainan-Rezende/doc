@@ -717,21 +717,39 @@
     "message": "STEP"
   },
   "homepage.features.feature1.title": {
-    "message": "Comece por Aqui"
+    "message": "Get Started"
   },
   "homepage.features.feature1.description": {
-    "message": "Aprenda o básico da nossa API: como se autenticar e fazer sua primeira chamada em menos de 5 minutos."
+    "message": "Learn the basics of our API: how to authenticate and make your first call in less than 5 minutes."
   },
   "homepage.features.feature2.title": {
-    "message": "Referência da API"
+    "message": "API Reference"
   },
   "homepage.features.feature2.description": {
-    "message": "Explore todos os endpoints. Veja detalhes sobre Depósitos, Saques, Clientes, PIX e muito mais."
+    "message": "Explore all endpoints. See details about Deposits, Withdrawals, Customers, PIX and much more."
   },
   "homepage.features.feature3.title": {
-    "message": "SDKs e Pacotes"
+    "message": "SDKs and Packages"
   },
   "homepage.features.feature3.description": {
-    "message": "Integre mais rápido com nossos pacotes. Temos exemplos prontos em Javascript (NPM), Python (Pip) e PHP (Composer)."
+    "message": "Integrate faster with our packages. We have ready-made examples in Javascript (NPM), Python (Pip) and PHP (Composer)."
+  },
+  "homepage.features.getStarted.title": {
+    "message": "Get Started"
+  },
+  "homepage.features.getStarted.description": {
+    "message": "Learn the basics of our API: how to authenticate and make your first call in less than 5 minutes."
+  },
+  "homepage.features.apiReference.title": {
+    "message": "API Reference"
+  },
+  "homepage.features.apiReference.description": {
+    "message": "Explore all endpoints. See details about Deposits, Withdrawals, Customers, PIX and much more."
+  },
+  "homepage.features.sdksPackages.title": {
+    "message": "SDKs and Packages"
+  },
+  "homepage.features.sdksPackages.description": {
+    "message": "Integrate faster with our packages. We have ready-made examples in Javascript (NPM), Python (Pip) and PHP (Composer)."
   }
 }

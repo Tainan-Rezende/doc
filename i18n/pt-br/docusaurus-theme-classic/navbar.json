@@ -1,0 +1,14 @@
+{
+  "logo.alt": {
+    "message": "XGate",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Documentação": {
+    "message": "Documentação",
+    "description": "Navbar item with label Documentação"
+  },
+  "item.label.FAQ": {
+    "message": "FAQ",
+    "description": "Navbar item with label FAQ"
+  }
+}

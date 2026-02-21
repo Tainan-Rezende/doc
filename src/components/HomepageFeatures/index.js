@@ -3,37 +3,44 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Translate from '@docusaurus/Translate';
 import styles from './styles.module.css';
 
 const FeatureList = [
   {
-    title: 'Comece por Aqui',
+    title: <Translate id="homepage.features.getStarted.title">Comece por Aqui</Translate>,
     ImgSrc: 'img/programming.png',
     link: '/docs/intro',
     description: (
       <>
-        Aprenda o básico da nossa API: como se autenticar e fazer sua primeira chamada em menos de 5 minutos.
+        <Translate id="homepage.features.getStarted.description">
+          Aprenda o básico da nossa API: como se autenticar e fazer sua primeira chamada em menos de 5 minutos.
+        </Translate>
       </>
     ),
   },
   {
-    title: 'Referência da API',
+    title: <Translate id="homepage.features.apiReference.title">Referência da API</Translate>,
     ImgSrc: 'img/gear.png',
     description: (
       <>
-        Explore todos os endpoints. Veja detalhes sobre Depósitos, Saques,
-        Clientes, PIX e muito mais.
+        <Translate id="homepage.features.apiReference.description">
+          Explore todos os endpoints. Veja detalhes sobre Depósitos, Saques,
+          Clientes, PIX e muito mais.
+        </Translate>
       </>
     ),
   },
   {
-    title: 'SDKs e Pacotes',
+    title: <Translate id="homepage.features.sdksPackages.title">SDKs e Pacotes</Translate>,
     ImgSrc: 'img/software-development.png',
     link: '/docs/intro#pacotes-oficiais', 
     description: (
       <>
-        Integre mais rápido com nossos pacotes. Temos exemplos prontos em
-        Javascript (NPM), Python (Pip) e PHP (Composer).
+        <Translate id="homepage.features.sdksPackages.description">
+          Integre mais rápido com nossos pacotes. Temos exemplos prontos em
+          Javascript (NPM), Python (Pip) e PHP (Composer).
+        </Translate>
       </>
     ),
   },
