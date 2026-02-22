@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criar Depósito'
+sidebar_label: 'Create Deposit'
 sidebar_position: 2
 ---
 
@@ -8,68 +8,68 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreatePixDepositTester from '@site/src/components/CreatePixDepositTester';
 
-# Criar Pedido de Depósito
+# Create Deposit Order
 
-Este endpoint permite gerar uma ordem de depósito (intenção de pagamento) para um cliente específico. Ao criar a ordem, o sistema retorna os dados necessários para que o usuário final realize o pagamento via Pix.
+This endpoint creates a deposit order (payment intent) for a specific customer. When the order is created, the system returns the data required for the end user to complete the payment via Pix.
 
-Todo pedido é obrigatoriamente associado a um usuário. Isso garante que o valor seja creditado para o cliente correto em sua plataforma, além de **facilitar a conciliação automática** e manter um **histórico organizado** de todas as transações.
+Every order must be associated with a customer. This ensures the funds are credited to the correct customer on your platform, **enables automatic reconciliation**, and keeps a **clean history** of all transactions.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/deposit
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a criação de um pedido e gerar o QR Code.
+Use the form below to simulate creating an order and generate the QR Code.
 
 <CreatePixDepositTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e o **Body** com os dados do pedido.
+You must provide the authentication **Header** and the request **Body** with the order data.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
-#### Body (Corpo da Requisição)
+#### Body (Request Body)
 
-| Campo        | Tipo     | Obrigatório | Descrição                                                               |
-| :----------- | :------- | :---------: | :---------------------------------------------------------------------- |
-| `amount`     | `number` |   **Sim**   | O valor do depósito (ex: `100.50`).                                     |
-| `customerId` | `string` |   **Não**   | O ID único (`_id`) do cliente que fará o depósito.                      |
-| `customer`   | `object` |   **Não**   | Dados para a criação do cliente junto da criação do pedido de depósito. |
-| `currency`   | `string` |   **Sim**   | A moeda da transação (ex: `BRL`).                                       |
-| `externalId` | `string` |   **Não**   | Idempotência                                                            |
+| Field        | Type     | Required | Description                                                               |
+| :----------- | :------- | :------: | :---------------------------------------------------------------------- |
+| `amount`     | `number` | **Yes**  | The deposit amount (ex: `100.50`).                                     |
+| `customerId` | `string` | **No**   | The customer's unique `_id` who will make the deposit.                  |
+| `customer`   | `object` | **No**   | Customer data to create the customer together with the deposit order.   |
+| `currency`   | `string` | **Yes**  | The transaction currency (ex: `BRL`).                                   |
+| `externalId` | `string` | **No**   | Idempotency identifier.                                                  |
 
 
 :::warning[Importante]
-Apesar dos dados da string `customerId` e do objeto `customer` não serem obrigatórios, é **OBRIGATÓRIO** utilizar um deles. 
+Although the `customerId` string and the `customer` object are not individually required, you **must** provide one of them.
 
-**Não se deve utilizar `customerId` e `customer` na mesma requisição**
+**Do not use both `customerId` and `customer` in the same request.**
 :::
 
 :::warning[Importante]
-Recomendamos a inclusão dado de `externalId` na requisição pois a mesmo evita o envio do pedido mais de uma vez, que pode acontecer acidentalmente.
+We recommend including an `externalId` in the request to prevent accidental duplicate orders.
 :::
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (201 Created)
+### Success (201 Created)
 
-Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o usuário pagar.
+Returns the created order object, including the `code` (Pix Copia e Cola) for the user to pay.
 
 ```json
 {
@@ -83,45 +83,45 @@ Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o u
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
+| Status  | Message                | Likely Cause                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
-| **409** | `Conflict`              | • Nome do cliente informado já está cadastrado.<br />• Documento informado já está cadastrado.   |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed. |
+| **404** | `Not Found`             | The `customerId` provided does not exist.                                              |
+| **409** | `Conflict`              | • The provided customer name is already registered.<br />• The provided document is already registered.   |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                         |
 
 ---
 
-## Como usar
+## How to use
 
-A finalidade deste endpoint é iniciar o fluxo de entrada de dinheiro (**Cash-in**).
+This endpoint starts the cash-in flow.
 
-O retorno mais importante aqui é o campo `code`. Ele contém a string do "Pix Copia e Cola". Você deve exibir esse código para o seu usuário final ou gerar um QR Code visual a partir dele.
+The most important return value is the `code` field. It contains the "Pix Copia e Cola" string. Display this code to your end user or generate a visual QR Code from it.
 
-### O Fluxo de Integração
+### Integration Flow
 
-1.  **Crie/Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank"><a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a></a>) e tenha o `_id` dele.
-2.  **Crie o Pedido:** Chame este endpoint passando o valor e o ID do cliente.
-3.  **Exiba o Pix:** Pegue o `code` da resposta e mostre ao usuário.
-4.  **Aguarde o Pagamento:** O status inicial será `PENDING`. Assim que o usuário pagar, o status mudará (via Webhook ou consulta).  
+1.  **Create/Identify the Customer:** Ensure the user exists in XGate (POST /customer) and obtain their `_id`.
+2.  **Create the Order:** Call this endpoint with the amount and the customer ID (or customer object).
+3.  **Show the Pix:** Take the `code` from the response and present it to the user.
+4.  **Wait for Payment:** The initial status will be `PENDING`. Once the user pays, the status will update (via Webhook or polling).  
 
-### Exemplo Prático
+### Practical Example
 
-Para criar pedidos de depósito Pix, você deve seguir esses 2 passos:
+To create Pix deposit orders follow these two steps:
 
 
-**1. Passo:** Aqui você tem as opções de criar o pedido de depósito sem um cliente ainda criado pela rota (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) ou com um já criado.
+**Step 1:** You can create the deposit order with an existing customer (POST /customer) or create the customer at the same time.
 
 :::tip[Recomendação]
-A equipe XGate recomenda que o cliente seja criado pela rota de criação de clientes (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>).
+The XGate team recommends creating the customer using the customers creation endpoint (POST /customer).
 
-Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank">clicando aqui</a>** para ir para a página de documentação de criação de cliente.
+You can **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click here</a>** to open the customer creation documentation.
 :::
 <Tabs>
-    <TabItem value="with-client" label="Com Cliente">
-**1.1. Passe o `_id` do cliente como `customerId`, igual no campo destacado:**
+    <TabItem value="with-client" label="With Customer">
+**1.1. Pass the customer's `_id` as `customerId`, as shown in the highlighted field:**
 ```json {3}
 {
     "amount": 0.2,
@@ -138,8 +138,8 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 }
 ```
     </TabItem>
-    <TabItem value="no-client" label="Sem Cliente">
-    **1.1. Você deve passar o objeto `customer` que irá criar o cliente ao mesmo tempo em que cria o pedido de depósito:**
+    <TabItem value="no-client" label="Without Customer">
+    **1.1. You must pass the `customer` object to create the customer together with the deposit order:**
     ```json {3-8}
     {
     "amount": 0.2,
@@ -161,14 +161,14 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 }
     ```
     :::warning[Importante]
-    Os dados `name` e `document` são **obrigatórios**.  
+    The `name` and `document` fields are **required**.  
     :::
     </TabItem>
 </Tabs>
 
-**2. Passo:** Você deve obter a moeda fiduciária para qual está realizando o depósito. 
+**Step 2:** Obtain the fiat currency for the deposit.
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/deposit/currency')} target="_blank">clicando aqui</a>.
+You can get the list by <a href={useBaseUrl('/docs/fiat/deposit/currency')} target="_blank">clicking here</a>.
 
 ```json {4-12}
 {
@@ -186,34 +186,34 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/deposit/currency'
 }
 ```
 
-#### Detalhes do Objeto
+#### Object Details
 
-Veja os detalhes de cada informação no objeto `currency` para montar sua requisição.
+See details for each field in the `currency` object to build your request.
 
-| Campo         | Tipo     | Obrigatório | Descrição                                                   |
-| :------------ | :------- | :---------: | :---------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da moeda.                               |
-| `name`        | `string` |   **Sim**   | Nome da moeda.                                              |
-| `type`        | `string` |   **Sim**   | Tipo do método de pagamento ou transação associado à moeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
-| `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
+| Field         | Type     | Required | Description                                                   |
+| :------------ | :------- | :------: | :---------------------------------------------------------- |
+| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                           |
+| `name`        | `string` | **Yes**  | Currency name.                                               |
+| `type`        | `string` | **Yes**  | Payment method or transaction type associated with the currency. |
+| `createdDate` | `string` | **No**   | Date when the currency was created in the system.            |
+| `updatedDate` | `string` | **No**   | Date of the last update to the currency information.         |
+| `__v`         | `number` | **No**   | Database record version for the currency.                    |
+| `symbol`      | `string` | **Yes**  | Currency symbol.                                              |
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+    The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
     ```js
     const axios = require("axios");
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Moedas FIAT'
+sidebar_label: 'Fiat Currencies'
 sidebar_position: 1
 ---
 
@@ -8,44 +8,44 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ListWithdrawCurrenciesTester from '@site/src/components/ListWithdrawCurrenciesTester';
 
-# Listar Moedas
+# List Fiat Currencies
 
-Este endpoint retorna todas as moédas fiduciárias disponíveis para a sua conta. Use esta rota para consultar e criar a requisição para pedido de saque.
+This endpoint returns all fiat currencies available for your account. Use this route to query currencies and build the withdraw order request.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--success">GET</span>
-```bash title="URL do Endpoint"
+ - **Method:** <span className="badge badge--success">GET</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw/company/currencies
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a listagem de moedas fiduciárias.
+Use the form below to simulate listing fiat currencies.
 
 <ListWithdrawCurrenciesTester />
 
 ---
 
-## Requisição
+## Request
 
-A requisição não requer corpo (`body`), apenas os **Headers** de autenticação.
+The request does not require a body (`body`); only authentication **Headers**.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna uma lista (array) de objetos, onde cada objeto é uma chave cadastrada.
+Returns a list (array) of objects, where each object is a currency.
 
 ```json
 [
@@ -57,31 +57,31 @@ Retorna uma lista (array) de objetos, onde cada objeto é uma chave cadastrada.
 ]
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                   |
+| Status  | Message                | Likely Cause                                                                                   |
 | :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **404** | `Not Found`             | Cliente não encontrado.                                                                           |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br /> • IP not allowed. |
+| **404** | `Not Found`             | Customer not found.                                                                           |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                          |
 
 ---
 
-## Como usar
+## How to use
 
-A principal finalidade de listar as moedas fiduciárias é permitir a seleção da moeda correta para criar um pedido de saque (**Withdraw Order**).
+The main purpose of listing fiat currencies is to allow selection of the correct currency when creating a withdraw order (**Withdraw Order**).
 
-A resposta deste endpoint fornece o **Objeto Completo** da moeda, que é obrigatório na construção do payload de criação do pedido.
+The response from this endpoint provides the **Full Object** of the currency, which is required when building the create order payload.
 
-### O Fluxo de Integração
+### Integration Flow
 
-1.  **Liste as moedas:** Chame este endpoint (`GET /withdraw/company/currencies`).
-2.  **Seleção:** Identifique a moeda desejada na lista (geralmente filtrando pelo `name` ou `symbol`, ex: "BRL").
-3.  **Envio:** Você deve passar o **objeto** dentro da propriedade `currency` no payload de criação do pedido, na documentação de <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criação de saque</a> é mostrado os valores **obrigatórios**.
+1.  **List the currencies:** Call this endpoint (`GET /withdraw/company/currencies`).
+2.  **Select:** Identify the desired currency in the list (typically by `name` or `symbol`, e.g., "BRL").
+3.  **Submit:** Pass the **object** within the `currency` property in the create order payload — required fields are shown in the <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create withdraw</a> documentation.
 
-### Exemplo Prático
+### Practical Example
 
-**1. O que você recebe ao listar as moedas fiduciárias:**
+**1. What you receive when listing fiat currencies:**
 ```json
 [
   {
@@ -96,9 +96,9 @@ A resposta deste endpoint fornece o **Objeto Completo** da moeda, que é obrigat
 ]
 ```
 
-**2. Como você deve enviar no saque (POST /withdraw):**
+**2. How you should send it in the withdraw (POST /withdraw):**
 
-Você vai pegar o objeto acima e injetá-lo dentro de `currency`:
+You will take the object above and inject it inside `currency`:
 ```json {4-12}
 {
     "amount": 0.2,
@@ -119,42 +119,42 @@ Você vai pegar o objeto acima e injetá-lo dentro de `currency`:
     }
 }
 ```
-Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de criar pedido de saque</a>.
+Each field in this JSON is explained on the <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create withdraw order</a> page.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
-    ```bash
-    npm install axios
-    ```
+  **Installing `Axios`:**
+  ```bash
+  npm install axios
+  ```
 
-    **Exemplo Javascript:**
-    ```js   
+  **JavaScript Example:**
+  ```js   
 const axios = require("axios");
 
 (async () => {
-    const email = "your_email@domain.com";
-    const password = "**********";
+  const email = "your_email@domain.com";
+  const password = "**********";
 
-    try {
-        const url_api = "https://api.xgateglobal.com"
-        const login = await axios.post(`${url_api}/auth/token`, { email, password });
-        const { data } = await axios.get(`${url_api}/withdraw/company/currencies`, {
-            headers: {
-                "Authorization": `Bearer ${login.data.token}`
-            }
-        });
-        console.log(data); // Response
-    } catch (error) {
-        console.log(error.response.data.message) // Error
-    }
+  try {
+    const url_api = "https://api.xgateglobal.com"
+    const login = await axios.post(`${url_api}/auth/token`, { email, password });
+    const { data } = await axios.get(`${url_api}/withdraw/company/currencies`, {
+      headers: {
+        "Authorization": `Bearer ${login.data.token}`
+      }
+    });
+    console.log(data); // Response
+  } catch (error) {
+    console.log(error.response.data.message) // Error
+  }
 })()
-    ```
+  ```
   </TabItem>
 </Tabs>

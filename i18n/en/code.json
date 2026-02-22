@@ -668,24 +668,6 @@
   "homepage.faq.step.label": {
     "message": "STEP"
   },
-  "homepage.features.feature1.title": {
-    "message": "Get Started"
-  },
-  "homepage.features.feature1.description": {
-    "message": "Learn the basics of our API: how to authenticate and make your first call in less than 5 minutes."
-  },
-  "homepage.features.feature2.title": {
-    "message": "API Reference"
-  },
-  "homepage.features.feature2.description": {
-    "message": "Explore all endpoints. See details about Deposits, Withdrawals, Customers, PIX and much more."
-  },
-  "homepage.features.feature3.title": {
-    "message": "SDKs and Packages"
-  },
-  "homepage.features.feature3.description": {
-    "message": "Integrate faster with our packages. We have ready-made examples in Javascript (NPM), Python (Pip) and PHP (Composer)."
-  },
   "homepage.features.getStarted.title": {
     "message": "Get Started"
   },

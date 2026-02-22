@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Receber Webhooks'
+sidebar_label: 'Receive Webhooks'
 sidebar_position: 6
 ---
 
@@ -7,79 +7,79 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Recebimento de Webhooks
+# Receiving Webhooks
 
-Os Webhooks são notificações automáticas enviadas pela XGate para o seu sistema sempre que o status de uma transação muda (ex: um depósito via Pix foi pago, ocorreu um erro na liquidação ou um saque entrou em processamento).
+Webhooks are automatic notifications sent by XGate to your system whenever the status of a transaction changes (e.g. a Pix deposit was paid, a settlement error occurred, or a withdrawal entered processing).
 
-Isso elimina a necessidade do seu sistema ficar consultando a API repetidamente (*polling*) para saber se um pagamento caiu. A XGate faz o papel apenas de mensageira: nós disparamos as informações, e o seu sistema deve estar preparado para recebê-las e tratá-las.
+This eliminates the need for your system to poll the API repeatedly to check whether a payment cleared. XGate acts only as a messenger: we send the information, and your system must be prepared to receive and handle it.
 
 ---
 
-## Configurando no Painel
+## Configuring in the Dashboard
 
-É fundamental entender que a **XGate não fornece uma URL de webhook**. Você (ou sua equipe de desenvolvimento) precisa construir uma rota pública em seu próprio servidor para receber os dados. Após criar essa rota, você deve informá-la no painel da XGate.
+It is important to understand that **XGate does not provide a webhook URL**. You (or your development team) must build a public route on your own server to receive the data. After creating that route, register it in the XGate dashboard.
 
-Siga os passos abaixo para configurar o envio das notificações:
+Follow the steps below to configure notifications:
 
-1. Acesse o menu lateral **Webhooks** no seu painel XGate.
-2. Clique em **+ Adicionar Integração** ou clique em **Configurar** em um slot vazio.
-3. Preencha os campos de destino:
-   * **Nome:** Um nome de identificação interno para você (ex: "Webhook Servidor Principal").
-   * **URL:** O endereço completo do endpoint hospedado no seu servidor (ex: `https://sua-empresa.com/api/webhooks/xgate`).
+1. Open the **Webhooks** menu in your XGate dashboard.
+2. Click **+ Add Integration** or click **Configure** on an empty slot.
+3. Fill in the destination fields:
+    * **Name:** An internal identifier for you (e.g. "Primary Server Webhook").
+    * **URL:** The full address of the endpoint hosted on your server (e.g. `https://your-company.com/api/webhooks/xgate`).
 
-4. **Eventos:** Selecione quais notificações você deseja que a XGate envie para esta URL. Os eventos são divididos em:
-   * **CRYPTOCURRENCY:** Transações via Crypto.
-   * **CURRENCY:** Transações via Moeda Fiduciária (Pix, incluindo aprovação, rejeição, erros, e toda a esteira de estornos/contestações).
+4. **Events:** Select which notifications you want XGate to send to this URL. Events are grouped as:
+    * **CRYPTOCURRENCY:** Crypto transactions.
+    * **CURRENCY:** Fiat currency transactions (Pix, including approvals, rejections, errors, and the full refund/dispute lifecycle).
 
-:::tip[Dica de Integração]
-Nossa recomendação é que você **habilite todos os eventos disponíveis**. Isso garante que o seu banco de dados possua um espelhamento perfeito do que está acontecendo na XGate, evitando que transações fiquem presas em status desatualizados. No entanto, a escolha final fica a seu critério.
+:::tip[Integration Tip]
+We recommend that you **enable all available events**. This ensures your database mirrors what is happening in XGate, preventing transactions from remaining stuck in outdated statuses. The final choice is yours.
 :::
 
 ---
 
-## Segurança: Whitelist de IP
+## Security: IP Whitelist
 
-Para garantir que seu sistema não sofra ataques de webhooks falsos (usuários mal-intencionados simulando que um pagamento foi aprovado), a XGate envia todas as notificações a partir de um **IP Fixo Exclusivo**.
+To ensure your system is not subject to fake webhook attacks (malicious actors simulating a payment approval), XGate sends all notifications from a **single fixed IP**.
 
-Recomendamos fortemente que você configure o firewall do seu servidor ou crie uma validação em seu código para aceitar apenas requisições `POST` vindas do seguinte IP:
+We strongly recommend configuring your server firewall or adding validation in your code to accept only `POST` requests originating from the following IP:
 
-**IP Oficial XGate:** `107.23.39.46`
-
----
-
-## Idempotência e "externalId"
-
-Ao criar pedidos de Depósito ou Saque, você pode enviar o campo `externalId`. Ele possui duas funções vitais:
-
-1. **Prevenção de Duplicidade (Idempotência):** Impede que falhas de rede ou "duplo clique" do seu cliente final gerem múltiplas transações iguais na XGate. Se enviarmos duas requisições com o mesmo `externalId`, a segunda será ignorada.
-2. **Rastreabilidade:** Funciona como o código único do pedido no *seu* sistema. 
-
-**Nota:** Se você enviar o `externalId` na criação da transação, a XGate o devolverá dentro do payload do webhook, facilitando a busca no seu banco de dados.
+**Official XGate IP:** `107.23.39.46`
 
 ---
 
-## Como funciona o fluxo?
+## Idempotency and "externalId"
 
-1. Você cadastra a **sua URL** no painel da XGate e seleciona os eventos.
-2. Quando um dos eventos selecionados ocorre, a XGate faz uma requisição **POST** para a sua URL a partir do IP `107.23.39.46`.
-3. Seu sistema recebe o JSON, processa a lógica de negócio e **confirma o recebimento retornando um HTTP 200 OK**.
+When creating Deposit or Withdrawal orders, you can send the `externalId` field. It serves two vital purposes:
 
-:::warning[Boa Prática de Integração]
-Seu servidor **DEVE** retornar o status HTTP `200` (OK) imediatamente após receber o webhook. Essa é a prática padrão para informar à XGate que seu sistema processou a notificação com sucesso, finalizando a conexão adequadamente e evitando falhas de comunicação (*timeouts*) entre os servidores.
+1. **Duplicate Prevention (Idempotency):** Prevents network failures or double-clicks from creating multiple identical transactions in XGate. If we receive two requests with the same `externalId`, the second will be ignored.
+2. **Traceability:** Acts as your system's unique order code.
+
+**Note:** If you include `externalId` when creating the transaction, XGate will return it inside the webhook payload, making it easier to look up records in your database.
+
+---
+
+## How does the flow work?
+
+1. You register **your URL** in the XGate dashboard and select the events.
+2. When one of the selected events occurs, XGate makes a **POST** request to your URL from the IP `107.23.39.46`.
+3. Your system receives the JSON, processes business logic, and **acknowledges receipt by returning HTTP 200 OK**.
+
+:::warning[Integration Best Practice]
+Your server **MUST** return HTTP status `200` (OK) immediately after receiving the webhook. This is the standard practice to inform XGate that your system processed the notification successfully, properly closing the connection and avoiding communication timeouts between servers.
 :::
 
 ---
 
-## Formato da Requisição e Variações
+## Request Format and Variations
 
-O formato do Payload varia ligeiramente dependendo se a transação envolve apenas Fiat (Pix) ou Criptomoedas (USDT).
+The payload format varies slightly depending on whether the transaction involves only Fiat (Pix) or Cryptocurrencies (USDT).
 
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-### Exemplos de Payload
+### Payload Examples
 
-**1. Transação Padrão (Pix BRL):**
-Retorna o campo `type` especificando o método.
+**1. Standard Transaction (Pix BRL):**
+Returns the `type` field specifying the method.
 
 ```json
 {
@@ -93,8 +93,8 @@ Retorna o campo `type` especificando o método.
 }
 ```
 
-**2. Saque (USDT convertido para Pix):**
-O campo `type` é omitido nas operações que envolvem saldos cripto.
+**2. Withdrawal (USDT converted to Pix):**
+The `type` field is omitted for operations involving crypto balances.
 
 ```json
 {
@@ -107,7 +107,7 @@ O campo `type` é omitido nas operações que envolvem saldos cripto.
 }
 ```
 
-**3. Depósito (Pix convertido para USDT ou USDT direto):**
+**3. Deposit (Pix converted to USDT or direct USDT):**
 
 ```json
 {
@@ -120,40 +120,40 @@ O campo `type` é omitido nas operações que envolvem saldos cripto.
 }
 ```
 
-### Descrição dos Campos
+### Field Descriptions
 
-| Campo        | Tipo     | Descrição                                                                                |
-| :----------- | :------- | :--------------------------------------------------------------------------------------- |
-| `id`         | `string` | ID único da transação gerado pela XGate.                                                 |
-| `status`     | `string` | O status atual da transação (veja a tabela abaixo).                                      |
-| `name`       | `string` | A moeda base da transação (ex: `BRL`, `USDT`).                                           |
-| `type`       | `string` | *(Condicional)* O método utilizado (ex: `PIX`). Geralmente ausente em transações cripto. |
-| `amount`     | `number` | O valor processado na transação.                                                         |
-| `operation`  | `string` | Define se é uma entrada ou saída (`DEPOSIT` ou `WITHDRAW`).                              |
-| `customerId` | `string` | ID do cliente vinculado à transação.                                                     |
-| `externalId` | `string` | *(Opcional)* O ID do pedido no seu sistema, retornado apenas se enviado na criação.      |
+| Field        | Type     | Description                                                                          |
+| :----------- | :------- | :----------------------------------------------------------------------------------- |
+| `id`         | `string` | Unique transaction ID generated by XGate.                                            |
+| `status`     | `string` | Current transaction status (see table below).                                        |
+| `name`       | `string` | The transaction's base currency (e.g. `BRL`, `USDT`).                                |
+| `type`       | `string` | *(Conditional)* The method used (e.g. `PIX`). Usually absent in crypto transactions. |
+| `amount`     | `number` | The amount processed in the transaction.                                             |
+| `operation`  | `string` | Indicates whether it is an inflow or outflow (`DEPOSIT` or `WITHDRAW`).              |
+| `customerId` | `string` | ID of the customer linked to the transaction.                                        |
+| `externalId` | `string` | *(Optional)* Your system's order ID, returned only if provided at creation.          |
 
 ---
 
-## Status Possíveis
+## Possible Statuses
 
-Seu sistema deve estar preparado para processar os status de fluxo normal e os status do fluxo de estornos (Chargeback).
+Your system should be prepared to handle both normal transaction statuses and refund/dispute (chargeback) statuses.
 
-### Fluxo Principal de Transações
+### Main Transaction Flow
 
-| Status                                                     | Significado                                                                   | Ação Recomendada                                                                  |
+| Status                                                     | Meaning                                                                       | Recommended Action                                                                |
 | :--------------------------------------------------------- | :---------------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| <span className="badge badge--secondary">PROCESSING</span> | A transação está sendo processada.                                            | Apenas registrar o andamento (comum em saques).                                   |
-| <span className="badge badge--success">PAID</span>         | Transação concluída e paga com sucesso.                                       | **Liberar o saldo/produto ou confirmar o saque.**                                 |
-| <span className="badge badge--danger">ERROR</span>         | Falha na operação (ex: chave Pix incorreta em saques, titularidade inválida). | Avisar o usuário final sobre a falha e sugerir verificar informações cadastradas. |
-| <span className="badge badge--danger">REJECTED</span>      | Rejeitado pela liquidante/parceiro bancário.                                  | Raro de acontecer, tratar como falha definitiva.                                  |
+| <span className="badge badge--secondary">PROCESSING</span> | The transaction is being processed.                                           | Log the progress (common for withdrawals).                                        |
+| <span className="badge badge--success">PAID</span>         | Transaction completed and paid successfully.                                  | **Release funds/product or confirm the withdrawal.**                              |
+| <span className="badge badge--danger">ERROR</span>         | Operation failed (e.g. incorrect Pix key for withdrawals, invalid ownership). | Notify the end user about the failure and suggest verifying provided information. |
+| <span className="badge badge--danger">REJECTED</span>      | Rejected by the settlement partner/bank.                                      | Rare; treat as a definitive failure.                                              |
 
-### Fluxo de Estornos e Contestações (Chargeback)
+### Refunds and Disputes (Chargeback) Flow
 
-| Status                                                                   | Significado                                                                       | Ação Recomendada                                     |
-| :----------------------------------------------------------------------- | :-------------------------------------------------------------------------------- | :--------------------------------------------------- |
-| <span className="badge badge--warning">AWAITING_REFUND_CONTESTION</span> | O cliente final abriu uma solicitação de estorno no banco dele. O saldo é retido. | Congelar o saldo/serviço do cliente preventivamente. |
-| <span className="badge badge--warning">AWAITING_BANK_VEREDICT</span>     | Você enviou a defesa da contestação e estamos aguardando o banco julgar.          | Aguardar resolução.                                  |
-| <span className="badge badge--danger">EXPIRED_DISPUTE</span>             | O prazo para enviar as provas de contestação do estorno expirou.                  | Registrar perda da disputa.                          |
-| <span className="badge badge--success">REFUND_CANCELED</span>            | O estorno foi cancelado pelo banco (você ganhou a disputa).                       | O valor retido é devolvido à sua conta.              |
-| <span className="badge badge--danger">REFUND_APPROVED</span>             | O estorno foi aprovado pelo banco (você perdeu a disputa).                        | O valor é devolvido ao cliente final em definitivo.  |
+| Status                                                                   | Meaning                                                                    | Recommended Action                                      |
+| :----------------------------------------------------------------------- | :------------------------------------------------------------------------- | :------------------------------------------------------ |
+| <span className="badge badge--warning">AWAITING_REFUND_CONTESTION</span> | The end user opened a refund request with their bank. The funds are held.  | Freeze the customer's balance/service preventively.     |
+| <span className="badge badge--warning">AWAITING_BANK_VEREDICT</span>     | You submitted the dispute defense and we are awaiting the bank's judgment. | Await resolution.                                       |
+| <span className="badge badge--danger">EXPIRED_DISPUTE</span>             | The deadline to submit dispute evidence has expired.                       | Record the dispute loss.                                |
+| <span className="badge badge--success">REFUND_CANCELED</span>            | The refund was canceled by the bank (you won the dispute).                 | The held amount is returned to your account.            |
+| <span className="badge badge--danger">REFUND_APPROVED</span>             | The refund was approved by the bank (you lost the dispute).                | The amount is returned to the end customer permanently. |

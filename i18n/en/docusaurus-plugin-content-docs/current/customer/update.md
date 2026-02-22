@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Atualizar'
+sidebar_label: 'Update'
 sidebar_position: 3
 ---
 
@@ -8,56 +8,56 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
 
-# Atualizar Cliente
+# Update Customer
 
-Este endpoint permite atualizar o registro de cliente na base de dados da XGATE.
+This endpoint allows updating the customer record in the XGate database.
 
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--info">PUT</span>
-```bash title="URL do Endpoint"
+- **Method:** <span className="badge badge--info">PUT</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/customer/CUSTOMER_ID
 ```
 
-:::warning[Importante]
-O valor **CUSTOMER_ID** se refere ao `_id` informado ao criar um cliente. 
+:::warning[Important]
+The **CUSTOMER_ID** value refers to the `_id` returned when creating a customer.
 :::
 
 ---
 
-## Testar Integração
+## Integration Test
 
-Simule a atualização de um cliente agora mesmo.
+Simulate updating a customer now.
 
 <CreateCustomerTester />
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header          | Valor                | Descrição                  |
-| :-------------- | :------------------- | :------------------------- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
+| Header          | Value                 | Description               |
+| :-------------- | :-------------------- | :------------------------ |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token. |
 
-### Corpo da Requisição (Body)
+### Request Body
 
-| Campo      | Tipo     | Obrigatório | Descrição                            |
-| :--------- | :------- | :---------- | :----------------------------------- |
-| `name`     | `string` | Sim         | Nome completo do cliente.            |
-| `document` | `string` | Sim         | CPF ou CNPJ (apenas números).        |
-| `email`    | `string` | Não         | E-mail do cliente para notificações. |
-| `phone`    | `string` | Não         | Telefone do cliente.                 |
+| Field      | Type     | Required | Description                       |
+| :--------- | :------- | :------- | :-------------------------------- |
+| `name`     | `string` | Yes      | Customer full name.               |
+| `document` | `string` | Yes      | CPF or CNPJ (numbers only).       |
+| `email`    | `string` | No       | Customer email for notifications. |
+| `phone`    | `string` | No       | Customer phone number.            |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Os dados do cliente foram atualizados com sucesso.
+Customer data was updated successfully.
 
 ```json
 {
@@ -65,34 +65,34 @@ Os dados do cliente foram atualizados com sucesso.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                                                                            |
-| :------ | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **400** | `Bad Request`           | Nome e/ou documento do cliente é obrigatório.                                                                                                              |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.<br />• Você não tem autorização para realizar essa ação. |
-| **409** | `Conflict`              | • Nome informado já está cadastrado.<br />• Documento informado já está cadastrado.                                                                        |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                                                                                   |
+| Status  | Message                 | Likely Reason                                                                                                                                |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| **400** | `Bad Request`           | Customer name and/or document is required.                                                                                                   |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Missing or invalid header.<br /> • IP not allowed.<br />• You are not authorized to perform this action. |
+| **409** | `Conflict`              | • The provided name is already registered.<br />• The provided document is already registered.                                               |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                                                      |
 
 ---
 
-## Como usar
+## How to use
 
-A rota de atualização de cliente é um endpoint de modificação de dados. Ela permite alterar as informações cadastrais de um usuário que já existe na sua base de dados da XGate.
+The customer update route is a data-modification endpoint. It allows changing the registration information of a user that already exists in your XGate database.
 
-### Casos de Uso Comuns
+### Common Use Cases
 
-Você utilizará este endpoint principalmente em situações de manutenção da conta do usuário:
+Use this endpoint primarily for user account maintenance scenarios:
 
-1. **Correção de Dados:** Ajustar erros de digitação no `name` ou corrigir o `document` (CPF/CNPJ) caso o usuário tenha preenchido incorretamente no momento do cadastro.
-2. **Atualização de Contato:** Modificar o `email` ou `phone` do cliente estritamente para fins de notificação e comunicação, mantendo os dados de contato administrativo sempre em dia.
-3. **Manutenção Cadastral (Espelhamento):** Garantir que, sempre que o cliente alterar os dados de perfil no seu próprio aplicativo ou site, essa mudança seja refletida automaticamente no ecossistema da XGate.
+1. **Data Correction:** Fix typos in `name` or correct the `document` (CPF/CNPJ) if the user provided it incorrectly during registration.
+2. **Contact Update:** Modify the customer's `email` or `phone` strictly for notification and communication purposes, keeping administrative contact data up to date.
+3. **Profile Synchronization:** Ensure that whenever the customer updates profile data in your app or site, the change is reflected automatically in the XGate ecosystem.
 
-### Exemplo Prático
+### Practical Example
 
-A finalidade primária desta rota é aplicar as mudanças e confirmar o sucesso da operação, sem retornar um grande volume de dados. Ao fazer a requisição informando o `_id` do cliente na URL e enviando as novas informações no corpo (body), a API processará a alteração e retornará uma confirmação simples.
+The primary purpose of this route is to apply changes and confirm the success of the operation without returning large volumes of data. By requesting the update with the customer's `_id` in the URL and sending the new information in the body, the API will process the change and return a simple confirmation.
 
-**1. O que você recebe ao atualizar o cliente com sucesso:**
+**1. What you receive when updating the customer successfully:**
 ```json
 {
     "message":"Cliente alterado com sucesso"
@@ -101,18 +101,18 @@ A finalidade primária desta rota é aplicar as mudanças e confirmar o sucesso 
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+    The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
 ```bash
 npm install axios
 ```
 
-    **Exemplo Javascript:**
+    **JavaScript example:**
 ```js
 const axios = require("axios");
 

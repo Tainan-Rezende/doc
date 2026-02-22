@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Consultar'
+sidebar_label: 'Customer Lookup'
 sidebar_position: 1
 ---
 
@@ -8,52 +8,52 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
 
-# Consultar Cliente
+# Customer Lookup
 
-Este endpoint consulta o registro de cliente na base da XGATE.
+This endpoint queries the customer record in the XGate database.
 
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--success">GET</span>
-```bash title="URL do Endpoint"
+- **Method:** <span className="badge badge--success">GET</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/customer/CUSTOMER_ID
 ```
 
-:::warning[Importante]
-O valor **CUSTOMER_ID** se refere ao `_id` informado ao criar um cliente. 
+:::warning[Important]
+The **CUSTOMER_ID** value refers to the `_id` returned when creating a customer.
 :::
 
-:::tip[Dica de Integração: Recuperando um id]
-A API da XGate utiliza o campo `name` como chave de validação de clientes. Se você perdeu o `_id` de um usuário, faça uma requisição de **Criação de Cliente** com o nome dele. O servidor identificará o nome já existente e retornará um erro amigável contendo o `_id` do registro já existente, permitindo que você atualize seu banco de dados interno.
+:::tip[Integration Tip: Retrieving an ID]
+The XGate API uses the `name` field as a validation key for customers. If you lost a user's `_id`, submit a **Create Customer** request using the same name. The server will detect the existing name and return a friendly error containing the existing record's `_id`, allowing you to update your internal database.
 :::
 
 ---
 
-## Testar Integração
+## Integration Test
 
-Simule a criação de um cliente agora mesmo. O resultado mostrará o `_id` gerado.
+Simulate creating a customer now. The result will show the generated `_id`.
 
 <CreateCustomerTester />
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header          | Valor                | Descrição                  |
+| Header          | Value                | Description                |
 | :-------------- | :------------------- | :------------------------- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token. |
 
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Os dados do cliente foram encontrados.
+Customer data was found.
 
 ```json
 {
@@ -67,36 +67,34 @@ Os dados do cliente foram encontrados.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                                                                            |
-| :------ | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.<br />• Você não tem autorização para realizar essa ação. |
-| **404** | `Not Found`             | • ID informado não é válido.<br />O cliente não existe.                                                                                                    |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                                                                                   |
+| Status  | Message                 | Likely Reason                                                                                                                                            |
+| :------ | :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Missing or invalid header.<br /> • IP not allowed.<br />• You are not authorized to perform this action. |
+| **404** | `Not Found`             | • Provided ID is not valid.<br />The customer does not exist.                                                                                              |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                                                                   |
 
 ---
 
-## Como usar
+## How to use
 
-A rota de consulta de cliente é um endpoint de leitura. Ela serve para que você possa resgatar e verificar os dados atuais de um usuário já cadastrado na sua base da XGate.
+The customer query route is a read-only endpoint. Use it to retrieve and verify the current data of a user already registered in your XGate database.
 
+### Common Use Cases
 
-### Casos de Uso Comuns
+Unlike payment routes, there is no complex flow here. Use this endpoint mainly for:
 
-Diferente de rotas de pagamento, não há um fluxo complexo aqui. Você utilizará este endpoint principalmente para:
+1. **Audit and Verification:** Confirm that the `document` (CPF/CNPJ) or `email` linked to the customer are correct.
+2. **Pre-Update Validation:** Fetch the user's current registration data to pre-fill an "Edit Profile" screen in your front-end.
+3. **Database Synchronization:** Ensure your internal database remains up-to-date and in sync with XGate.
 
-1. **Auditoria e Verificação:** Confirmar se o `document` (CPF/CNPJ) ou `email` vinculados àquele cliente estão corretos.
-2. **Validação Pré-Atualização:** Buscar os dados cadastrais atuais do usuário para preencher os campos de uma tela de "Editar Perfil" no seu aplicativo front-end.
-3. **Sincronização de Banco de Dados:** Garantir que o seu banco de dados interno esteja sempre com as informações mais atualizadas em sincronia com a XGate.
+### Practical Example
+The primary purpose is quick, secure data viewing. By requesting the customer using its _id, you will receive the complete customer object.
 
-### Exemplo Prático
+**1. What you receive when querying the customer:**
 
-A finalidade primária é a visualização rápida e segura dos dados. Ao fazer a requisição de consulta informando o _id do cliente, você receberá o objeto completo dele.
-
-**1. O que você recebe ao consultar o cliente:**
-
-Note no exemplo abaixo como a rota retorna as informações vitais, permitindo que você faça a conferência do documento (linha destacada):
+Note in the example below how the route returns the vital information, allowing you to verify the `document` (highlighted line):
 ```json {5}
 {
   "_id": "697e15******************",
@@ -111,38 +109,38 @@ Note no exemplo abaixo como a rota retorna as informações vitais, permitindo q
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+  **Installing `Axios`:**
 ```bash
 npm install axios
 ```
 
-    **Exemplo Javascript:**
+  **JavaScript example:**
 ```js
 const axios = require("axios");
 
 (async () => {
-    const email = "your_email@domain.com";
-    const password = "**********";
-    const customerId = "***********";
+  const email = "your_email@domain.com";
+  const password = "**********";
+  const customerId = "***********";
 
-    try {
-        const url_api = "https://api.xgateglobal.com"
-        const login = await axios.post(`${url_api}/auth/token`, { email, password });
-        const { data } = await axios.get(`${url_api}/customer/${customerId}`, {
-            headers: {
-                "Authorization": `Bearer ${login.data.token}`
-            }
-        });
-        console.log(data); // Response
-    } catch (error) {
-        console.log(error.response.data.message) // Error
-    }
+  try {
+    const url_api = "https://api.xgateglobal.com"
+    const login = await axios.post(`${url_api}/auth/token`, { email, password });
+    const { data } = await axios.get(`${url_api}/customer/${customerId}`, {
+      headers: {
+        "Authorization": `Bearer ${login.data.token}`
+      }
+    });
+    console.log(data); // Response
+  } catch (error) {
+    console.log(error.response.data.message) // Error
+  }
 })()
 ```
   </TabItem>

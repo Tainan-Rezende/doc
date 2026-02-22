@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Adicionar Chave'
+sidebar_label: 'Add Pix Key'
 sidebar_position: 2
 ---
 
@@ -8,63 +8,60 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import AddPixKeyTester from '@site/src/components/AddPixKeyTester';
 
-# Adicionar Chave Pix
+# Add Pix Key
 
-Este endpoint permite cadastrar uma nova chave Pix (E-mail, CPF, CNPJ, Telefone ou Aleatória) para seu cliente final.
-
-<!-- :::info[Nota sobre Validação]
-O sistema valida automaticamente se o formato da chave corresponde ao `type` informado (ex: se o CPF tem 11 dígitos, se o e-mail é válido, etc).
-::: -->
+This endpoint allows registering a new Pix key (Email, CPF, CNPJ, Phone or Random) for your end customer.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
-```bash title="URL do Endpoint"
+ - **Method:** <span className="badge badge--info">POST</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/pix/customer/CLIENT_ID/key
 ```
 
-:::warning[Importante]
-O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
+:::warning[Important]
+The `CLIENT_ID` field refers to the customer ID; if you haven't created it yet, you can create it from the <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create customers</a> page.
 :::
 
 ---
 
-## Testar Integração
 
-Utilize o formulário abaixo para simular o cadastro de uma chave real.
+## Test Integration
+
+Use the form below to simulate registering a real Pix key.
 
 <AddPixKeyTester />
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header          | Valor                | Descrição                  |
-| :-------------- | :------------------- | :------------------------- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
+| Header          | Value                | Description               |
+| :-------------- | :------------------- | :------------------------ |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token. |
 
-#### Parâmetros de URL
+### URL Parameters
 
-| Parâmetro   | Tipo     | Obrigatório | Descrição                                                 |
-| :---------- | :------- | :---------: | :-------------------------------------------------------- |
-| `CLIENT_ID` | `string` |   **Sim**   | O `_id` do cliente que você deseja adicionar a chave pix. |
+| Parameter   | Type     | Required | Description                                                    |
+| :---------- | :------- | :------: | :------------------------------------------------------------- |
+| `CLIENT_ID` | `string` | **Yes**  | The `_id` of the customer to whom you want to add the Pix key. |
 
-### Corpo da Requisição (Body)
+### Request Body
 
-| Campo  | Tipo     | Obrigatório | Descrição                                                                         |
-| :----- | :------- | :---------- | :-------------------------------------------------------------------------------- |
-| `key`  | `string` | Sim         | O valor da chave Pix (ex: `seu@email.com`, `+551199...`).                         |
-| `type` | `string` | Sim         | O tipo da chave.<br />Valores aceitos: `EMAIL`, `CPF`, `CNPJ`, `PHONE`, `RANDOM`. |
+| Field  | Type     | Required | Description                                                                    |
+| :----- | :------- | :------: | :----------------------------------------------------------------------------- |
+| `key`  | `string` |   Yes    | The Pix key value (ex: `your@email.com`, `+551199...`).                        |
+| `type` | `string` |   Yes    | The key type.<br />Accepted values: `EMAIL`, `CPF`, `CNPJ`, `PHONE`, `RANDOM`. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (201 Created)
+### Success (201 Created)
 
-A chave foi cadastrada com sucesso e já está pronta para uso.
+The key was successfully registered and is ready for use.
 
 ```json
 {
@@ -77,34 +74,33 @@ A chave foi cadastrada com sucesso e já está pronta para uso.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                             |
+| Status  | Message                 | Likely Cause                                                                                                |
 | :------ | :---------------------- | :---------------------------------------------------------------------------------------------------------- |
-| **400** | `Bad Request`           | Chave Pix digitada não é válida.                                                                            |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.           |
-| **404** | `Not Found`             | • Chave Pix já registrada.<br />• Chave Pix não corresponde a um CPF válido.<br />• Cliente não encontrado. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                                    |
+| **400** | `Bad Request`           | The provided Pix key is not valid.                                                                          |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br /> • IP not allowed.                      |
+| **404** | `Not Found`             | • Pix key already registered.<br />• Pix key does not correspond to a valid CPF.<br />• Customer not found. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                     |
 
-## Como usar
+## How to use
 
-A principal finalidade da adição de chaves Pix é permitir que o usuário realize um saque (**Withdraw**) utilizando a chave recém-criada.
+The main purpose of adding Pix keys is to allow the user to perform a withdrawal (**Withdraw**) using the newly created key.
 
-A resposta deste endpoint fornece imediatamente o **Objeto Completo** da chave, que é obrigatório na construção do payload de saque.
+The response from this endpoint immediately provides the **Full Object** of the key, which is required when building the withdrawal payload.
+### Integration Flow
 
-### O Fluxo de Integração
+1.  **Register the key:** Call this endpoint (`POST /pix/customer/CLIENT_ID/key`).
+2.  **Capture:** The API will return the created key data. Store this object.
+3.  **Submit:** You must pass the **entire object** received inside the `pixKey` property in the withdrawal payload.
 
-1.  **Cadastre a chave:** Chame este endpoint (`POST /pix/customer/CLIENT_ID/key`).
-2.  **Captura:** A API retornará os dados da chave criada. Armazene esse objeto.
-3.  **Envio:** Você deve passar o **objeto inteiro** recebido dentro da propriedade `pixKey` no payload de saque.
-
-:::warning[Atenção ao Formato]
-Não envie os dados da chave Pix incompletos. O payload de saque espera o **objeto JSON completo** contendo `key`, `type` e `_id`.
+:::warning[Format Warning]
+Do not send incomplete Pix key data. The withdrawal payload expects the **complete JSON object** containing `key`, `type` and `_id`.
 :::
 
-### Exemplo Prático
+### Practical Example
 
-**1. O que você recebe ao criar chave pix:**
+**1. What you receive when creating a Pix key:**
 ```json
 
 {
@@ -118,9 +114,9 @@ Não envie os dados da chave Pix incompletos. O payload de saque espera o **obje
 
 ```
 
-**2. Como você deve enviar no Saque (POST /withdraw):**
+**2. How you should send it in the Withdrawal (POST /withdraw):**
 
-Você vai pegar o objeto acima e injetá-lo dentro de pixKey:
+You will take the object above and inject it inside `pixKey`:
 ```json {13-17}
 {
     "amount": 0.2,
@@ -141,22 +137,22 @@ Você vai pegar o objeto acima e injetá-lo dentro de pixKey:
     }
 }
 ```
-Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de saques</a>.
+Each field in this JSON is explained on the <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>withdrawals page</a>.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+        The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+        **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+        **JavaScript Example:**
     ```js
 const axios = require("axios");
 
@@ -185,15 +181,15 @@ const axios = require("axios");
 })()
     ```
   </TabItem>
-  <TabItem value="python" label="Python">
-    O exemplo de integração utiliza a biblioteca <code>requests</code>.
+    <TabItem value="python" label="Python">
+        The integration example uses the <code>requests</code> library.
 
-    **Instalando `requests`:**
+        **Installing `requests`:**
     ```bash
     pip install requests
     ```
 
-    **Exemplo Python:**
+        **Python Example:**
     ```py
 import requests
 
@@ -225,8 +221,8 @@ except requests.exceptions.RequestException as error:
         print("Erro ao processar a requisição.")
     ```
   </TabItem>
-  <TabItem value="php" label="PHP">
-    <p>Exemplo de como adicionar chave pix usando cURL nativo do PHP.</p>
+    <TabItem value="php" label="PHP">
+        <p>Example of how to add a Pix key using native PHP cURL.</p>
     ```php
     $email = "your_email@domain.com";
 $password = "**********";

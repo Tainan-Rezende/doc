@@ -20,8 +20,8 @@ The generated token is valid for **15 days**. After this period, you will need t
 
 ## Endpoint
 
-- **Método:** <span className="badge badge--info">POST</span>
-```bash title="URL do Endpoint"
+ - **Method:** <span className="badge badge--info">POST</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/auth/token
 ```
 
@@ -102,7 +102,7 @@ The token expires in 15 days. If you start receiving 401 Unauthorized errors in 
         npm install axios
         ```
 
-        **Javascript Example:**
+        **JavaScript Example:**
     ```js
     const axios = require("axios");
 

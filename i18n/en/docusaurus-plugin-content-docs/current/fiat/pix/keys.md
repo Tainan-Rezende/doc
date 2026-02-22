@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Chaves Pix'
+sidebar_label: 'Pix Keys'
 sidebar_position: 1
 ---
 
@@ -8,53 +8,53 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import PixKeysTester from '@site/src/components/PixKeysTester';
 
-# Listar Chaves Pix
+# List Pix Keys
 
-Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.
+This endpoint returns all Pix keys registered for your account. Use this route to check which keys are already active before attempting to register a new one.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--success">GET</span>
-```bash title="URL do Endpoint"
+- **Method:** <span className="badge badge--success">GET</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/pix/customer/CLIENT_ID/key
 ```
-:::warning[Importante]
-O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
+:::warning[Important]
+The `CLIENT_ID` field refers to the customer ID; if you haven't created it yet, you can create it from the <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create customers</a> page.
 :::
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a listagem de chaves pix.
+Use the form below to simulate listing Pix keys.
 
 <PixKeysTester />
 
 ---
 
-## Requisição
+## Request
 
-A requisição não requer corpo (`body`), apenas os **Headers** de autenticação.
+The request does not require a body (`body`); only authentication **Headers**.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
-#### Parâmetros de URL
+#### URL Parameters
 
-| Parâmetro   | Tipo     | Obrigatório | Descrição |
-| :---------- | :------- | :---------: | :-------- |
-| `CLIENT_ID` | `string` | **Sim** | O `_id` do cliente que você deseja consultar a lista de chaves. |
+| Parameter   | Type     | Required | Description |
+| :---------- | :------- | :------: | :-------- |
+| `CLIENT_ID` | `string` | **Yes** | The `_id` of the customer whose key list you want to query. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna uma lista (array) de objetos, onde cada objeto é uma chave cadastrada.
+Returns a list (array) of objects, where each object is a registered key.
 
 ```json
 [
@@ -66,35 +66,35 @@ Retorna uma lista (array) de objetos, onde cada objeto é uma chave cadastrada.
 ]
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                   |
+| Status  | Message                | Likely Cause                                                                                   |
 | :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **404** | `Not Found`             | Cliente não encontrado.                                                                           |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br /> • IP not allowed. |
+| **404** | `Not Found`             | Customer not found.                                                                           |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                          |
 
 ---
 
-## Como usar
+## How to use
 
-A principal finalidade de listar as chaves é permitir que o usuário selecione uma delas para realizar um saque (**Withdraw**).
+The main purpose of listing keys is to allow the user to select one to perform a withdrawal (**Withdraw**).
 
-A resposta deste endpoint fornece o **Objeto Completo** da chave, que é obrigatório na construção do payload de saque.
+The response from this endpoint provides the **Full Object** of the key, which is required when building the withdrawal payload.
 
-### O Fluxo de Integração
+### Integration Flow
 
-1.  **Liste as chaves:** Chame este endpoint (`GET /pix/customer/CLIENT_ID/key`).
-2.  **Seleção:** Escolha qual chave quer usar, se houver mais de uma (ex: a primeira da lista).
-3.  **Envio:** Você deve passar o **objeto inteiro** dentro da propriedade `pixKey` no payload de saque.
+1.  **List the keys:** Call this endpoint (`GET /pix/customer/CLIENT_ID/key`).
+2.  **Selection:** Choose which key you want to use, if there is more than one (e.g., the first in the list).
+3.  **Submit:** You must pass the **entire object** inside the `pixKey` property in the withdrawal payload.
 
-:::warning[Atenção ao Formato]
-Não envie os dados da chave pix incompleto. O payload de saque espera o **objeto JSON completo** contendo `key`, `type` e `_id`.
+:::warning[Format Warning]
+Do not send incomplete Pix key data. The withdrawal payload expects the **complete JSON object** containing `key`, `type`, and `_id`.
 :::
 
-### Exemplo Prático
+### Practical Example
 
-**1. O que você recebe ao listar as chaves pix:**
+**1. What you receive when listing Pix keys:**
 ```json
 [
   {
@@ -105,9 +105,9 @@ Não envie os dados da chave pix incompleto. O payload de saque espera o **objet
 ]
 ```
 
-**2. Como você deve enviar no Saque (POST /withdraw):**
+**2. How you should send it in the Withdrawal (POST /withdraw):**
 
-Você vai pegar o objeto acima e injetá-lo dentro de pixKey:
+You will take the object above and inject it inside `pixKey`:
 ```json {13-17}
 {
     "amount": 0.2,
@@ -128,22 +128,22 @@ Você vai pegar o objeto acima e injetá-lo dentro de pixKey:
     }
 }
 ```
-Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de criar pedido de saques</a>.
+Each field in this JSON is explained on the <a href={useBaseUrl('/docs/fiat/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create withdrawal request page</a>.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+    The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
     ```js
     const axios = require("axios");
 
@@ -168,14 +168,14 @@ Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/fiat/
     ```
   </TabItem>
   <TabItem value="python" label="Python">
-    O exemplo de integração utiliza a biblioteca <code>requests</code>.
+    The integration example uses the <code>requests</code> library.
 
-    **Instalando `requests`:**
+    **Installing `requests`:**
     ```bash
     pip install requests
     ```
 
-    **Exemplo Python:**
+    **Python Example:**
     ```py
     import requests
 email = "your_email@domain.com"
@@ -203,7 +203,7 @@ except requests.exceptions.RequestException as error:
     ```
   </TabItem>
   <TabItem value="php" label="PHP">
-    <p>Exemplo de como obter a lista de chaves pix usando cURL nativo do PHP.</p>
+    <p>Example of how to obtain the list of Pix keys using native PHP cURL.</p>
     ```php
     $email = "your_email@domain.com";
 $password = "**********";

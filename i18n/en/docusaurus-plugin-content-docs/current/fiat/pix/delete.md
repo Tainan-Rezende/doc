@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Remover Chave'
+sidebar_label: 'Remove Pix Key'
 sidebar_position: 2
 ---
 
@@ -8,60 +8,56 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import DeletePixKeyTester from '@site/src/components/DeletePixKeyTester';
 
-# Remover Chave Pix
+# Remove Pix Key
 
-Este endpoint permite remover a chave pix de seu cliente final.
-
-<!-- :::info[Nota sobre Validação]
-O sistema valida automaticamente se o formato da chave corresponde ao `type` informado (ex: se o CPF tem 11 dígitos, se o e-mail é válido, etc).
-::: -->
+This endpoint allows removing a customer's Pix key.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--danger">DELETE</span>
-```bash title="URL do Endpoint"
+- **Method:** <span className="badge badge--danger">DELETE</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/pix/customer/CLIENT_ID/key/remove/KEY_ID
 ```
 
-:::warning[Importante]
-O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
+:::warning[Important]
+The `CLIENT_ID` field refers to the customer ID; if you haven't created it yet, you can create it from the <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create customers</a> page.
 :::
-:::warning[Importante]
-O campo `KEY_ID` se refere ao ID da chave pix, se ainda não criou, você pode cria-la a partir da página de <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar chave pix</a>.
+:::warning[Important]
+The `KEY_ID` field refers to the Pix key ID; if you haven't created it yet, you can create one from the <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create Pix key</a> page.
 :::
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a remoção de uma chave real.
+Use the form below to simulate removing a real Pix key.
 
 <DeletePixKeyTester />
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header          | Valor                | Descrição                  |
+| Header          | Value                | Description                  |
 | :-------------- | :------------------- | :------------------------- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação. |
+| `Authorization` | `Bearer <seu_token>` | JWT authentication token. |
 
-#### Parâmetros de URL
+#### URL Parameters
 
-| Parâmetro   | Tipo     | Obrigatório | Descrição                                               |
-| :---------- | :------- | :---------: | :------------------------------------------------------ |
-| `CLIENT_ID` | `string` |   **Sim**   | O `_id` do cliente que você deseja deletar a chave pix. |
-| `KEY_ID`    | `string` |   **Sim**   | O `_id` da chave pix que deseja remover.                |
+| Parameter   | Type     | Required | Description                                               |
+| :---------- | :------- | :------: | :------------------------------------------------------ |
+| `CLIENT_ID` | `string` | **Yes**   | The `_id` of the customer whose Pix key you want to delete. |
+| `KEY_ID`    | `string` | **Yes**   | The `_id` of the Pix key to remove.                        |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (201 Created)
+### Success (201 Created)
 
-A chave foi removida com sucesso.
+The key was successfully removed.
 
 ```json
 {
@@ -69,36 +65,36 @@ A chave foi removida com sucesso.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                   |
+| Status  | Message                | Likely Cause                                                                                   |
 | :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **404** | `Not Found`             | • Cliente não encontrado.<br />• Chave Pix não encontrada.                                        |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br /> • IP not allowed. |
+| **404** | `Not Found`             | • Customer not found.<br />• Pix key not found.                                        |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                          |
 
-## Como usar
+## How to use
 
-A finalidade deste endpoint é permitir a **manutenção** da lista de chaves do usuário, removendo registros obsoletos, incorretos ou que não devem mais ser utilizados para saques.
+This endpoint allows **maintenance** of a user's key list by removing obsolete, incorrect, or no longer used keys for withdrawals.
 
-Uma vez excluída, a chave **não poderá mais ser utilizada** em nenhuma transação de saque (`/withdraw`).
+Once removed, the key **can no longer be used** in any withdrawal transaction (`/withdraw`).
 
-### O Fluxo de Integração
+### Integration Flow
 
-Para deletar uma chave, você precisa saber qual é o ID dela (`_id`). O fluxo comum é:
+To delete a key you need to know its ID (`_id`). Common flow:
 
-1.  **Listar:** Consulte as chaves do cliente (`GET /pix/customer/{id}/key`) para visualizar as opções.
-2.  **Identificar:** Capture o `_id` da chave que deseja remover.
-3.  **Remover:** Envie esse `_id` na URL deste endpoint de deleção.
+1.  **List:** Call the customer's keys (`GET /pix/customer/{id}/key`) to view available options.
+2.  **Identify:** Capture the `_id` of the key you want to remove.
+3.  **Remove:** Send that `_id` in the URL of this deletion endpoint.
 
-:::danger[Ação Destrutiva]
-A remoção é permanente. Se o usuário tentar realizar um saque enviando o objeto de uma chave que já foi deletada, a API retornará um erro de validação.
+:::danger[Destructive Action]
+Removal is permanent. If a user attempts a withdrawal using an object of a key that has already been deleted, the API will return a validation error.
 :::
 
-### Exemplo Prático
+### Practical Example
 
-**1. Encontrando o ID na Listagem:**
-Ao listar as chaves, você verá o campo `_id`.
+**1. Finding the ID in the listing:**
+When listing keys you will see the `_id` field.
 
 ```json {5}
 [
@@ -110,16 +106,16 @@ Ao listar as chaves, você verá o campo `_id`.
 ]
 ```
 
-**2. Montando a URL de deleção:**
+**2. Building the deletion URL:**
 
-Você deve inserir o ID do cliente e o ID da chave na rota:
+You must insert the customer ID and the key ID into the route:
 ```url
 DELETE /pix/customer/68e7b8f0db*************/key/remove/68fa5d54004*************
 ```
 
-**3. A resposta:**
+**3. The response:**
 
-A resposta esperada deve ser sucesso (201 Created):
+Expected response is success (201 Created):
 
 ```json
 {
@@ -128,52 +124,52 @@ A resposta esperada deve ser sucesso (201 Created):
 ```
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
-    ```bash
-    npm install axios
-    ```
+  **Installing `Axios`:**
+  ```bash
+  npm install axios
+  ```
 
-    **Exemplo Javascript:**
-    ```js
+  **JavaScript Example:**
+  ```js
 const axios = require("axios");
 
 (async () => {
-    const email = "your_email@domain.com";
-    const password = "**********";
-    const customerId = "12************";
-    const keyId = "1A***********";
+  const email = "your_email@domain.com";
+  const password = "**********";
+  const customerId = "12************";
+  const keyId = "1A***********";
 
-    try {
-        const url_api = "https://api.xgateglobal.com"
-        const login = await axios.post(`${url_api}/auth/token`, { email, password });
-        const { data } = await axios.delete(`${url_api}/pix/customer/${customerId}/key/remove/${keyId}`, {
-            headers: {
-                "Authorization": `Bearer ${login.data.token}`
-            }
-        });
-        console.log(data); // Response
-    } catch (error) {
-        console.log(error.response.data.message) // Error
-    }
+  try {
+    const url_api = "https://api.xgateglobal.com"
+    const login = await axios.post(`${url_api}/auth/token`, { email, password });
+    const { data } = await axios.delete(`${url_api}/pix/customer/${customerId}/key/remove/${keyId}`, {
+      headers: {
+        "Authorization": `Bearer ${login.data.token}`
+      }
+    });
+    console.log(data); // Response
+  } catch (error) {
+    console.log(error.response.data.message) // Error
+  }
 })()
-    ```
+  ```
   </TabItem>
   <TabItem value="python" label="Python">
-    O exemplo de integração utiliza a biblioteca <code>requests</code>.
+  The integration example uses the <code>requests</code> library.
 
-    **Instalando `requests`:**
-    ```bash
-    pip install requests
-    ```
+  **Installing `requests`:**
+  ```bash
+  pip install requests
+  ```
 
-    **Exemplo Python:**
-    ```py
+  **Python Example:**
+  ```py
 import requests
 
 email = "your_email@domain.com"
@@ -182,26 +178,26 @@ customer_id = "12************"
 key_id = "1A***********"
 
 try:
-    url_api = "https://api.xgateglobal.com"
+  url_api = "https://api.xgateglobal.com"
     
-    # Login request
-    login_response = requests.post(f"{url_api}/auth/token", json={"email": email, "password": password})
-    login_response.raise_for_status()
-    token = login_response.json().get("token")
+  # Login request
+  login_response = requests.post(f"{url_api}/auth/token", json={"email": email, "password": password})
+  login_response.raise_for_status()
+  token = login_response.json().get("token")
     
-    # Delete request
-    headers = {"Authorization": f"Bearer {token}"}
-    delete_response = requests.delete(f"{url_api}/pix/customer/{customer_id}/key/remove/{key_id}", headers=headers)
-    delete_response.raise_for_status()
+  # Delete request
+  headers = {"Authorization": f"Bearer {token}"}
+  delete_response = requests.delete(f"{url_api}/pix/customer/{customer_id}/key/remove/{key_id}", headers=headers)
+  delete_response.raise_for_status()
     
-    print(delete_response.json())  # Response
+  print(delete_response.json())  # Response
 except requests.exceptions.RequestException as error:
-    print(error.response.json().get("message", "An error occurred"))  # Error
-    ```
+  print(error.response.json().get("message", "An error occurred"))  # Error
+  ```
   </TabItem>
   <TabItem value="php" label="PHP">
-    <p>Exemplo de como adicionar chave pix usando cURL nativo do PHP.</p>
-    ```php
+  <p>Example of how to delete a Pix key using native PHP cURL.</p>
+  ```php
 $email = "your_email@domain.com";
 $password = "**********";
 $customerId = "12************";
@@ -219,7 +215,7 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
 $loginResponse = curl_exec($ch);
 if ($loginResponse === false) {
-    die('Login Error: ' . curl_error($ch));
+  die('Login Error: ' . curl_error($ch));
 }
 $token = json_decode($loginResponse, true)['token'];
 curl_close($ch);
@@ -230,24 +226,24 @@ $ch = curl_init($deleteUrl);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Authorization: Bearer $token",
-    "Content-Type: application/json"
+  "Authorization: Bearer $token",
+  "Content-Type: application/json"
 ]);
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 if ($response === false) {
-    echo 'Curl Error: ' . curl_error($ch);
+  echo 'Curl Error: ' . curl_error($ch);
 } else {
-    if ($httpCode >= 200 && $httpCode < 300) {
-        echo "Chave removida com sucesso! (Status: $httpCode)";
-    } else {
-        echo "Erro ao remover: " . $response;
-    }
+  if ($httpCode >= 200 && $httpCode < 300) {
+    echo "Chave removida com sucesso! (Status: $httpCode)";
+  } else {
+    echo "Erro ao remover: " . $response;
+  }
 }
 
 curl_close($ch);
-    ```
+  ```
   </TabItem>
 </Tabs>
