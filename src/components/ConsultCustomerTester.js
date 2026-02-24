@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
 import CodeBlock from '@theme/CodeBlock';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext'; // 1. Importamos o hook do Docusaurus
 
-export default function CreateCustomerTester() {
+export default function ConsultCustomerTester() {
+  // 2. Descobrimos qual o idioma atual do site (ex: 'pt', 'en', 'es')
   const { i18n } = useDocusaurusContext();
-  const isEn = i18n.currentLocale === 'en';
+  const isEn = i18n.currentLocale === 'en'; // Variável mágica que diz se é inglês
 
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
-  
-  const [customerName, setCustomerName] = useState('');
-  const [customerDoc, setCustomerDoc] = useState('');
-  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerId, setCustomerId] = useState('');
 
   const [showPassword, setShowPassword] = useState(false);
   const [resultado, setResultado] = useState(null);
   const [loading, setLoading] = useState(false);
   const [etapa, setEtapa] = useState('');
 
-  const handleCreateCustomer = async (e) => {
+  const handleConsultCustomer = async (e) => {
     e.preventDefault();
+    
+    if (!customerId.trim()) {
+      setResultado({ 
+        erro: isEn ? 'Validation Error' : 'Validação', 
+        detalhe: isEn ? 'Customer ID is required.' : 'O ID do Cliente é obrigatório.' 
+      });
+      return;
+    }
+
     setLoading(true);
     setResultado(null);
     setEtapa(isEn ? 'Authenticating...' : 'Autenticando...');
@@ -33,26 +40,20 @@ export default function CreateCustomerTester() {
       const authData = await authResponse.json();
 
       if (!authResponse.ok || !authData.token) {
-        throw new Error(isEn ? `Login failed: ${authData.message || 'Check credentials'}` : `Falha no Login: ${authData.message || 'Verifique credenciais'}`);
+        throw new Error(isEn ? 'Login failed: Check credentials' : 'Falha no Login: Verifique credenciais');
       }
 
-      setEtapa(isEn ? 'Creating Customer...' : 'Criando Cliente...');
+      setEtapa(isEn ? 'Querying Customer...' : 'Consultando Cliente...');
 
-      const createResponse = await fetch('https://api.xgateglobal.com/customer', {
-        method: 'POST',
+      const consultResponse = await fetch(`https://api.xgateglobal.com/customer/${customerId.trim()}`, {
+        method: 'GET',
         headers: { 
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${authData.token}`
-        },
-        body: JSON.stringify({
-          name: customerName,
-          document: customerDoc,
-          email: customerEmail
-        })
+        }
       });
 
-      const createData = await createResponse.json();
-      setResultado({ status: createResponse.status, body: createData });
+      const consultData = await consultResponse.json();
+      setResultado({ status: consultResponse.status, body: consultData });
 
     } catch (error) {
       setResultado({ erro: isEn ? 'Execution Error' : 'Erro na execução', detalhe: error.message });
@@ -62,20 +63,24 @@ export default function CreateCustomerTester() {
     }
   };
 
+  // ... (Estilos continuam iguais)
   const inputStyle = { width: '100%', padding: '10px', borderRadius: 'var(--ifm-global-radius)', border: '1px solid var(--ifm-color-emphasis-300)', backgroundColor: 'var(--ifm-background-surface-color)', color: 'var(--ifm-font-color-base)', fontSize: '0.9rem' };
   const toggleButtonStyle = { position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--ifm-font-color-secondary)', padding: '5px', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' };
 
   return (
     <div style={{ padding: '20px', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: 'var(--ifm-global-radius)', backgroundColor: 'var(--ifm-card-background-color)', boxShadow: 'var(--ifm-global-shadow-lw)', marginTop: '20px' }}>
+      
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', borderBottom: '1px solid var(--ifm-color-emphasis-200)', paddingBottom: '10px' }}>
-        <span style={{ fontSize: '1.5rem' }}>👤</span>
-        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{isEn ? 'Test: Create New Customer' : 'Testar: Criar Novo Cliente'}</h3>
+        <span style={{ fontSize: '1.5rem' }}>🔍</span>
+        {/* Usamos o isEn ? 'Texto Inglês' : 'Texto Português' */}
+        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{isEn ? 'Test: Consult Customer' : 'Testar: Consultar Cliente'}</h3>
       </div>
 
-      <form onSubmit={handleCreateCustomer}>
+      <form onSubmit={handleConsultCustomer}>
         <div style={{ marginBottom: '10px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
-            {isEn ? '1. Your Credentials (Admin)' : '1. Suas Credenciais (Admin)'}
+          {isEn ? '1. Your Credentials (Admin)' : '1. Suas Credenciais (Admin)'}
         </div>
+        
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '15px' }}>
             <div>
                 <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{isEn ? 'Your Email' : 'Seu Email'}</label>
@@ -102,27 +107,18 @@ export default function CreateCustomerTester() {
         <hr style={{ border: '0', borderTop: '1px dashed var(--ifm-color-emphasis-300)', margin: '20px 0' }} />
 
         <div style={{ marginBottom: '10px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
-            {isEn ? '2. New Customer Data' : '2. Dados do Novo Cliente'}
+          {isEn ? '2. Query Data' : '2. Dados da Consulta'}
         </div>
         
         <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', fontSize: '0.85rem' }}>{isEn ? 'Full Name' : 'Nome Completo'}</label>
-            <input type="text" required value={customerName} onChange={e => setCustomerName(e.target.value)} style={inputStyle} placeholder={isEn ? "E.g.: John Doe" : "Ex: João da Silva"} />
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '15px' }}>
-            <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{isEn ? 'Document (CPF/CNPJ)' : 'Documento (CPF/CNPJ)'}</label>
-                <input type="text" required value={customerDoc} onChange={e => setCustomerDoc(e.target.value)} style={inputStyle} placeholder="12345678900" />
-            </div>
-            <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{isEn ? 'Customer Email' : 'Email do Cliente'}</label>
-                <input type="email" required value={customerEmail} onChange={e => setCustomerEmail(e.target.value)} style={inputStyle} placeholder="cliente@email.com" />
-            </div>
+            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', fontSize: '0.85rem' }}>
+              {isEn ? 'Customer ID (_id)' : 'ID do Cliente (_id)'}
+            </label>
+            <input type="text" required value={customerId} onChange={e => setCustomerId(e.target.value)} style={inputStyle} placeholder="Ex: 697e15d..." />
         </div>
 
         <button type="submit" disabled={loading} className="button button--primary button--block">
-          {loading ? etapa : (isEn ? 'Create Customer' : 'Criar Cliente')}
+          {loading ? etapa : (isEn ? 'Consult Customer' : 'Consultar Cliente')}
         </button>
       </form>
 
@@ -131,10 +127,9 @@ export default function CreateCustomerTester() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
             <strong>{isEn ? 'Result:' : 'Resultado:'}</strong>
             <span style={{ fontWeight: 'bold', color: resultado.status >= 200 && resultado.status < 300 ? 'var(--ifm-color-success)' : 'var(--ifm-color-danger)' }}>
-              {resultado.status ? `${resultado.status} ${resultado.status === 201 ? 'Created' : ''}` : (isEn ? 'Error' : 'Erro')}
+              {resultado.status ? `${resultado.status} ${resultado.status === 200 ? 'OK' : ''}` : (isEn ? 'Error' : 'Erro')}
             </span>
           </div>
-          
           <CodeBlock language="json">
              {JSON.stringify(resultado.body || resultado, null, 2)}
           </CodeBlock>

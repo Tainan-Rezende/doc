@@ -6,7 +6,7 @@ sidebar_position: 3
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
+import UpdateCustomerTester from '@site/src/components/UpdateCustomerTester';
 
 # Atualizar Cliente
 
@@ -30,7 +30,7 @@ O valor **CUSTOMER_ID** se refere ao `_id` informado ao criar um cliente.
 
 Simule a atualização de um cliente agora mesmo.
 
-<CreateCustomerTester />
+<UpdateCustomerTester />
 
 ---
 

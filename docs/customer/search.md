@@ -6,7 +6,7 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
+import ConsultCustomerTester from '@site/src/components/ConsultCustomerTester';
 
 # Consultar Cliente
 
@@ -34,7 +34,7 @@ A API da XGate utiliza o campo `name` como chave de validação de clientes. Se 
 
 Simule a criação de um cliente agora mesmo. O resultado mostrará o `_id` gerado.
 
-<CreateCustomerTester />
+<ConsultCustomerTester />
 
 ---
 
