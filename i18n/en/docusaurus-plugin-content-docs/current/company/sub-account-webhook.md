@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Webhook na Subconta'
+sidebar_label: 'Subaccount Webhook'
 sidebar_position: 3
 ---
 
@@ -7,56 +7,56 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Criar Webhook da Subconta
+# Create Subaccount Webhook
 
-Este endpoint permite cadastrar automaticamente a **primeira URL de Webhook** para uma subconta recém-criada. 
+This endpoint allows you to automatically register the **first Webhook URL** for a newly created subaccount.
 
-:::warning[Regra de Uso Único]
-Esta rota foi desenhada exclusivamente para a configuração inicial (setup) da subconta. **Ela permite salvar apenas o primeiro webhook**. Caso a subconta já possua um webhook configurado, a API retornará um erro.
+:::warning[Single Use Rule]
+This route was designed exclusively for the initial setup of the subaccount. **It only allows saving the first webhook**. If the subaccount already has a webhook configured, the API will return an error.
 :::
 
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/webhook/subaccount
 ```
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header | Valor | Descrição |
-| :--- | :--- | :--- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação da **Subconta**. |
+| Header          | Value                 | Description                                     |
+| :-------------- | :-------------------- | :---------------------------------------------- |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token of the **Subaccount**. |
 
-### Corpo da Requisição (Body)
+### Request Body
 
-| Parâmetro | Tipo | Validação | Descrição |
-| :--- | :--- | :--- | :--- |
-| `name` | `string` | Obrigatório | Um nome de identificação interno para o webhook (ex: "Primeiro Webhook"). |
-| `externalWebhookUrl` | `string` | Obrigatório | A URL completa do seu servidor que irá receber os dados enviados pela XGate via POST. |
+| Parameter            | Type     | Validation | Description                                                                        |
+| :------------------- | :------- | :--------- | :--------------------------------------------------------------------------------- |
+| `name`               | `string` | Required   | An internal identification name for the webhook (e.g., "First Webhook").           |
+| `externalWebhookUrl` | `string` | Required   | The complete URL of your server that will receive the data sent by XGate via POST. |
 
-#### Exemplo de Payload
+#### Payload Example
 
 ```json
 {
-    "externalWebhookUrl": "https://sua-empresa.com/api/webhooks/subaccount/xgate",
-    "name": "Primeiro Webhook"
+    "externalWebhookUrl": "https://your-company.com/api/webhooks/subaccount/xgate",
+    "name": "First Webhook"
 }
 ```
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-A URL de notificação foi registrada e já está ativa para a subconta.
+The notification URL has been registered and is already active for the subaccount.
 
 ```json
 {
@@ -64,59 +64,59 @@ A URL de notificação foi registrada e já está ativa para a subconta.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status | Mensagem | Motivo Provável |
-| :--- | :--- | :--- |
-| **400** | `Bad Request` | • **Essa funcionalidade não está disponível para a sua Conta**: A conta que fez a requisição não é uma subconta válida para este fluxo.<br /><br />• **Essa funcionalidade permite salvar somente o primeiro webhook da sua conta**: A subconta **já possui** um webhook cadastrado. Esta rota só funciona quando a lista de webhooks está vazia. |
-| **401** | `Unauthorized` | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte. |
-
----
-
-## Como usar
-
-### Casos de Uso Comuns
-
-1. **Automação de Setup (Onboarding):** Quando a sua Conta Principal (Master) cria uma subconta para um novo cliente corporativo, você pode programar o seu sistema para, logo em seguida, já fazer o login na subconta recém-criada e acionar este endpoint. Isso garante que a subconta já nasça pronta para notificar o seu gateway interno sobre os pagamentos, sem a necessidade de operação manual no painel.
+| Status  | Message                 | Probable Cause                                                                                                                                                                                                                                                                                                               |
+| :------ | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **400** | `Bad Request`           | • **This feature is not available for your Account**: The account making the request is not a valid subaccount for this flow.<br /><br />• **This feature allows saving only the first webhook of your account**: The subaccount **already has** a webhook registered. This route only works when the webhook list is empty. |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Header invalid or not provided.<br /> • IP not allowed.                                                                                                                                                                                                                                  |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                                                                                                                                                                                                                                      |
 
 ---
 
-## Integração
+## How to Use
 
-Abaixo, um exemplo simples de como implementar essa chamada utilizando Node.js. Lembre-se de utilizar as credenciais da subconta para obter o token de autorização.
+### Common Use Cases
+
+1. **Setup Automation (Onboarding):** When your Main Account (Master) creates a subaccount for a new corporate client, you can program your system to immediately log into the newly created subaccount and trigger this endpoint. This ensures that the subaccount is born ready to notify your internal gateway about payments, without the need for manual operation in the dashboard.
+
+---
+
+## Integration
+
+Below is a simple example of how to implement this call using Node.js. Remember to use the subaccount credentials to obtain the authorization token.
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca `Axios` para realizar a requisição HTTP.
+    The integration example uses the `Axios` library to perform the HTTP request.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **Javascript Example:**
     ```javascript
     const axios = require("axios");
 
     (async () => {
-        // ATENÇÃO: Use o e-mail e senha da SUBCONTA para gerar o token desta ação
+        // ATTENTION: Use the SUBACCOUNT email and password to generate the token for this action
         const emailSubconta = "admin@subconta.com";
         const passwordSubconta = "••••••";
 
         try {
             const url_api = "https://api.xgateglobal.com";
             
-            // 1. Obter token de autenticação da Subconta
+            // 1. Get Subaccount authentication token
             const login = await axios.post(`${url_api}/auth/token`, { 
                 email: emailSubconta, 
                 password: passwordSubconta 
             });
             
-            // 2. Configurar o primeiro webhook
+            // 2. Configure the first webhook
             const webhookData = {
-                externalWebhookUrl: "https://api.sua-empresa.com/webhooks/xgate/subconta-1",
-                name: "Webhook Principal - Subconta 1"
+                externalWebhookUrl: "https://api.your-company.com/webhooks/xgate/subaccount-1",
+                name: "Main Webhook - Subaccount 1"
             };
 
             const { data } = await axios.post(`${url_api}/webhook/subaccount`, webhookData, {
@@ -126,11 +126,11 @@ Abaixo, um exemplo simples de como implementar essa chamada utilizando Node.js. 
                 }
             });
             
-            console.log("Resposta:", data); 
-            // Esperado: { message: 'Primeiro Webhook cadastrado com sucesso' }
+            console.log("Response:", data); 
+            // Expected: { message: 'Primeiro Webhook cadastrado com sucesso' }
 
         } catch (error) {
-            console.error("Erro ao cadastrar webhook:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+            console.error("Error registering webhook:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
         }
     })();
     ```

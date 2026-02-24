@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criar Saque para FIAT'
+sidebar_label: 'Create Withdrawal for FIAT'
 sidebar_position: 3
 ---
 
@@ -8,56 +8,56 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import WithdrawFiatToCryptoTester from '@site/src/components/CreateWithdrawConversion';
 
-# Criar Pedido de Saque (Crypto → FIAT)
+# Create Withdrawal Order (Crypto → FIAT)
 
-Este endpoint permite que o cliente realize o resgate de seus ativos digitais com **conversão automática para moeda fiduciária**. Na prática, o sistema processa a venda da criptomoeda (ex: USDT) e realiza o pagamento equivalente em BRL diretamente via **Pix** para a chave cadastrada.
+This endpoint allows the client to redeem their digital assets with **automatic conversion to fiat currency**. In practice, the system processes the sale of cryptocurrency (e.g., USDT) and makes the equivalent payment in BRL directly via **Pix** to the registered key.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a criação de um pedido de conversão Crypto para FIAT.
+Use the form below to simulate the creation of a Crypto to FIAT conversion order.
 
 <WithdrawFiatToCryptoTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e o **Body** com os dados do pedido.
+You need to send the authentication **Header** and the **Body** with the order data.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
-| :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| Header          | Value                | Description                   |
+| :-------------- | :------------------- | :---------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
-#### Body (Corpo da Requisição)
+#### Body (Request Body)
 
-| Campo            | Tipo     | Obrigatório | Descrição                                       |
-| :--------------- | :------- | :---------: | :---------------------------------------------- |
-| `amount`         | `number` |   **Sim**   | O valor do saque em USDT (ex: `0.1` min).       |
-| `customerId`     | `string` |   **Sim**   | O ID único (`_id`) do cliente que fará o saque. |
-| `currency`       | `object` |   **Sim**   | A moeda da transação (ex: `BRL`).               |
-| `cryptocurrency` | `object` |   **Sim**   | A criptomoeda da transação (ex: `USDT`).        |
-| `pixKey`         | `object` |   **Sim**   | A chave pix do cliente para realizar o saque.   |
-| `externalId`     | `string` |   **Não**   | Idempotência.                                   |
+| Field            | Type     | Required | Description                                            |
+| :--------------- | :------- | :------: | :------------------------------------------------------ |
+| `amount`         | `number` | **Yes**  | The withdrawal amount in USDT (e.g., `0.1` min).       |
+| `customerId`     | `string` | **Yes**  | The unique ID (`_id`) of the client making withdrawal. |
+| `currency`       | `object` | **Yes**  | The transaction currency (e.g., `BRL`).                |
+| `cryptocurrency` | `object` | **Yes**  | The transaction cryptocurrency (e.g., `USDT`).         |
+| `pixKey`         | `object` | **Yes**  | The client's Pix key for withdrawal.                    |
+| `externalId`     | `string` | **No**   | Idempotency.                                           |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (201 Created)
+### Success (201 Created)
 
-Retorna o objeto do pedido criado, contendo informações do `status` e o `_id` da transação.
+Returns the created order object, containing `status` information and the transaction `_id`.
 
 ```json
 {
@@ -67,39 +67,39 @@ Retorna o objeto do pedido criado, contendo informações do `status` e o `_id` 
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
+| Status  | Message                 | Likely Reason                                                                                    |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.            |
+| **404** | `Not Found`             | The client informed in the `customerId` field does not exist.                                   |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                        |
 
 ---
 
-## Como usar
+## How to Use
 
-A finalidade deste endpoint é iniciar o fluxo de saída de dinheiro com conversão Crypto para BRL (**Cash-out**).
+The purpose of this endpoint is to initiate the cash-out flow with Crypto to BRL conversion (**Cash-out**).
 
-### O Fluxo de Integração
+### The Integration Flow
 
-1.  **Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) e tenha o `_id` dele.
-2.  **Cadastre uma Chave Pix:** Após criar o cliente, é necessário estar cadastrando uma chave pix para o mesmo em <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">Adicionar Chave Pix</a>.
-3.  **Dados de moeda:** Será necessário buscar os dados da moeda e criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">Moedas FIAT</a> e <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Criptomoedas</a>.
-4.  **Crie o Pedido:** Chame este endpoint enviando os dados de amount, customerId, currency, cryptocurrency e pixKey.
-5.  **Aguarde o Pagamento:** O status inicial será `PENDING`.
+1.  **Identify the Customer:** Make sure the user exists in XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) and have their `_id`.
+2.  **Register a Pix Key:** After creating the customer, you need to register a Pix key for them at <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">Add Pix Key</a>.
+3.  **Currency Data:** You'll need to fetch the currency and cryptocurrency data to add to the request. You can get them at <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">FIAT Currencies</a> and <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Cryptocurrencies</a>.
+4.  **Create the Order:** Call this endpoint sending the amount, customerId, currency, cryptocurrency, and pixKey data.
+5.  **Wait for Payment:** The initial status will be `PENDING`.
 
-### Exemplo Prático
+### Practical Example
 
-Para criar pedidos de saque convertendo Crypto para BRL, você deve seguir esses 5 passos:
+To create withdrawal orders converting Crypto to BRL, you should follow these 5 steps:
 
-:::tip[Recomendação]
-É necessário criar um cliente antes de processeguir para criação de saque.
+:::tip[Recommendation]
+You need to create a customer before proceeding to create a withdrawal.
 
-Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank">clicando aqui</a>** para ir para a página de documentação de criação de cliente.
+You can **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click here</a>** to go to the customer creation documentation page.
 :::
 >
-**1. Passo:** Passe o valor em USDT no campo `amount` e o `_id` do cliente como `customerId`, igual nos campos destacados:
+**Step 1:** Pass the value in USDT in the `amount` field and the customer's `_id` as `customerId`, as highlighted in the fields:
 ```json {2-3}
 {
     "amount": 2,
@@ -131,9 +131,9 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 }
 ```
 
-**2. Passo:** Você deve obter a moeda fiduciária com os dados para saque. 
+**Step 2:** You must obtain the fiat currency with the withdrawal data. 
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">clicando aqui</a>.
+You can get the list <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">by clicking here</a>.
 
 ```json {4-12}
 {
@@ -166,23 +166,23 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/withdraw/currency
 }
 ```
 
-#### Detalhes do Objeto
+#### Object Details
 
-Veja os detalhes de cada informação no objeto `currency` para montar sua requisição.
+See the details of each information in the `currency` object to build your request.
 
-| Campo         | Tipo     | Obrigatório | Descrição                                                   |
-| :------------ | :------- | :---------: | :---------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da moeda.                               |
-| `name`        | `string` |   **Sim**   | Nome da moeda.                                              |
-| `type`        | `string` |   **Sim**   | Tipo do método de pagamento ou transação associado à moeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
-| `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
+| Field         | Type     | Required | Description                                              |
+| :------------ | :------- | :------: | :------------------------------------------------------- |
+| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                       |
+| `name`        | `string` | **Yes**  | Name of the currency.                                    |
+| `type`        | `string` | **Yes**  | Type of payment method or transaction associated with the currency. |
+| `createdDate` | `string` | **No**   | Date the currency was created in the system.             |
+| `updatedDate` | `string` | **No**   | Date of last update of currency information.             |
+| `__v`         | `number` | **No**   | Version of the currency record in the database.           |
+| `symbol`      | `string` | **Yes**  | Symbol of the currency.                                  |
 
-**3. Passo:** Você deve obter a criptomoeda para realizar a conversão de saque. 
+**Step 3:** You must obtain the cryptocurrency to perform the withdrawal conversion. 
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
+You can get the list <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">by clicking here</a>.
 
 ```json {13-21}
 {
@@ -215,23 +215,23 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/crypto
 }
 ```
 
-#### Detalhes do Objeto
+#### Object Details
 
-Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
+See the details of each information in the `cryptocurrency` object to build your request.
 
-| Campo         | Tipo     | Obrigatório | Descrição                                                  |
-| :------------ | :------- | :---------: | :--------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
-| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
-| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
-| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
-| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
+| Field         | Type     | Required | Description                                           |
+| :------------ | :------- | :------: | :----------------------------------------------------- |
+| `_id`         | `string` | **Yes**  | Unique identifier of the cryptocurrency.              |
+| `name`        | `string` | **Yes**  | Name of the cryptocurrency.                           |
+| `symbol`      | `string` | **Yes**  | Symbol of the cryptocurrency.                         |
+| `coinGecko`   | `string` | **No**   | Cryptocurrency identifier on CoinGecko.               |
+| `updatedDate` | `string` | **No**   | Date of last update of cryptocurrency information.    |
+| `createdDate` | `string` | **No**   | Date the cryptocurrency was created in the system.    |
+| `__v`         | `number` | **No**   | Version of the cryptocurrency record in the database. |
 
-**4. Passo:** Você deve obter os dados da chave pix e informar no payload para o saque ser realizado. 
+**Step 4:** You must get the Pix key data and inform it in the payload for the withdrawal to be processed. 
 
-Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/fiat/pix/keys')} target="_blank">clicando aqui</a> ou então  <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">adicionar uma nova chave pix</a>.
+You can get the list of registered Pix keys <a href={useBaseUrl('/docs/fiat/pix/keys')} target="_blank">by clicking here</a> or <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">add a new Pix key</a>.
 
 ```json {22-26}
 {
@@ -264,7 +264,7 @@ Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/f
 }
 ```
 
-**5. Passo (Opcional):** Adicione o `externalId` ao final do código, ele irá evitar que o cliente envie mais de 1 (uma) vez a solicitação de saque, **evitando duplicidade**.
+**Step 5 (Optional):** Add the `externalId` at the end of the code. It will prevent the customer from submitting the withdrawal request more than once, **avoiding duplicates**.
 ```json {27}
 {
     "amount": 2,
@@ -300,18 +300,18 @@ Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/f
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+    The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
 ```js
 const axios = require("axios");
 

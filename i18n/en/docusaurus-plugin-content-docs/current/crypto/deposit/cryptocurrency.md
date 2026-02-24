@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criptomoedas'
+sidebar_label: 'Cryptocurrencies'
 sidebar_position: 1
 ---
 
@@ -8,44 +8,44 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ListCryptoCurrenciesTester from '@site/src/components/ListCryptoCurrenciesTester';
 
-# Listar Criptomoedas
+# List Cryptocurrencies
 
-Este endpoint retorna todas as criptomoedas disponíveis para a sua conta. Use esta rota para consultar os dados necessários para criar requisições de pedido de depósito.
+This endpoint returns all cryptocurrencies available for your account. Use this route to consult the necessary data to create deposit order requests.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--success">GET</span>
-```bash title="URL do Endpoint"
+- **Method:** <span className="badge badge--success">GET</span>
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/deposit/company/cryptocurrencies
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a listagem de criptomoedas.
+Use the form below to simulate the list of cryptocurrencies.
 
 <ListCryptoCurrenciesTester />
 
 ---
 
-## Requisição
+## Request
 
-A requisição não requer corpo (`body`), apenas os **Headers** de autenticação.
+The request does not require a body, only the **authentication Headers**.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna uma lista (array) de objetos, onde cada objeto é uma criptomoeda.
+Returns a list (array) of objects, where each object is a cryptocurrency.
 
 ```json
 [
@@ -61,30 +61,30 @@ Retorna uma lista (array) de objetos, onde cada objeto é uma criptomoeda.
 ]
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                   |
+| Status  | Message                | Likely Reason                                                                                   |
 | :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br /> • IP not allowed. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                          |
 
 ---
 
-## Como usar
+## How to Use
 
-A principal finalidade de listar as criptomoedas é permitir a seleção da criptomoeda correta para criar um pedido de depósito (**Deposit Order**).
+The main purpose of listing cryptocurrencies is to allow the selection of the correct cryptocurrency to create a deposit order (**Deposit Order**).
 
-A resposta deste endpoint fornece o **Objeto Completo** da criptomoeda, permitindo a construção do payload de criação do pedido.
+The response from this endpoint provides the **Complete Object** of the cryptocurrency, allowing the construction of the order creation payload.
 
-### O Fluxo de Integração
+### The Integration Flow
 
-1.  **Liste as moedas:** Chame este endpoint (`GET /deposit/company/cryptocurrencies`).
-2.  **Seleção:** Identifique a criptomoeda desejada na lista (geralmente filtrando pelo `name` ou `symbol`, ex: "USDT").
-3.  **Envio:** Você deve passar o **objeto** dentro da propriedade `cryptocurrency` no payload de criação do pedido. Na documentação de <a href={useBaseUrl('/docs/crypto/deposit/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criação de depósito crypto</a> são mostrados os valores **obrigatórios**.
+1.  **List the currencies:** Call this endpoint (`GET /deposit/company/cryptocurrencies`).
+2.  **Selection:** Identify the desired cryptocurrency in the list (usually by filtering by `name` or `symbol`, e.g., "USDT").
+3.  **Submission:** You must pass the **object** within the `cryptocurrency` property in the deposit order creation payload. In the <a href={useBaseUrl('/docs/crypto/deposit/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>cryptocurrency deposit creation</a> documentation, the **required** values are shown.
 
-### Exemplo Prático
+### Practical Example
 
-**1. O que você recebe ao listar as moedas fiduciárias:**
+**1. What you receive when listing cryptocurrencies:**
 ```json
 [
   {
@@ -99,9 +99,9 @@ A resposta deste endpoint fornece o **Objeto Completo** da criptomoeda, permitin
 ]
 ```
 
-**2. Como você deve enviar no depósito (POST /deposit):**
+**2. How you should send it in the deposit (POST /deposit):**
 
-Você vai pegar o objeto acima e injetá-lo dentro de `cryptocurrency`:
+You will take the above object and inject it within `cryptocurrency`:
 ```json {13-21}
 {
   "amount": 2,
@@ -127,22 +127,22 @@ Você vai pegar o objeto acima e injetá-lo dentro de `cryptocurrency`:
   "externalId": "67ce09d**************"
 }
 ```
-Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/crypto/deposit/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>página de criar pedido de depósito crypto</a>.
+Each piece of this JSON will be explained on the <a href={useBaseUrl('/docs/crypto/deposit/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>cryptocurrency deposit order creation</a> page.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+    This integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
     ```js   
 const axios = require("axios");
 

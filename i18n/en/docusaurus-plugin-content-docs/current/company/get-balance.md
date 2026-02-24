@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Consultar Saldo'
+sidebar_label: 'Consult Balance'
 sidebar_position: 1
 ---
 
@@ -7,48 +7,47 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Consultar Saldo da Empresa
+# Consult Company Balance
 
-Este endpoint permite consultar os saldos disponíveis na sua conta da XGate. Você pode buscar o saldo total (todas as moedas) ou filtrar por uma moeda Fiat ou Criptomoeda específica.
+This endpoint allows you to query the available balances in your XGate account. You can fetch the total balance (all currencies) or filter by a specific Fiat currency or Cryptocurrency.
 
-:::warning[Aviso de Segurança - Whitelist de IP]
-Por questões de segurança, esta rota exige validação de origem. O IP do servidor que fará a requisição **deve obrigatoriamente** estar cadastrado na sua dashboard. 
+:::warning[Security Warning - IP Whitelist]
+For security reasons, this route requires origin validation. The IP of the server making the request **must mandatorily** be registered in your dashboard. 
 
-Acesse o menu **Configurações > IP Permitidos para consulta de saldo via API** e adicione o seu IP. Caso contrário, a API retornará um erro de autorização.
+Access the menu **Settings > Allowed IPs for API balance query** and add your IP. Otherwise, the API will return an authorization error.
 :::
-
 
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/balance/company
 ```
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header | Valor | Descrição |
-| :--- | :--- | :--- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação obtido no login. |
+| Header          | Value                 | Description                                 |
+| :-------------- | :-------------------- | :------------------------------------------ |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token obtained at login. |
 
-### Corpo da Requisição (Body)
+### Request Body
 
-Você tem 3 opções de payload para enviar, dependendo do que deseja consultar:
+You have 3 payload options to send, depending on what you want to query:
 
-**Opção 1: Consultar Todo o Saldo (Fiat e Crypto)**
-Envie um objeto vazio.
+**Option 1: Query Total Balance (Fiat and Crypto)**
+Send an empty object.
 ```json
 {}
 ```
 
-**Opção 2: Consultar apenas Moeda Fiduciária (Fiat)**
-Envie o objeto `currency` detalhado.
+**Option 2: Query only Fiat Currency**
+Send the detailed `currency` object.
 ```json
 {
     "currency": {
@@ -63,8 +62,8 @@ Envie o objeto `currency` detalhado.
 }
 ```
 
-**Opção 3: Consultar apenas Criptomoeda**
-Envie o objeto `cryptocurrency` detalhado.
+**Option 3: Query only Cryptocurrency**
+Send the detailed `cryptocurrency` object.
 ```json
 {
     "cryptocurrency": {
@@ -81,13 +80,13 @@ Envie o objeto `cryptocurrency` detalhado.
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-A API sempre retornará um *Array* (lista) contendo os saldos encontrados.
+The API will always return an *Array* containing the found balances.
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-**Resposta para Opção 1 (Saldo Total):**
+**Response for Option 1 (Total Balance):**
 ```json
 [
     {
@@ -108,7 +107,7 @@ A API sempre retornará um *Array* (lista) contendo os saldos encontrados.
 ]
 ```
 
-**Resposta para Opção 2 (Apenas Fiat):**
+**Response for Option 2 (Fiat Only):**
 ```json
 [
     {
@@ -122,7 +121,7 @@ A API sempre retornará um *Array* (lista) contendo os saldos encontrados.
 ]
 ```
 
-**Resposta para Opção 3 (Apenas Crypto):**
+**Response for Option 3 (Crypto Only):**
 ```json
 [
     {
@@ -135,39 +134,39 @@ A API sempre retornará um *Array* (lista) contendo os saldos encontrados.
 ]
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status | Mensagem | Motivo Provável |
-| :--- | :--- | :--- |
-| **401** | `Unauthorized` | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • **IP não cadastrado na lista de permissões da Dashboard.** |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte. |
-
----
-
-## Como usar
-
-### Casos de Uso Comuns
-
-1. **Exibição em Dashboard Próprio:** Sincronizar e exibir o saldo atualizado da empresa diretamente no seu sistema administrativo interno, sem a necessidade de logar no painel da XGate.
-2. **Validação Pré-Saque:** Antes de aprovar e disparar uma requisição de saque (withdraw) massiva, seu sistema pode consultar o saldo disponível (`totalAmount`) para garantir que há fundos suficientes, evitando erros de processamento.
-3. **Monitoramento Financeiro:** Criar rotinas automatizadas que alertam sua equipe financeira quando o saldo (Fiat ou Crypto) cai abaixo de um limite mínimo operacional.
+| Status  | Message                 | Probable Cause                                                                                                              |
+| :------ | :---------------------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Header invalid or not provided.<br /> • IP not registered in the Dashboard's whitelist. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                                     |
 
 ---
 
-## Integração
+## How to Use
 
-Abaixo, um exemplo de como implementar a consulta de **Saldo Total** utilizando Node.js. 
+### Common Use Cases
+
+1. **Display on Custom Dashboard:** Synchronize and display the updated company balance directly in your internal administrative system, without needing to log into the XGate dashboard.
+2. **Pre-Withdrawal Validation:** Before approving and triggering a massive withdrawal request, your system can query the available balance (`totalAmount`) to ensure there are sufficient funds, avoiding processing errors.
+3. **Financial Monitoring:** Create automated routines that alert your financial team when the balance (Fiat or Crypto) falls below a minimum operational threshold.
+
+---
+
+## Integration
+
+Below is an example of how to implement the **Total Balance** query using Node.js. 
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca `Axios` para realizar a requisição HTTP.
+    The integration example uses the `Axios` library to perform the HTTP request.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **Javascript Example:**
     ```javascript
     const axios = require("axios");
 
@@ -178,27 +177,27 @@ Abaixo, um exemplo de como implementar a consulta de **Saldo Total** utilizando 
         try {
             const url_api = "https://api.xgateglobal.com";
             
-            // 1. Obter token de autenticação
+            // 1. Get authentication token
             const login = await axios.post(`${url_api}/auth/token`, { email, password });
             
-            // 2. Consultar o saldo total (Body vazio)
-            // Nota: Para filtrar, basta adicionar o objeto currency ou cryptocurrency no body ({})
+            // 2. Query total balance (Empty body)
+            // Note: To filter, simply add the currency or cryptocurrency object to the body ({})
             const { data } = await axios.post(`${url_api}/balance/company`, {}, {
                 headers: {
                     "Authorization": `Bearer ${login.data.token}`
                 }
             });
             
-            console.log("Saldo da Empresa:", JSON.stringify(data, null, 2));
+            console.log("Company Balance:", JSON.stringify(data, null, 2));
 
-            // Exemplo de leitura do saldo BRL:
+            // Example of reading BRL balance:
             const saldoFiat = data.find(item => item.currency && item.currency.name === "BRL");
             if (saldoFiat) {
-                console.log(`Saldo disponível em Reais: R$ ${saldoFiat.totalAmount}`);
+                console.log(`Available balance in Reais: R$ ${saldoFiat.totalAmount}`);
             }
 
         } catch (error) {
-            console.error("Erro ao buscar saldo:", error.response ? error.response.data : error.message);
+            console.error("Error fetching balance:", error.response ? error.response.data : error.message);
         }
     })();
     ```

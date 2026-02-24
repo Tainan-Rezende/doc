@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Liberar IP (Saque)'
+sidebar_label: 'Allow IP (Withdraw)'
 sidebar_position: 4
 ---
 
@@ -7,45 +7,44 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Liberar IP de Saque na Subconta
+# Allow Withdrawal IP on Subaccount
 
-Este endpoint permite cadastrar automaticamente o **primeiro IP autorizado** para realizar requisições de saque em uma subconta recém-criada.
+This endpoint allows you to automatically register the **first authorized IP** to make withdrawal requests in a newly created subaccount.
 
-:::warning[Regra de Uso Único]
-Esta rota foi desenhada exclusivamente para a configuração inicial (setup) da subconta. **Ela permite salvar apenas o primeiro IP**. Caso a subconta já possua um IP de saque configurado, a API retornará um erro e novos IPs deverão ser adicionados via Dashboard.
+:::warning[Single Use Rule]
+This route was designed exclusively for the initial setup of the subaccount. **It only allows saving the first IP**. If the subaccount already has a withdrawal IP configured, the API will return an error and new IPs must be added via the Dashboard.
 :::
 
-:::info[Atenção: Saque vs Saldo]
-O IP liberado por este endpoint tem permissão **exclusiva para criação de saques**. Ele **não** libera acesso para as rotas de Consulta de Saldo. A liberação de IPs para consulta de saldo possui uma configuração separada.
+:::info[Attention: Withdraw vs Balance]
+The IP allowed by this endpoint has **exclusive permission for creating withdrawals**. It **does not** grant access to the Balance Query routes. Allowing IPs for balance queries has a separate configuration.
 :::
-
 
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw/allowed-ip/subaccount
 ```
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header | Valor | Descrição |
-| :--- | :--- | :--- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação da **Subconta**. |
+| Header          | Value                 | Description                                     |
+| :-------------- | :-------------------- | :---------------------------------------------- |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token of the **Subaccount**. |
 
-### Corpo da Requisição (Body)
+### Request Body
 
-| Parâmetro | Tipo | Validação | Descrição |
-| :--- | :--- | :--- | :--- |
-| `ip` | `string` | Obrigatório | O endereço IP (IPv4 ou IPv6) do seu servidor que terá permissão para disparar saques nesta subconta. |
+| Parameter | Type     | Validation | Description                                                                                                  |
+| :-------- | :------- | :--------- | :----------------------------------------------------------------------------------------------------------- |
+| `ip`      | `string` | Required   | The IP address (IPv4 or IPv6) of your server that will be allowed to trigger withdrawals in this subaccount. |
 
-#### Exemplo de Payload
+#### Payload Example
 
 ```json
 {
@@ -55,11 +54,11 @@ https://api.xgateglobal.com/withdraw/allowed-ip/subaccount
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-O endereço IP foi registrado na lista de permissões e já pode solicitar saques.
+The IP address has been registered in the allowlist and can now request withdrawals.
 
 ```json
 {
@@ -67,58 +66,58 @@ O endereço IP foi registrado na lista de permissões e já pode solicitar saque
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-Como esta é uma rota de uso único, as validações de regra de negócio costumam retornar status `400`.
+Since this is a single-use route, business rule validations usually return a `400` status.
 
-| Status | Mensagem | Motivo Provável |
-| :--- | :--- | :--- |
-| **400** | `Bad Request` | • **Essa funcionalidade não está disponível para a sua Conta**: Essa rota só é disponível para o cadastro do primeiro IP de uma subconta. A conta que fez a requisição não é uma subconta válida para este fluxo.<br /><br />• **Essa funcionalidade permite liberar somente o primeiro IP de saque da sua conta**: Quando já tenha sido cadastrado um primeiro IP. A subconta **já possui** um IP cadastrado e a rota só funciona quando a lista está vazia. |
-| **401** | `Unauthorized` | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP da requisição não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte. |
-
----
-
-## Como usar
-
-### Casos de Uso Comuns
-
-1. **Automação de Setup (Onboarding):** Assim como o Webhook, logo após criar a subconta via API para um novo cliente, seu sistema pode realizar o login nessa nova subconta e registrar o IP fixo do seu servidor financeiro. Isso garante que a subconta já nasça pronta e segura para processar saques automaticamente, sem precisar de intervenção manual da sua equipe de suporte.
+| Status  | Message                 | Probable Cause                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **400** | `Bad Request`           | • **This feature is not available for your Account**: This route is only available for registering the first IP of a subaccount. The account making the request is not a valid subaccount for this flow.<br /><br />• **This feature allows allowing only the first withdrawal IP of your account**: When a first IP has already been registered. The subaccount **already has** a registered IP and the route only works when the list is empty. |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Header invalid or not provided.<br /> • Request IP not allowed.                                                                                                                                                                                                                                                                                                                                               |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ---
 
-## Integração
+## How to Use
 
-Abaixo, um exemplo simples de como implementar essa chamada utilizando Node.js. Lembre-se de utilizar as credenciais da subconta para obter o token de autorização.
+### Common Use Cases
+
+1. **Setup Automation (Onboarding):** Just like the Webhook, right after creating the subaccount via API for a new client, your system can log into this new subaccount and register the static IP of your financial server. This ensures that the subaccount is born ready and secure to process withdrawals automatically, without needing manual intervention from your support team.
+
+---
+
+## Integration
+
+Below is a simple example of how to implement this call using Node.js. Remember to use the subaccount credentials to obtain the authorization token.
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca `Axios` para realizar a requisição HTTP.
+    The integration example uses the `Axios` library to perform the HTTP request.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **Javascript Example:**
     ```javascript
     const axios = require("axios");
 
     (async () => {
-        // ATENÇÃO: Use o e-mail e senha da SUBCONTA para gerar o token desta ação
+        // ATTENTION: Use the SUBACCOUNT email and password to generate the token for this action
         const emailSubconta = "admin@subconta.com";
         const passwordSubconta = "••••••";
 
         try {
             const url_api = "https://api.xgateglobal.com";
             
-            // 1. Obter token de autenticação da Subconta
+            // 1. Get Subaccount authentication token
             const login = await axios.post(`${url_api}/auth/token`, { 
                 email: emailSubconta, 
                 password: passwordSubconta 
             });
             
-            // 2. Configurar o primeiro IP autorizado para saque
+            // 2. Configure the first allowed IP for withdrawal
             const ipData = {
                 ip: "8.8.8.8"
             };
@@ -130,11 +129,11 @@ Abaixo, um exemplo simples de como implementar essa chamada utilizando Node.js. 
                 }
             });
             
-            console.log("Resposta:", data); 
-            // Esperado: { message: 'Primeiro IP liberado para solicitação de saque cadastrado com sucesso' }
+            console.log("Response:", data); 
+            // Expected: { message: 'Primeiro IP liberado para solicitação de saque cadastrado com sucesso' }
 
         } catch (error) {
-            console.error("Erro ao cadastrar IP:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+            console.error("Error registering IP:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
         }
     })();
     ```

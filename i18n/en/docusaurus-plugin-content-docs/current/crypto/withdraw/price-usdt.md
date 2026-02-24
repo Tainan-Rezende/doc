@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cotação USDT para FIAT'
+sidebar_label: 'USDT to FIAT Quote'
 sidebar_position: 5
 ---
 
@@ -8,52 +8,52 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionToFiatTester from '@site/src/components/GetTetherConversionToFiatTester';
 
-# Cotação USDT para FIAT
+# USDT to FIAT Quote
 
-Este endpoint permite calcular antecipadamente quanto o cliente receberá em **BRL** ao sacar um valor específico em USDT.
+This endpoint allows you to calculate in advance how much the client will receive in **BRL** when cashing out a specific amount in USDT.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw/conversion/brl/pix
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a cotação. O sistema irá buscar automaticamente os dados da criptomoeda e calcular quanto renderia em BRL.
+Use the form below to simulate the quote. The system will automatically fetch the cryptocurrency data and calculate how much it would yield in BRL.
 
 <GetTetherConversionToFiatTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e o corpo JSON com o valor e o objeto da moeda.
+You need to send the authentication **Header** and the JSON body with the value and currency object.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
-| :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| Header          | Value                | Description                   |
+| :-------------- | :------------------- | :---------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
-#### Body (Corpo da Requisição)
+#### Body (Request Body)
 
-| Campo            | Tipo     | Obrigatório | Descrição                                                                        |
-| :--------------- | :------- | :---------: | :------------------------------------------------------------------------------- |
-| `amount`         | `number` |   **Sim**   | Valor em USDT (Tether) que se deseja calcular a cotação.                         |
-| `cryptocurrency` | `object` |   **Sim**   | O objeto da criptomoeda, obtido na rota de listagem de criptomoedas para saques. |
+| Field            | Type     | Required | Description                                                                         |
+| :--------------- | :------- | :------: | :---------------------------------------------------------------------------------- |
+| `amount`         | `number` | **Yes**  | Amount in USDT (Tether) for which you want to calculate the quote.                 |
+| `cryptocurrency` | `object` | **Yes**  | The cryptocurrency object, obtained from the cryptocurrencies listing route.       |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna o valor convertido, a moeda e a taxa de câmbio utilizada no momento.
+Returns the converted value, the currency, and the exchange rate used at that moment.
 
 ```json
 {
@@ -63,31 +63,31 @@ Retorna o valor convertido, a moeda e a taxa de câmbio utilizada no momento.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| Status  | Message                 | Likely Reason                                                                                     |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.         |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                         |
 
 ---
 
-## Como usar
+## How to Use
 
-Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta**.
+This route **does not generate** a payment order, it is only for **consultation**.
 
-### O Fluxo Recomendado (UX)
+### The Recommended Flow (UX)
 
-1.  **Input:** O usuário digita "1" (valor em USDT) no seu app/site.
-2.  **Consulta:** Seu sistema chama `POST /withdraw/conversion/brl/pix` enviando o valor 1 USDT e o objeto da criptomoeda.
-3.  **Exibição:** A API retorna que isso equivale a `5.17`. Você exibe: *"Você receberá aproximadamente R$ 5,17"*.
-4.  **Ação:** Se o usuário concordar, você chama a rota de **Criar Pedido de Saque Conversão Cripto para FIAT** (`POST /withdraw`).
+1.  **Input:** The user types "1" (amount in USDT) in your app/site.
+2.  **Consultation:** Your system calls `POST /withdraw/conversion/brl/pix` sending the value 1 USDT and the cryptocurrency object.
+3.  **Display:** The API returns that this equals `5.17`. You display: *"You will receive approximately R$ 5.17"*.
+4.  **Action:** If the user agrees, you call the **Create Withdrawal Order for Crypto to FIAT Conversion** route (`POST /withdraw`).
 
-### Exemplo Prático
+### Practical Example
 
-Siga os passos abaixo para realizar a cotação USDT para FIAT.
+Follow the steps below to perform the USDT to FIAT quote.
 
-**1. Passo:** Insira o valor em USDT para a cotação:
+**Step 1:** Enter the USDT amount for the quote:
 ```json {2}
 {
     "amount": 1,
@@ -103,7 +103,7 @@ Siga os passos abaixo para realizar a cotação USDT para FIAT.
 }
 ```
 
-**2. Passo:** Você deve buscar e injetar o objeto da criptomoeda dentro de `cryptocurrency`:
+**Step 2:** You must fetch and inject the cryptocurrency object inside `cryptocurrency`:
 
 ```json {3-11}
 {
@@ -119,22 +119,22 @@ Siga os passos abaixo para realizar a cotação USDT para FIAT.
     }
 }
 ```
-Você pode obter a lista de criptomoedas <a href={useBaseUrl('/docs/fiat/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
+You can get the list of cryptocurrencies <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">by clicking here</a>.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-  O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
 ```js
 const axios = require("axios");
 

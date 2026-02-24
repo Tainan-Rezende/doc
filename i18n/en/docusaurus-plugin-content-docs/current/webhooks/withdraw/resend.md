@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Reenviar Webhook'
+sidebar_label: 'Resend Webhook'
 sidebar_position: 2
 ---
 
@@ -7,42 +7,40 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Reenviar Webhook
+# Resend Webhook
 
-Este endpoint permite forçar o reenvio de uma notificação de webhook para uma transação de saque específica.
-
-
+This endpoint allows you to force the resending of a webhook notification for a specific withdrawal transaction.
 
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
-https://api.xgateglobal.com/withdraw/ID_TRANSACAO/resend/webhook
+```bash title="Endpoint URL"
+https://api.xgateglobal.com/withdraw/TRANSACTION_ID/resend/webhook
 ```
 
-:::warning[Importante]
-O valor **ID_TRANSACAO** na URL refere-se ao `_id` do saque. Esta requisição **não necessita de corpo (body)**, apenas a URL parametrizada e o Header de autenticação.
+:::warning[Important]
+The **TRANSACTION_ID** value in the URL refers to the withdrawal's `_id`. This request **does not require a body**, only the parameterized URL and the authentication Header.
 :::
 
 ---
 
-## Requisição
+## Request
 
-### Headers Obrigatórios
+### Required Headers
 
-| Header | Valor | Descrição |
+| Header | Value | Description |
 | :--- | :--- | :--- |
-| `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação obtido no login. |
+| `Authorization` | `Bearer <your_token>` | JWT authentication token obtained at login. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-O comando foi recebido e a XGate reenviou o payload do webhook para a URL cadastrada no seu painel.
+The command was received and XGate resent the webhook payload to the URL registered in your dashboard.
 
 ```json
 {
@@ -50,30 +48,30 @@ O comando foi recebido e a XGate reenviou o payload do webhook para a URL cadast
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status | Mensagem | Motivo Provável |
+| Status | Message | Probable Cause |
 | :--- | :--- | :--- |
-| **401** | `Unauthorized` | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.<br />• Você não tem autorização para realizar essa ação. |
-| **404** | `Not Found` | • ID informado não é válido.<br />• A transação não existe. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte. |
+| **401** | `Unauthorized` | • Invalid or expired token.<br /> • Header invalid or not provided.<br /> • IP not allowed.<br />• You are not authorized to perform this action. |
+| **404** | `Not Found` | • Provided ID is invalid.<br />• The transaction does not exist. |
+| **500** | `Internal Server Error` | Internal server error. Contact support. |
 
 ---
 
-## Como usar
+## How to Use
 
-Esta é uma rota de contingência e manutenção. Diferente das rotas de consulta, ela executa uma ação ativa na XGate, fazendo com que nosso servidor dispare novamente a notificação HTTP para o seu sistema.
+This is a contingency and maintenance route. Unlike query routes, it performs an active action in XGate, causing our server to trigger the HTTP notification to your system again.
 
-### Casos de Uso Comuns
+### Common Use Cases
 
-Você utilizará este endpoint principalmente para:
+You will use this endpoint mainly for:
 
-1. **Recuperação de Falhas:** Se o seu servidor passou por instabilidades, caiu, ou o firewall bloqueou a requisição original da XGate, você pode usar este endpoint para "puxar" a notificação novamente e atualizar o status no seu banco de dados.
-2. **Testes de Integração:** Durante a fase de desenvolvimento, você pode disparar o webhook de uma transação antiga várias vezes para testar se a lógica do seu código de recebimento está funcionando corretamente.
+1. **Failure Recovery:** If your server experienced instability, crashed, or the firewall blocked the original XGate request, you can use this endpoint to "pull" the notification again and update the status in your database.
+2. **Integration Tests:** During the development phase, you can trigger the webhook of an old transaction multiple times to test if your receiving code's logic is working correctly.
 
-### Exemplo Prático
+### Practical Example
 
-Basta fazer um POST para a URL informando o ID da transação. Você receberá uma mensagem de sucesso confirmando que o gatilho foi acionado.
+Simply make a POST to the URL providing the transaction ID. You will receive a success message confirming that the trigger was activated.
 
 ```json
 {
@@ -83,20 +81,20 @@ Basta fazer um POST para a URL informando o ID da transação. Você receberá u
 
 ---
 
-## Integração
+## Integration
 
-Abaixo, um exemplo simples de como implementar essa chamada utilizando Node.js. Como é um `POST` sem corpo, enviamos apenas um objeto vazio `{}` seguido dos headers.
+Below is a simple example of how to implement this call using Node.js. Since it is a `POST` without a body, we simply send an empty object `{}` followed by the headers.
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca `Axios` para realizar a requisição HTTP.
+    The integration example uses the `Axios` library to perform the HTTP request.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **Javascript Example:**
     ```javascript
     const axios = require("axios");
 
@@ -106,23 +104,23 @@ Abaixo, um exemplo simples de como implementar essa chamada utilizando Node.js. 
         const transactionId = "6997146*******************";
 
         try {
-            const url_api = "https://api.xgateglobal.com";
+            const url_api = "[https://api.xgateglobal.com](https://api.xgateglobal.com)";
             
-            // 1. Obter token de autenticação
+            // 1. Get authentication token
             const login = await axios.post(`${url_api}/auth/token`, { email, password });
             
-            // 2. Disparar o reenvio do Webhook (POST sem body)
+            // 2. Trigger Webhook resend (POST without body)
             const { data } = await axios.post(`${url_api}/withdraw/${transactionId}/resend/webhook`, {}, {
                 headers: {
                     "Authorization": `Bearer ${login.data.token}`
                 }
             });
             
-            console.log("Resposta:", data); 
-            // Esperado: { message: 'Webhook de saque reenviado com sucesso' }
+            console.log("Response:", data); 
+            // Expected: { message: 'Webhook de saque reenviado com sucesso' }
 
         } catch (error) {
-            console.error("Erro ao reenviar:", error.response ? error.response.data : error.message);
+            console.error("Resend error:", error.response ? error.response.data : error.message);
         }
     })();
     ```

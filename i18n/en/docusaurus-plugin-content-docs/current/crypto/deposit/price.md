@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cotação FIAT para USDT'
+sidebar_label: 'Fiat to USDT Quote'
 sidebar_position: 4
 ---
 
@@ -8,54 +8,54 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionTester from '@site/src/components/GetTetherConversionTester';
 
-# Cotação FIAT para USDT
+# Fiat to USDT Quote
 
-Este endpoint permite calcular antecipadamente quanto o cliente receberá em **USDT** (Tether) ao depositar um valor específico em moeda fiduciária (BRL).
+This endpoint allows you to calculate in advance how much the customer will receive in **USDT** (Tether) when depositing a specific amount in fiat currency (BRL).
 
-Utilize esta rota para exibir uma "prévia" ou cotação em tempo real na tela do seu usuário antes que ele confirme a geração do pedido de depósito.
+Use this route to display a "preview" or real-time quote on your user's screen before they confirm the generation of the deposit order.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/deposit/conversion/tether
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular uma conversão. O sistema irá buscar automaticamente os dados da moeda BRL e calcular quanto renderia em USDT.
+Use the form below to simulate a conversion. The system will automatically fetch BRL currency data and calculate how much it would yield in USDT.
 
 <GetTetherConversionTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e o corpo JSON com o valor e o objeto da moeda.
+You must send the **authentication Header** and the JSON body with the amount and currency object.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
-#### Body (Corpo da Requisição)
+#### Body (Request Body)
 
-| Campo      | Tipo     | Obrigatório | Descrição |
+| Field      | Type     | Required | Description |
 | :--------- | :------- | :---------: | :-------- |
-| `amount`   | `number` | **Sim** | Valor em Reais (BRL) que se deseja converter. |
-| `currency` | `object` | **Sim** | O objeto da moeda Fiat (BRL), obtido na rota de listagem de moedas. |
+| `amount`   | `number` | **Yes** | Amount in Reais (BRL) that you want to convert. |
+| `currency` | `object` | **Yes** | The Fiat currency object (BRL), obtained from the currency listing route. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna o valor convertido, a sigla da cripto e a taxa de câmbio utilizada no momento.
+Returns the converted value, the crypto acronym, and the exchange rate used at that moment.
 
 ```json
 {
@@ -65,31 +65,31 @@ Retorna o valor convertido, a sigla da cripto e a taxa de câmbio utilizada no m
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
+| Status  | Message                | Likely Reason                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br />• IP not allowed. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                         |
 
 ---
 
-## Como usar
+## How to Use
 
-Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta**.
+This route **does not generate** a payment order, it serves only for **consultation**.
 
-### O Fluxo Recomendado (UX)
+### The Recommended Flow (UX)
 
-1.  **Input:** O usuário digita "R$ 100,00" no seu app/site.
-2.  **Consulta:** Seu sistema chama `POST /deposit/conversion/tether` enviando o valor 100 e o objeto da moeda BRL.
-3.  **Exibição:** A API retorna que isso equivale a `18.64 USDT`. Você exibe: *"Você receberá aproximadamente 18.64 USDT"*.
-4.  **Ação:** Se o usuário concordar, aí sim você chama a rota de **Criar Pedido de Depósito** (`POST /deposit`).
+1.  **Input:** The user types "R$ 100.00" in your app/site.
+2.  **Query:** Your system calls `POST /deposit/conversion/tether` sending the amount 100 and the BRL currency object.
+3.  **Display:** The API returns that this equals `18.64 USDT`. You display: *"You will receive approximately 18.64 USDT"*.
+4.  **Action:** If the user agrees, then you call the **Create Deposit Order** route (`POST /deposit`).
 
-### Exemplo Prático
+### Practical Example
 
-Siga os passos abaixo para realizar a cotação
+Follow the steps below to perform the quote
 
-**1. Passo:** Insira o valor em BRL para a cotação:
+**Step 1:** Insert the BRL amount for the quote:
 ```json {2}
 {
   "amount": 100,
@@ -105,7 +105,7 @@ Siga os passos abaixo para realizar a cotação
 }
 ```
 
-**2. Passo:** Você deve buscar e injetar o objeto da moeda dentro de `currency`:
+**Step 2:** You must fetch and inject the currency object within `currency`:
 
 ```json {3-11}
 {
@@ -121,22 +121,22 @@ Siga os passos abaixo para realizar a cotação
   }
 }
 ```
-Você pode obter a lista de moedas <a href={useBaseUrl('/docs/fiat/deposit/currency')} target="_blank">clicando aqui</a>.
+You can obtain the list of currencies <a href={useBaseUrl('/docs/fiat/deposit/currency')} target="_blank">by clicking here</a>.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-  O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  This integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
 ```js
 const axios = require("axios");
 

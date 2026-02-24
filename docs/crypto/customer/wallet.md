@@ -66,7 +66,8 @@ Retorna um array com a carteira gerada e a rede que deve ser utilizada para rece
     "blockchainNetworks": [
       "Ethereum",
       "ERC-20",
-      "BEP-20"
+      "BEP-20",
+      "Polygon"
     ],
     "publicKey": "0xf898b006511848B7************************"
   }
@@ -77,9 +78,10 @@ Retorna um array com a carteira gerada e a rede que deve ser utilizada para rece
 Depósitos de origem crypto não aparecem na aba depósitos da Dashboard até que sejam concluídas (Pagas).
 :::
 
-:::danger[Risco de Perda de Fundos]
-1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) para este endereço resultará na **perda irreversível** do valor.
-2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas no retorno da API (ex: `ERC-20`, `BEP-20` ou `Polygon`). O uso de redes não suportadas impedirá o recebimento do valor.
+:::danger[Risco de Perda de Fundos e Fraudes]
+1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) resultará na **perda irreversível** do valor.
+2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas na nossa API (ex: `ERC-20`, `BEP-20` ou `Polygon`).
+3.  **Alerta de Fraude ("Flash USDT"):** Cuidado com golpistas que enviam tokens falsos imitando o USDT original. Essas moedas falsas aparecem na carteira, mas não têm valor real e não podem ser sacadas. Sempre valide se o token depositado é o oficial da Tether antes de liberar o saldo para o seu cliente final.
 :::
 
 ### Erros Comuns
@@ -105,9 +107,10 @@ O fluxo para o usuário final deve ser:
 
 Para garantir a segurança dos fundos, o desenvolvedor deve exibir avisos claros no front-end para o usuário final:
 
-:::danger[Risco de Perda de Fundos]
-1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) para este endereço resultará na **perda irreversível** do valor.
-2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas no retorno da API (ex: `ERC-20`, `BEP-20` ou `Polygon`). O uso de redes não suportadas impedirá o recebimento do valor.
+:::danger[Risco de Perda de Fundos e Fraudes]
+1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) resultará na **perda irreversível** do valor.
+2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas na nossa API (ex: `ERC-20`, `BEP-20` ou `Polygon`).
+3.  **Alerta de Fraude ("Flash USDT"):** Cuidado com golpistas que enviam tokens falsos imitando o USDT original. Essas moedas falsas aparecem na carteira, mas não têm valor real e não podem ser sacadas. Sempre valide se o token depositado é o oficial da Tether antes de liberar o saldo para o seu cliente final.
 :::
 
 ### Exemplo de Aplicação (UX)

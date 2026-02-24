@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Listar Redes'
+sidebar_label: 'List Networks'
 sidebar_position: 2
 ---
 
@@ -8,47 +8,47 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ListBlockchainNetworksTester from '@site/src/components/ListBlockchainNetworksTester';
 
-# Listar Redes Blockchain
+# List Blockchain Networks
 
-Este endpoint retorna todas as redes blockchain suportadas pela plataforma (ex: Ethereum, BSC, Polygon). 
+This endpoint returns all blockchain networks supported by the platform (e.g., Ethereum, BSC, Polygon).
 
-Esta listagem é **fundamental para realizar saques de criptomoedas** para carteiras externas. Como o USDT existe em várias blockchains diferentes, você precisa especificar em qual rede a transferência deve ocorrer para montar o payload de saque corretamente.
+This listing is **essential to withdraw cryptocurrencies** to external wallets. Since USDT exists on various different blockchains, you need to specify which network the transfer should occur on to correctly build the withdrawal payload.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--success">GET</span>
+- **Method:** <span className="badge badge--success">GET</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw/company/blockchain-networks
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para visualizar as redes disponíveis.
+Use the form below to view the available networks.
 
 <ListBlockchainNetworksTester />
 
 ---
 
-## Requisição
+## Request
 
-A requisição não requer corpo (`body`), apenas os **Headers** de autenticação.
+The request does not require a body, only authentication **Headers**.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
-| :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| Header          | Value                | Description                   |
+| :-------------- | :------------------- | :---------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna a lista de redes. Você precisará do **objeto completo** da rede escolhida.
+Returns the list of networks. You will need the **complete object** of the chosen network.
 
 ```json
 [
@@ -71,37 +71,37 @@ Retorna a lista de redes. Você precisará do **objeto completo** da rede escolh
 ]
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| Status  | Message                 | Likely Reason                                                                                     |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.         |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                         |
 
 ---
 
-## Como usar
+## How to Use
 
-Para realizar um **Saque Crypto** (enviar USDT da XGate para uma carteira externa), não basta informar a moeda e o valor. É obrigatório informar a **Rede (Blockchain Network)**.
+To perform a **Crypto Withdrawal** (send USDT from XGate to an external wallet), it is not enough to provide the currency and amount. It is mandatory to provide the **Network (Blockchain Network)**.
 
-### O que são essas Redes?
-Imagine que o **USDT** é a carga (o dinheiro) e a **Rede Blockchain** é a rodovia por onde essa carga vai passar. Nós trabalhamos principalmente com:
+### What Are These Networks?
+Imagine that **USDT** is the cargo (the money) and the **Blockchain Network** is the highway that cargo travels on. We mainly work with:
 
-* **Ethereum / ERC-20:** A rede principal do Ethereum. Geralmente possui taxas de gás mais elevadas.
-* **BEP-20 (BSC):** A rede da Binance Smart Chain. Conhecida por taxas mais baixas e alta velocidade.
-* **Polygon:** Uma rede de segunda camada (Layer 2) focada em escalabilidade e baixo custo.
+* **Ethereum / ERC-20:** The main Ethereum network. Usually has higher gas fees.
+* **BEP-20 (BSC):** The Binance Smart Chain network. Known for lower fees and high speed.
+* **Polygon:** A second-layer network (Layer 2) focused on scalability and low cost.
 
-Se o seu cliente fornecer um endereço de carteira da rede **Polygon**, você **deve** selecionar a rede `Polygon` nesta listagem. Enviar pela rede errada (ex: enviar para um endereço Polygon usando a rede Ethereum) pode resultar em falha na transação ou custos elevados desnecessários.
+If your customer provides a wallet address from the **Polygon** network, you **must** select the `Polygon` network in this listing. Sending through the wrong network (e.g., sending to a Polygon address using the Ethereum network) can result in transaction failure or unnecessary high costs.
 
-### O Fluxo de Integração
+### The Integration Flow
 
-1.  **Consulte as Redes:** Chame este endpoint para obter as opções disponíveis e seus IDs.
-2.  **Selecione a Rede:** Deixe seu usuário escolher (ex: "Selecione a rede de destino: ERC-20, BEP-20 ou Polygon") ou selecione via sistema com base no endereço da carteira.
-3.  **Monte o Payload:** Pegue o **objeto completo** da rede escolhida e insira no campo `blockchainNetwork` do payload de saque.
+1.  **Check the Networks:** Call this endpoint to get the available options and their IDs.
+2.  **Select the Network:** Let your user choose (e.g., "Select the destination network: ERC-20, BEP-20, or Polygon") or select via system based on the wallet address.
+3.  **Build the Payload:** Take the **complete object** of the chosen network and insert it in the `blockchainNetwork` field of the withdrawal payload.
 
-### Exemplo Prático
+### Practical Example
 
-**1. Objeto de Rede que você recebeu nesta listagem (ex: BEP-20):**
+**1. Network object you received in this listing (e.g., BEP-20):**
 ```json
 {
     "_id": "6733a3a200**************",
@@ -116,9 +116,9 @@ Se o seu cliente fornecer um endereço de carteira da rede **Polygon**, você **
 },
 ```
 
-**2. Como enviar no Saque Crypto (POST /withdraw):**
+**2. How to send in Crypto Withdrawal (POST /withdraw):**
 
-Observe como o objeto acima é injetado no campo `blockchainNetwork`:
+Notice how the object above is injected in the `blockchainNetwork` field:
 
 ```json {9-19}
 {
@@ -147,18 +147,18 @@ Observe como o objeto acima é injetado no campo `blockchainNetwork`:
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-  O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
 ```js
 const axios = require("axios");
 

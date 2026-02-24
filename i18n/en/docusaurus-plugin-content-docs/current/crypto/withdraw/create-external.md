@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criar Saque Externo'
+sidebar_label: 'Create External Withdrawal'
 sidebar_position: 4
 ---
 
@@ -8,56 +8,56 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import WithdrawCryptoToWalletTester from '@site/src/components/WithdrawCryptoToWalletTester';
 
-# Criar Pedido de Saque para Carteira Externa
+# Create External Withdrawal Request
 
-Este endpoint permite que o cliente realize um saque das criptomoedas para uma carteira externa.
+This endpoint allows the customer to withdraw cryptocurrencies to an external wallet.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular a criação de um pedido de saque crypto para carteira externa.
+Use the form below to simulate the creation of a crypto withdrawal request to an external wallet.
 
 <WithdrawCryptoToWalletTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e o **Body** com os dados do pedido.
+You must send the **authentication Header** and the **Body** with the order data.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
-#### Body (Corpo da Requisição)
+#### Body (Request Body)
 
-| Campo               | Tipo     | Obrigatório | Descrição                                       |
+| Field               | Type     | Required | Description                                       |
 | :------------------ | :------- | :---------: | :---------------------------------------------- |
-| `amount`            | `number` |   **Sim**   | O valor do saque em USDT (ex: `0.1` min).       |
-| `customerId`        | `string` |   **Sim**   | O ID único (`_id`) do cliente que fará o saque. |
-| `cryptocurrency`    | `object` |   **Sim**   | A criptomoeda da transação (ex: `USDT`).        |
-| `blockchainNetwork` | `object` |   **Sim**   | Informações sobre a rede blockchain.            |
-| `wallet`            | `string` |   **Sim**   | A carteira para onde os valores serão enviados. |
-| `externalId`        | `string` |   **Não**   | Idempotência.                                   |
+| `amount`            | `number` |   **Yes**   | The withdrawal amount in USDT (e.g., `0.1` min).       |
+| `customerId`        | `string` |   **Yes**   | The unique ID (`_id`) of the customer making the withdrawal. |
+| `cryptocurrency`    | `object` |   **Yes**   | The cryptocurrency of the transaction (e.g., `USDT`).        |
+| `blockchainNetwork` | `object` |   **Yes**   | Information about the blockchain network.            |
+| `wallet`            | `string` |   **Yes**   | The wallet to which the values will be sent. |
+| `externalId`        | `string` |   **No**   | Idempotency.                                   |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (201 Created)
+### Success (201 Created)
 
-Retorna o objeto do pedido criado, contendo informações do `status` e o `_id` da transação.
+Returns the created order object, containing information about the `status` and the `_id` of the transaction.
 
 ```json
 {
@@ -67,39 +67,39 @@ Retorna o objeto do pedido criado, contendo informações do `status` e o `_id` 
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
+| Status  | Message                | Likely Reason                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br />• IP not allowed. |
+| **404** | `Not Found`             | Customer informed in the `customerId` field does not exist.                                              |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                         |
 
 ---
 
-## Como usar
+## How to Use
 
-A finalidade deste endpoint é iniciar o fluxo de saída de dinheiro com conversão Crypto para BRL (**Cash-out**).
+The purpose of this endpoint is to initiate the money outflow flow with Crypto to BRL conversion (**Cash-out**).
 
-### O Fluxo de Integração
+### The Integration Flow
 
-1.  **Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) e tenha o `_id` dele.
-2.  **Dados da Criptomoeda:** Será necessário buscar os dados da criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Criptomoedas</a>.
-3.  **Dados da rede:** Será necessário buscar os dados da rede (network), você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">Redes Blockchain</a>.
-4.  **Destino:** Adicione a chave pública da carteira de quem receberá o saque na carteira externa.
-5.  **Envie o pedido:** Envie a solicitação para a XGate, o tempo de aprovação pode variar dependendo da rede.
+1.  **Identify the Customer:** Make sure the user exists in XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) and have their `_id`.
+2.  **Cryptocurrency Data:** You will need to fetch cryptocurrency data to add to the request. You can obtain it from <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Cryptocurrencies</a>.
+3.  **Network Data:** You will need to fetch the network data, you can obtain it from <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">Blockchain Networks</a>.
+4.  **Destination:** Add the public key of the wallet that will receive the withdrawal to the external wallet.
+5.  **Send the request:** Send the request to XGate. The approval time may vary depending on the network.
 
-### Exemplo Prático
+### Practical Example
 
-Para criar pedidos de saque para carteira externa, você deve seguir esses 4 passos:
+To create withdrawal requests to external wallets, you must follow these 4 steps:
 
-:::tip[Recomendação]
-É necessário criar um cliente antes de processeguir para criação de saque.
+:::tip[Recommendation]
+It is necessary to create a customer before proceeding with the withdrawal creation.
 
-Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank">clicando aqui</a>** para ir para a página de documentação de criação de cliente.
+You can be **<a href={useBaseUrl('/docs/customer/create')} target="_blank">clicking here</a>** to go to the customer creation documentation page.
 :::
 >
-**1. Passo:** Informe o valor em USDT em `amount` e o `_id` do cliente como `customerId`, igual nos campos destacados:
+**Step 1:** Enter the amount in USDT in `amount` and the customer's `_id` as `customerId`, just like in the highlighted fields:
 ```json {2-3}
 {
     "amount": 2,
@@ -129,9 +129,9 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 }
 ```
 
-**2. Passo:** Você deve obter a criptomoeda com os dados para saque. 
+**Step 2:** You must obtain the cryptocurrency with the data for the withdrawal.
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
+You can obtain the list of them <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">by clicking here</a>.
 
 ```json {4-12}
 {
@@ -162,27 +162,27 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/crypto
 }
 ```
 
-:::tip[Criptomoeda]
-Os dados de `cryptocurrency` também podem ser retirados da resposta vinda da listagem de redes blockchain, o exemplo de integração em **Node.Js** mostra como funciona.
+:::tip[Cryptocurrency]
+The `cryptocurrency` data can also be retrieved from the response coming from the blockchain network listing. The integration example in **Node.Js** shows how it works.
 :::
 
-#### Detalhes do Objeto
+#### Object Details
 
-Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua requisição.
+See the details of each information in the `cryptocurrency` object to build your request.
 
-| Campo         | Tipo     | Obrigatório | Descrição                                                  |
+| Field         | Type     | Required | Description                                                  |
 | :------------ | :------- | :---------: | :--------------------------------------------------------- |
-| `_id`         | `string` |   **Sim**   | Identificador único da criptomoeda.                        |
-| `name`        | `string` |   **Sim**   | Nome da criptomoeda.                                       |
-| `symbol`      | `string` |   **Sim**   | Símbolo da criptomoeda.                                    |
-| `coinGecko`   | `string` |   **Não**   | Identificador da criptomoeda no CoinGecko.                 |
-| `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da criptomoeda. |
-| `createdDate` | `string` |   **Não**   | Data em que a criptomoeda foi criada no sistema.           |
-| `__v`         | `number` |   **Não**   | Versão do registro da criptomoeda no banco de dados.       |
+| `_id`         | `string` |   **Yes**   | Unique identifier of the cryptocurrency.                        |
+| `name`        | `string` |   **Yes**   | Name of the cryptocurrency.                                       |
+| `symbol`      | `string` |   **Yes**   | Symbol of the cryptocurrency.                                    |
+| `coinGecko`   | `string` |   **No**   | Cryptocurrency identifier on CoinGecko.                 |
+| `updatedDate` | `string` |   **No**   | Date of last update of cryptocurrency information. |
+| `createdDate` | `string` |   **No**   | Date when the cryptocurrency was created in the system.           |
+| `__v`         | `number` |   **No**   | Version of the cryptocurrency record in the database.       |
 
-**3. Passo:** Você deve obter os dados da rede blockchain. 
+**Step 3:** You must obtain the blockchain network data.
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">clicando aqui</a>.
+You can obtain the list of them <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">by clicking here</a>.
 
 ```json {13-23}
 {
@@ -213,27 +213,27 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/networ
 }
 ```
 
-:::warning[Recomendação]
-Caso sua integração utilize uma rede fixa para todas as operações de saque, recomendamos enviar os valores obrigatórios via **hard-code**. Isso otimiza a performance da sua aplicação, evitando chamadas repetitivas ao endpoint de listagem de redes, que possui um volume de dados elevado.
+:::warning[Recommendation]
+If your integration uses a fixed network for all withdrawal operations, we recommend sending the required values via **hard-code**. This optimizes your application's performance, avoiding repetitive calls to the network listing endpoint, which has a high data volume.
 :::
 
-#### Detalhes do Objeto
+#### Object Details
 
-Veja os detalhes de cada informação no objeto `blockchainNetwork` para montar sua requisição.
+See the details of each information in the `blockchainNetwork` object to build your request.
 
-| Campo              | Tipo     | Obrigatório | Descrição                                               |
+| Field              | Type     | Required | Description                                               |
 | :----------------- | :------- | :---------: | :------------------------------------------------------ |
-| `_id`              | `string` |   **Sim**   | Identificador único da rede blockchain no sistema.      |
-| `name`             | `string` |   **Sim**   | Nome técnico do padrão da rede (ex: BEP-20, ERC-20).    |
-| `chainId`          | `string` |   **Sim**   | ID numérico da rede (ex: 56 para BSC, 1 para Ethereum). |
-| `cryptocurrencies` | `array`  |   **Não**   | Lista de IDs das criptomoedas suportadas nesta rede.    |
-| `updatedDate`      | `string` |   **Não**   | Data da última atualização dos parâmetros da rede.      |
-| `createdDate`      | `string` |   **Não**   | Data de criação do registro da rede no sistema.         |
-| `__v`              | `number` |   **Não**   | Versão interna do registro no banco de dados.           |
-| `chain`            | `string` |   **Sim**   | Nome simplificado da blockchain (ex: BSC, ETH).         |
-| `symbol`           | `string` |   **Sim**   | Símbolo da moeda nativa da rede (ex: BNB, ETH).         |
+| `_id`              | `string` |   **Yes**   | Unique identifier of the blockchain network in the system.      |
+| `name`             | `string` |   **Yes**   | Technical name of the network standard (e.g., BEP-20, ERC-20).    |
+| `chainId`          | `string` |   **Yes**   | Numeric ID of the network (e.g., 56 for BSC, 1 for Ethereum). |
+| `cryptocurrencies` | `array`  |   **No**   | List of IDs of cryptocurrencies supported on this network.    |
+| `updatedDate`      | `string` |   **No**   | Date of last update of network parameters.      |
+| `createdDate`      | `string` |   **No**   | Date of creation of the network record in the system.         |
+| `__v`              | `number` |   **No**   | Internal version of the record in the database.           |
+| `chain`            | `string` |   **Yes**   | Simplified name of the blockchain (e.g., BSC, ETH).         |
+| `symbol`           | `string` |   **Yes**   | Symbol of the native currency of the network (e.g., BNB, ETH).         |
 
-**3. Passo:** Você deve obter a chave publica da carteira para onde será enviado os valores do saque.
+**Step 4:** You must obtain the public key of the wallet where the withdrawal values will be sent.
 
 ```json {24}
 {
@@ -264,7 +264,7 @@ Veja os detalhes de cada informação no objeto `blockchainNetwork` para montar 
 }
 ```
 
-**4. Passo (Opcional):** Adicione o `externalId` ao final do código, ele irá evitar que o cliente envie mais de 1 (uma) vez a solicitação de saque, **evitando duplicidade**.
+**Step 5 (Optional):** Add the `externalId` at the end of the code. It will prevent the client from sending the withdrawal request more than once, **avoiding duplication**.
 ```json {27}
 {
     "amount": 2,
@@ -298,18 +298,18 @@ Veja os detalhes de cada informação no objeto `blockchainNetwork` para montar 
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+    This integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
 ```js
 const axios = require("axios");
 

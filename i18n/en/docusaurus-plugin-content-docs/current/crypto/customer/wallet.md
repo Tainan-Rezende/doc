@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Buscar Carteira'
+sidebar_label: 'Get Crypto Wallet'
 sidebar_position: 1
 ---
 
@@ -8,57 +8,57 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetCryptoWalletTester from '@site/src/components/GetCryptoWalletTester';
 
-# Buscar Carteira Crypto
+# Get Crypto Wallet
 
-Este endpoint retorna as carteiras de criptomoedas associadas a um cliente específico. 
+This endpoint returns the cryptocurrency wallets associated with a specific customer.
 
-Utilize esta rota para obter o **endereço (address)** de depósito e verificar a **rede (network)** (ex: ERC-20, BEP-20).
+Use this route to obtain the **deposit address** and verify the **network** (e.g., ERC-20, BEP-20).
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--success">GET</span>
+- **Method:** <span className="badge badge--success">GET</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/crypto/customer/CLIENT_ID/wallet
 ```
 
-:::warning[Importante]
-O campo `CLIENT_ID` se refere ao ID do cliente, se ainda não criou, você pode cria-lo a partir da página de <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>criar clientes</a>.
+:::warning[Important]
+The `CLIENT_ID` field refers to the customer ID. If you haven't created it yet, you can create it from the <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>create customers</a> page.
 :::
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para listar as carteiras de um cliente.
+Use the form below to list a customer's wallets.
 
 <GetCryptoWalletTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e passar o **ID do Cliente** na URL.
+You must send the **authentication Header** and pass the **Customer ID** in the URL.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
+| Header          | Value                | Description                    |
 | :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
-#### Parâmetros de URL
+#### URL Parameters
 
-| Parâmetro   | Tipo     | Obrigatório | Descrição                                     |
+| Parameter   | Type     | Required | Description                                     |
 | :---------- | :------- | :---------: | :-------------------------------------------- |
-| `CLIENT_ID` | `string` |   **Sim**   | O `_id` do cliente que você deseja consultar. |
+| `CLIENT_ID` | `string` |   **Yes**   | The `_id` of the customer you want to consult. |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna um array com a carteira gerada e a rede que deve ser utilizada para receber depósitos via criptomoedas.
+Returns an array with the generated wallet and the network that must be used to receive deposits via cryptocurrencies.
 
 ```json
 [
@@ -66,73 +66,76 @@ Retorna um array com a carteira gerada e a rede que deve ser utilizada para rece
     "blockchainNetworks": [
       "Ethereum",
       "ERC-20",
-      "BEP-20"
+      "BEP-20",
+      "Polygon"
     ],
     "publicKey": "0xf898b006511848B7************************"
   }
 ]
 ```
 
-:::warning[Importante]
-Depósitos de origem crypto não aparecem na aba depósitos da Dashboard até que sejam concluídas (Pagas).
+:::warning[Important]
+Crypto origin deposits do not appear in the Dashboard deposits tab until they are completed (Paid).
 :::
 
-:::danger[Risco de Perda de Fundos]
-1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) para este endereço resultará na **perda irreversível** do valor.
-2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas no retorno da API (ex: `ERC-20`, `BEP-20` ou `Polygon`). O uso de redes não suportadas impedirá o recebimento do valor.
+:::danger[Risk of Fund Loss and Fraud]
+1.  **USDT Only:** XGate processes exclusively **Tether (USDT)** deposits. Sending other cryptocurrencies (such as Bitcoin, native Ethereum, TRX, etc.) will result in **irreversible loss** of the value.
+2.  **Correct Network:** The deposit must be made exclusively through one of the networks listed in our API (e.g., `ERC-20`, `BEP-20`, or `Polygon`).
+3.  **Fraud Alert ("Flash USDT"):** Beware of scammers who send fake tokens imitating the original USDT. These counterfeit coins appear in the wallet but have no real value and cannot be withdrawn. Always validate that the deposited token is the official Tether token before releasing the balance to your end customer.
 :::
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                   |
+| Status  | Message                | Likely Reason                                                                                   |
 | :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **404** | `Not Found`             | Cliente não encontrado.                                                                           |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                          |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br /> • IP not allowed. |
+| **404** | `Not Found`             | Customer not found.                                                                           |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                          |
 
 ---
 
-## Como usar
+## How to Use
 
-As informações entregues nesta rota são o **Endereço (publicKey)** e as **Redes (blockchainNetworks)**. Elas serão utilizadas sempre que você ou seu cliente final desejar realizar um depósito em **USDT**.
+The information delivered by this route is the **Address (publicKey)** and the **Networks (blockchainNetworks)**. These will be used whenever you or your end customer wishes to make a deposit in **USDT**.
 
-O fluxo para o usuário final deve ser:
-1.  O sistema exibe o endereço (`publicKey`).
-2.  O sistema informa quais redes são aceitas (`blockchainNetworks`).
-3.  O usuário vai até a corretora ou carteira dele e envia **USDT** usando uma das redes listadas para o endereço informado.
+The flow for the end user should be:
+1.  The system displays the address (`publicKey`).
+2.  The system informs which networks are accepted (`blockchainNetworks`).
+3.  The user goes to their exchange or wallet and sends **USDT** using one of the listed networks to the provided address.
 
-### ⚠️ Regras Críticas de Depósito
+### ⚠️ Critical Deposit Rules
 
-Para garantir a segurança dos fundos, o desenvolvedor deve exibir avisos claros no front-end para o usuário final:
+To ensure fund security, the developer must display clear warnings on the front-end for the end user:
 
-:::danger[Risco de Perda de Fundos]
-1.  **Apenas USDT:** A XGate processa exclusivamente depósitos em **Tether (USDT)**. O envio de outras criptomoedas (como Bitcoin, Ethereum nativo, TRX, etc.) para este endereço resultará na **perda irreversível** do valor.
-2.  **Rede Correta:** O depósito deve ser feito obrigatoriamente através de uma das redes listadas no retorno da API (ex: `ERC-20`, `BEP-20` ou `Polygon`). O uso de redes não suportadas impedirá o recebimento do valor.
+:::danger[Risk of Fund Loss and Fraud]
+1.  **USDT Only:** XGate processes exclusively **Tether (USDT)** deposits. Sending other cryptocurrencies (such as Bitcoin, native Ethereum, TRX, etc.) will result in **irreversible loss** of the value.
+2.  **Correct Network:** The deposit must be made exclusively through one of the networks listed in our API (e.g., `ERC-20`, `BEP-20`, or `Polygon`).
+3.  **Fraud Alert ("Flash USDT"):** Beware of scammers who send fake tokens imitating the original USDT. These counterfeit coins appear in the wallet but have no real value and cannot be withdrawn. Always validate that the deposited token is the official Tether token before releasing the balance to your end customer.
 :::
 
-### Exemplo de Aplicação (UX)
+### Application Example (UX)
 
-Ao integrar essa rota, recomendamos que sua interface mostre as informações da seguinte maneira:
+When integrating this route, we recommend that your interface displays the information in the following manner:
 
-> **Deposite apenas USDT**
+> **Deposit USDT only**
 >
-> **Redes Aceitas:** Ethereum (ERC-20), Binance Smart Chain (BEP-20), Polygon.
+> **Accepted Networks:** Ethereum (ERC-20), Binance Smart Chain (BEP-20), Polygon.
 >
-> **Endereço de Depósito:**
-> `0xf898b006511848B7************************` (Botão Copiar)
+> **Deposit Address:**
+> `0xf898b006511848B7************************` (Copy Button)
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-     O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+     This integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
     ```js
     const axios = require("axios");
 

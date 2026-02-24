@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cotação para Carteira Externa'
+sidebar_label: 'Quote for External Wallet'
 sidebar_position: 6
 ---
 
@@ -8,53 +8,53 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherToExternalTester from '@site/src/components/GetTetherToExternalTester';
 
-# Cotação para Carteira Externa
+# Quote for External Wallet
 
-Este endpoint permite calcular antecipadamente quanto o cliente receberá em **USDT** (Tether) ao criar uma solitação de saque para uma carteira externa, já descontando as taxas de gás da rede blockchain vigente.
+This endpoint allows you to calculate in advance how much the client will receive in **USDT** (Tether) when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.
 
 ---
 ## Endpoint
-- **Método:** <span className="badge badge--info">POST</span>
+- **Method:** <span className="badge badge--info">POST</span>
 
-```bash title="URL do Endpoint"
+```bash title="Endpoint URL"
 https://api.xgateglobal.com/withdraw/transaction/crypto/amount
 ```
 
 ---
 
-## Testar Integração
+## Test Integration
 
-Utilize o formulário abaixo para simular um saque para carteira externa. O sistema irá buscar automaticamente os dados necessários e calcular quanto receberia em USDT.
+Use the form below to simulate a withdrawal to an external wallet. The system will automatically fetch the necessary data and calculate how much you would receive in USDT.
 
 <GetTetherToExternalTester />
 
 ---
 
-## Requisição
+## Request
 
-É necessário enviar o **Header** de autenticação e o corpo JSON com o valor e o objeto da moeda.
+You need to send the authentication **Header** and the JSON body with the value and currency object.
 
-#### Headers Obrigatórios
+#### Required Headers
 
-| Header          | Valor                | Descrição                    |
-| :-------------- | :------------------- | :--------------------------- |
-| `Authorization` | `Bearer <seu_token>` | O token JWT obtido no login. |
+| Header          | Value                | Description                   |
+| :-------------- | :------------------- | :---------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
-#### Body (Corpo da Requisição)
+#### Body (Request Body)
 
-| Campo               | Tipo     | Obrigatório | Descrição                                                                        |
-| :------------------ | :------- | :---------: | :------------------------------------------------------------------------------- |
-| `amount`            | `number` |   **Sim**   | Valor em USDT (Tether) que se deseja calcular o saque.                           |
-| `cryptocurrency`    | `object` |   **Sim**   | O objeto da criptomoeda, obtido na rota de listagem de criptomoedas para saques. |
-| `blockchainNetwork` | `object` |   **Sim**   | O objeto da rede blockchain, obtido na listagem de redes blockchain.             |
+| Field               | Type     | Required | Description                                                                         |
+| :------------------ | :------- | :------: | :---------------------------------------------------------------------------------- |
+| `amount`            | `number` | **Yes**  | Amount in USDT (Tether) for which you want to calculate the withdrawal.            |
+| `cryptocurrency`    | `object` | **Yes**  | The cryptocurrency object, obtained from the cryptocurrencies listing route.       |
+| `blockchainNetwork` | `object` | **Yes**  | The blockchain network object, obtained from the blockchain networks listing.      |
 
 ---
 
-## Respostas (Responses)
+## Responses
 
-### Sucesso (200 OK)
+### Success (200 OK)
 
-Retorna o valor que aproximadamente será recebido na carteira externa. 
+Returns the value that approximately will be received at the external wallet. 
 
 ```json
 {
@@ -62,31 +62,31 @@ Retorna o valor que aproximadamente será recebido na carteira externa.
 }
 ```
 
-### Erros Comuns
+### Common Errors
 
-| Status  | Mensagem                | Motivo Provável                                                                                  |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| Status  | Message                 | Likely Reason                                                                                     |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.         |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                         |
 
 ---
 
-## Como usar
+## How to Use
 
-Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta**.
+This route **does not generate** a payment order, it is only for **consultation**.
 
-### O Fluxo Recomendado (UX)
+### The Recommended Flow (UX)
 
-1.  **Input:** O usuário digita "10" (USDT) no seu app/site.
-2.  **Consulta:** Seu sistema chama `POST /withdraw/transaction/crypto/amount` enviando o valor 10, o objeto da rede e o objeto da criptomoeda.
-3.  **Exibição:** A API retorna que isso equivale a `9.369984879637112 USDT`. Você exibe: *"Você receberá aproximadamente 9.369984879637112 USDT"*.
-4.  **Ação:** Se o usuário concordar, você chama a rota de **Criar Pedido de Saque para Carteira Externa** (`POST /withdraw`).
+1.  **Input:** The user types "10" (USDT) in your app/site.
+2.  **Consultation:** Your system calls `POST /withdraw/transaction/crypto/amount` sending the value 10, the network object, and the cryptocurrency object.
+3.  **Display:** The API returns that this equals `9.369984879637112 USDT`. You display: *"You will receive approximately 9.369984879637112 USDT"*.
+4.  **Action:** If the user agrees, you call the **Create Withdrawal Request to External Wallet** route (`POST /withdraw`).
 
-### Exemplo Prático
+### Practical Example
 
-Siga os passos abaixo para realizar a cotação para carteira externa.
+Follow the steps below to perform a quote for external wallet.
 
-**1. Passo:** Insira o valor em USDT para a cotação:
+**Step 1:** Enter the USDT amount for the quote:
 ```json {2}
 {
     "amount": 10,
@@ -106,7 +106,7 @@ Siga os passos abaixo para realizar a cotação para carteira externa.
 }
 ```
 
-**2. Passo:** Você deve buscar e injetar o objeto da rede blockchain dentro de `blockchainNetwork`:
+**Step 2:** You must fetch and inject the blockchain network object inside `blockchainNetwork`:
 
 ```json {3-9}
 {
@@ -126,9 +126,9 @@ Siga os passos abaixo para realizar a cotação para carteira externa.
     }
 }
 ```
-Você pode obter a lista de redes blockchain <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">clicando aqui</a>.
+You can get the list of blockchain networks <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">by clicking here</a>.
 
-**3. Passo:** Você deve buscar e injetar o objeto da criptomoeda dentro de `cryptocurrency`:
+**Step 3:** You must fetch and inject the cryptocurrency object inside `cryptocurrency`:
 
 ```json {10-15}
 {
@@ -148,22 +148,22 @@ Você pode obter a lista de redes blockchain <a href={useBaseUrl('/docs/crypto/w
     }
 }
 ```
-Você pode obter a lista de criptomoedas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
+You can get the list of cryptocurrencies <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">by clicking here</a>.
 
 ---
 
-## Integração
+## Integration
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-  O exemplo de integração utiliza a biblioteca <code>Axios</code> em Node.js.
+  The integration example uses the <code>Axios</code> library in Node.js.
 
-    **Instalando `Axios`:**
+    **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Exemplo Javascript:**
+    **JavaScript Example:**
 ```js
 const axios = require("axios");
 
@@ -181,29 +181,29 @@ const axios = require("axios");
       headers: { "Authorization": `Bearer ${login.data.token}` }
     };
 
-    // 2. Buscar Redes e Criptomoedas
+    // 2. Fetch Networks and Cryptocurrencies
     const blockchains = await axios.get(`${url_api}/withdraw/company/blockchain-networks`, config);
             
-    // Seleciona a primeira rede disponível (Ex: BEP-20)
+    // Selects the first available network (Ex: BEP-20)
     const selectedNetwork = blockchains.data[0];
 
-    // Busca especificamente pelo objeto do USDT dentro da lista de criptos da rede
+    // Searches specifically for the USDT object within the network's crypto list
     const usdtObject = selectedNetwork.cryptocurrencies.find(
       item => item.cryptocurrency.symbol === 'USDT'
     );
 
     if (!usdtObject) {
-      throw new Error(`USDT não encontrado na rede ${selectedNetwork.name}`);
+      throw new Error(`USDT not found in ${selectedNetwork.name} network`);
     }
 
-    // 3. Calcular Cotação
+    // 3. Calculate Quote
     const { data } = await axios.post(`${url_api}/withdraw/transaction/crypto/amount`, {
       amount,
       cryptocurrency: usdtObject.cryptocurrency,
       blockchainNetwork: selectedNetwork
     }, config);
 
-    console.log("Cotação Recebida:", data); 
+    console.log("Quote Received:", data); 
   } catch (error) {
     console.log(error.response ? error.response.data : error.message);
   }
