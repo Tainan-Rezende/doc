@@ -66,7 +66,7 @@ O cliente foi criado com sucesso e já pode ser utilizado.
   "customer": {
     "_id": "696d1f3331117************",
     "name": "Name Client",
-    "email": "email@domail",
+    "email": "email@domain",
     "document": "123***********"
   }
 }
@@ -121,7 +121,7 @@ Para creditar valores (Depósito), você deve passar o ID do cliente dentro do c
   "customer": {
     "_id": "696d1f3331117************",
     "name": "Name Client",
-    "email": "email@domail",
+    "email": "email@domain",
     "document": "123***********"
   }
 }

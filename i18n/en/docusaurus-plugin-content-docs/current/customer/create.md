@@ -68,7 +68,7 @@ The customer was created successfully and is available for use.
   "customer": {
     "_id": "696d1f3331117************",
     "name": "Name Client",
-    "email": "email@domail",
+    "email": "email@domain",
     "document": "123***********"
   }
 }
@@ -123,7 +123,7 @@ To credit funds (Deposit), include the customer ID in the `customerId` field of 
   "customer": {
     "_id": "696d1f3331117************",
     "name": "Name Client",
-    "email": "email@domail",
+    "email": "email@domain",
     "document": "123***********"
   }
 }
