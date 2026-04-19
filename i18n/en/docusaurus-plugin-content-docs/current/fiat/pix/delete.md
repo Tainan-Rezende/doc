@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import DeletePixKeyTester from '@site/src/components/DeletePixKeyTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Remove Pix Key
 
@@ -170,80 +171,134 @@ const axios = require("axios");
 
   **Python Example:**
   ```py
-import requests
+  import requests
 
-email = "your_email@domain.com"
-password = "**********"
-customer_id = "12************"
-key_id = "1A***********"
+  email = "your_email@domain.com"
+  password = "**********"
+  customer_id = "12************"
+  key_id = "1A***********"
 
-try:
-  url_api = "https://api.xgateglobal.com"
-    
-  # Login request
-  login_response = requests.post(f"{url_api}/auth/token", json={"email": email, "password": password})
-  login_response.raise_for_status()
-  token = login_response.json().get("token")
-    
-  # Delete request
-  headers = {"Authorization": f"Bearer {token}"}
-  delete_response = requests.delete(f"{url_api}/pix/customer/{customer_id}/key/remove/{key_id}", headers=headers)
-  delete_response.raise_for_status()
-    
-  print(delete_response.json())  # Response
-except requests.exceptions.RequestException as error:
-  print(error.response.json().get("message", "An error occurred"))  # Error
+  try:
+    url_api = "https://api.xgateglobal.com"
+      
+    # Login request
+    login_response = requests.post(f"{url_api}/auth/token", json={"email": email, "password": password})
+    login_response.raise_for_status()
+    token = login_response.json().get("token")
+      
+    # Delete request
+    headers = {"Authorization": f"Bearer {token}"}
+    delete_response = requests.delete(f"{url_api}/pix/customer/{customer_id}/key/remove/{key_id}", headers=headers)
+    delete_response.raise_for_status()
+      
+    print(delete_response.json())  # Response
+  except requests.exceptions.RequestException as error:
+    print(error.response.json().get("message", "An error occurred"))  # Error
+    ```
+    </TabItem>
+    <TabItem value="php" label="PHP">
+    <p>Example of how to delete a Pix key using native PHP cURL.</p>
+    ```php
+  $email = "your_email@domain.com";
+  $password = "**********";
+  $customerId = "12************";
+  $keyId = "1A***********";
+  $url_api = "https://api.xgateglobal.com";
+
+  $loginUrl = $url_api . "/auth/token";
+  $loginData = json_encode(["email" => $email, "password" => $password]);
+
+  $ch = curl_init($loginUrl);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_POST, true);
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $loginData);
+  curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+
+  $loginResponse = curl_exec($ch);
+  if ($loginResponse === false) {
+    die('Login Error: ' . curl_error($ch));
+  }
+  $token = json_decode($loginResponse, true)['token'];
+  curl_close($ch);
+
+  $deleteUrl = $url_api . "/pix/customer/$customerId/key/remove/$keyId";
+
+  $ch = curl_init($deleteUrl);
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+  curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Authorization: Bearer $token",
+    "Content-Type: application/json"
+  ]);
+
+  $response = curl_exec($ch);
+  $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+  if ($response === false) {
+    echo 'Curl Error: ' . curl_error($ch);
+  } else {
+    if ($httpCode >= 200 && $httpCode < 300) {
+      echo "Chave removida com sucesso! (Status: $httpCode)";
+    } else {
+      echo "Erro ao remover: " . $response;
+    }
+  }
+
+  curl_close($ch);
   ```
   </TabItem>
-  <TabItem value="php" label="PHP">
-  <p>Example of how to delete a Pix key using native PHP cURL.</p>
-  ```php
-$email = "your_email@domain.com";
-$password = "**********";
-$customerId = "12************";
-$keyId = "1A***********";
-$url_api = "https://api.xgateglobal.com";
-
-$loginUrl = $url_api . "/auth/token";
-$loginData = json_encode(["email" => $email, "password" => $password]);
-
-$ch = curl_init($loginUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $loginData);
-curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-
-$loginResponse = curl_exec($ch);
-if ($loginResponse === false) {
-  die('Login Error: ' . curl_error($ch));
-}
-$token = json_decode($loginResponse, true)['token'];
-curl_close($ch);
-
-$deleteUrl = $url_api . "/pix/customer/$customerId/key/remove/$keyId";
-
-$ch = curl_init($deleteUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-  "Authorization: Bearer $token",
-  "Content-Type: application/json"
-]);
-
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-if ($response === false) {
-  echo 'Curl Error: ' . curl_error($ch);
-} else {
-  if ($httpCode >= 200 && $httpCode < 300) {
-    echo "Chave removida com sucesso! (Status: $httpCode)";
-  } else {
-    echo "Erro ao remover: " . $response;
-  }
-}
-
-curl_close($ch);
-  ```
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Remover Chave Pix
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /pix/customer/{clientId}/key/remove/{keyId}:
+    delete:
+      summary: Remover Chave Pix
+      description: Remove permanentemente uma chave Pix vinculada a um cliente. A chave não poderá mais ser utilizada para transações de saque.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) do cliente.
+        - in: path
+          name: keyId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) da chave Pix que será removida.
+      responses:
+        '201':
+          description: Sucesso. Chave Pix removida com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Chave Pix removida com sucesso
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou ausente.
+        '404':
+          description: Not Found. Cliente não encontrado ou Chave Pix inexistente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

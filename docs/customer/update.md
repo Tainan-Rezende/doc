@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import UpdateCustomerTester from '@site/src/components/UpdateCustomerTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Atualizar Cliente
 
@@ -141,5 +142,70 @@ const axios = require("axios");
     }
 })()
 ```
+  </TabItem>
+  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Atualizar Cliente
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /customer/{id}:
+    put:
+      summary: Atualizar Cliente
+      description: Atualiza o registro de um cliente existente na base de dados da XGate.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único do cliente (_id) retornado na criação.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - document
+              properties:
+                name:
+                  type: string
+                  description: Nome completo do cliente atualizado.
+                document:
+                  type: string
+                  description: CPF ou CNPJ atualizado (apenas números).
+                email:
+                  type: string
+                  format: email
+                  description: E-mail do cliente para notificações (opcional).
+                phone:
+                  type: string
+                  description: Telefone do cliente (opcional).
+      responses:
+        '200':
+          description: OK. Cliente alterado com sucesso.
+        '400':
+          description: Bad Request. O nome e/ou documento do cliente é obrigatório.
+        '401':
+          description: Unauthorized. Token inválido, expirado ou não informado.
+        '409':
+          description: Conflict. O nome ou documento informado já está cadastrado para outro cliente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

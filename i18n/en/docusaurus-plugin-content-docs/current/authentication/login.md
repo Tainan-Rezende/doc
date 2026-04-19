@@ -5,6 +5,7 @@ sidebar_label: 'Login'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import AuthTester from '@site/src/components/AuthTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Login
 
@@ -195,5 +196,54 @@ The token expires in 15 days. If you start receiving 401 Unauthorized errors in 
         }
     }
     ```
+  </TabItem>
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Token de Autenticação
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /auth/token:
+    post:
+      summary: Obter Token de Acesso
+      description: Troca as credenciais do usuário (e-mail e senha) por um token JWT Bearer válido por 15 dias.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: E-mail de acesso à plataforma.
+                password:
+                  type: string
+                  format: password
+                  description: Senha de acesso.
+      responses:
+        '200':
+          description: Autenticação realizada com sucesso. Retorna o token JWT.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Token JWT Bearer.
+        '401':
+          description: Não autorizado. E-mail ou senha incorretos.
+        '500':
+          description: Erro interno de servidor.`}
+    />
   </TabItem>
 </Tabs>

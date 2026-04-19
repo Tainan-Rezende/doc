@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Create Customer
 
@@ -191,5 +192,65 @@ const axios = require("axios");
   }
 })()
   ```
+  </TabItem>
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+      info:
+        title: API XGate - Criar Cliente
+        version: 1.0.0
+      servers:
+        - url: https://api.xgateglobal.com
+        description: Servidor de Produção XGate
+      paths:
+        /customer:
+          post:
+            summary: Criar Cliente
+            description: Cria um novo registro de cliente na base da XGate e retorna o ID único (_id) necessário para futuras operações.
+            security:
+              - bearerAuth: []
+            requestBody:
+              required: true
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    required:
+                      - name
+                      - document
+                    properties:
+                      name:
+                        type: string
+                        description: Nome completo do cliente.
+                      document:
+                        type: string
+                        description: CPF ou CNPJ (apenas números).
+                      email:
+                        type: string
+                        format: email
+                        description: E-mail do cliente para notificações (opcional).
+                      phone:
+                        type: string
+                        description: Telefone do cliente (opcional).
+            responses:
+              '201':
+                description: Novo cliente criado com sucesso. Retorna o objeto do cliente com o \`_id\`.
+              '200':
+                description: Cliente já cadastrado. Retorna o \`_id\` do cliente existente.
+              '400':
+                description: Bad Request. Nome e/ou documento são obrigatórios.
+              '401':
+                description: Unauthorized. Token inválido, não informado ou IP bloqueado.
+              '409':
+                description: Conflict. Conflito de dados de cadastro.
+              '500':
+                description: Internal Server Error.
+      components:
+        securitySchemes:
+          bearerAuth:
+            type: http
+            scheme: bearer
+            bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

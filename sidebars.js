@@ -5,7 +5,6 @@ const sidebars = {
     {
       type: 'category',
       label: 'Autenticação',
-      collapsed: true,
       items: ['authentication/login']
     },
     {
