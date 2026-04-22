@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import WithdrawFiatToCryptoTester from '@site/src/components/CreateWithdrawConversion';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Create Withdrawal Order (Crypto → FIAT)
 
@@ -356,5 +357,120 @@ const axios = require("axios");
     }
 })()
 ```
+  </TabItem>
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Saque para FIAT (Crypto → FIAT)
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw:
+    post:
+      summary: Solicitar Saque com Conversão (Crypto → FIAT)
+      description: Cria uma ordem de saque onde os ativos digitais (ex USDT) são convertidos e pagos em moeda fiduciária via Pix para o cliente.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - customerId
+                - currency
+                - cryptocurrency
+                - pixKey
+              properties:
+                amount:
+                  type: number
+                  description: O valor do saque na criptomoeda de origem (ex 0.1).
+                customerId:
+                  type: string
+                  description: O ID único (_id) do cliente que fará o saque.
+                currency:
+                  type: object
+                  description: A moeda fiduciária de destino (ex BRL).
+                  required:
+                    - _id
+                    - name
+                    - type
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    symbol:
+                      type: string
+                cryptocurrency:
+                  type: object
+                  description: A criptomoeda de origem (ex USDT).
+                  required:
+                    - _id
+                    - name
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    coinGecko:
+                      type: string
+                pixKey:
+                  type: object
+                  description: A chave Pix cadastrada do cliente para recebimento do valor convertido.
+                  required:
+                    - key
+                    - type
+                    - _id
+                  properties:
+                    key:
+                      type: string
+                    type:
+                      type: string
+                    _id:
+                      type: string
+                externalId:
+                  type: string
+                  description: Identificador de idempotência para evitar duplicidade na solicitação de saque.
+      responses:
+        '201':
+          description: Sucesso. Retorna o status PENDING e o ID da transação.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Solicitação de Saque realizada com sucesso
+                  status:
+                    type: string
+                    example: PENDING
+                  _id:
+                    type: string
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '404':
+          description: Not Found. O customerId fornecido não existe.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

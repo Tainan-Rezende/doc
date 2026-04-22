@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreatePixDepositTester from '@site/src/components/CreatePixDepositTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Create Deposit Order (Fiat → Crypto)
 
@@ -325,5 +326,130 @@ const axios = require("axios");
     }
 })()
 ```
+  </TabItem>
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Pedido de Depósito (Fiat → Crypto)
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /deposit:
+    post:
+      summary: Criar Pedido de Depósito com Conversão
+      description: Inicia um fluxo de cash-in onde o cliente paga em Fiat (Pix) e recebe o saldo convertido em Crypto (USDT). Retorna o código Pix (Copia e Cola).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+                - cryptocurrency
+              properties:
+                amount:
+                  type: number
+                  description: O valor do depósito em moeda fiduciária (ex 100.50).
+                customerId:
+                  type: string
+                  description: ID único do cliente. Não envie este campo se for utilizar o objeto 'customer'.
+                customer:
+                  type: object
+                  description: Dados para criar o cliente junto com a ordem.
+                  required:
+                    - name
+                    - document
+                  properties:
+                    name:
+                      type: string
+                    document:
+                      type: string
+                    phone:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+                currency:
+                  type: object
+                  description: Moeda fiduciária de origem (ex BRL).
+                  required:
+                    - _id
+                    - name
+                    - type
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    symbol:
+                      type: string
+                cryptocurrency:
+                  type: object
+                  description: Criptomoeda de destino para a conversão (ex USDT).
+                  required:
+                    - _id
+                    - name
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    coinGecko:
+                      type: string
+                externalId:
+                  type: string
+                  description: Identificador de idempotência para controle interno.
+      responses:
+        '201':
+          description: Sucesso. Retorna a ordem gerada, incluindo o código Pix Copia e Cola no campo data.code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pix Gerado com Sucesso
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        example: WAITING_PAYMENT
+                      code:
+                        type: string
+                        description: Linha digitável (Pix Copia e Cola)
+                      id:
+                        type: string
+                      customerId:
+                        type: string
+        '401':
+          description: Unauthorized. Token inválido, ausente ou IP bloqueado.
+        '404':
+          description: Not Found. O customerId fornecido não existe.
+        '409':
+          description: Conflict. Conflito nos dados do customer.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

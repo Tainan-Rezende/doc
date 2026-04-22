@@ -259,7 +259,7 @@ try {
 }
     ```
   </TabItem>
-  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
     <AICopyButton 
       promptText={`openapi: 3.0.3
 info:

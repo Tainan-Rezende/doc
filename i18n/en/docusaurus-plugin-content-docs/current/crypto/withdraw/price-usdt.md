@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionToFiatTester from '@site/src/components/GetTetherConversionToFiatTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # USDT to FIAT Quote
 
@@ -165,5 +166,79 @@ const axios = require("axios");
     }
 })()
 ```
+  </TabItem>
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Cotação USDT para FIAT
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw/conversion/brl/pix:
+    post:
+      summary: Cotação USDT para FIAT (Pix)
+      description: Calcula antecipadamente o valor em moeda fiduciária (BRL) que o cliente receberá ao sacar um valor específico em criptomoeda (USDT). Rota apenas de consulta (não gera pedido de saque).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - cryptocurrency
+              properties:
+                amount:
+                  type: number
+                  description: Valor em USDT que se deseja converter e cotar (ex 1.00).
+                cryptocurrency:
+                  type: object
+                  description: Objeto completo com os dados da criptomoeda de origem (ex USDT).
+                  required:
+                    - _id
+                    - name
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    coinGecko:
+                      type: string
+      responses:
+        '200':
+          description: Sucesso. Retorna o valor convertido para BRL e a taxa de câmbio aplicada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    description: Valor convertido na moeda fiduciária de destino.
+                  currency:
+                    type: string
+                    description: Símbolo da moeda fiat (ex R$).
+                  cryptoToFiatExchangeRate:
+                    type: string
+                    description: Taxa de câmbio utilizada no momento da cotação.
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

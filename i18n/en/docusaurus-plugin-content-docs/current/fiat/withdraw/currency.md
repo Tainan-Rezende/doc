@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ListWithdrawCurrenciesTester from '@site/src/components/ListWithdrawCurrenciesTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Fiat Currencies
 
@@ -156,5 +157,63 @@ const axios = require("axios");
   }
 })()
   ```
+  </TabItem>
+  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Moedas para Saque
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw/company/currencies:
+    get:
+      summary: Listar Moedas para Saque
+      description: Retorna uma lista de todas as moedas fiduciárias disponíveis para a conta da empresa para operações de saque (cash-out). O objeto retornado é necessário para compor o payload de criação de saque.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Sucesso. Lista de moedas recuperada corretamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: ID único da moeda.
+                    name:
+                      type: string
+                      description: Nome/código da moeda (ex BRL).
+                    type:
+                      type: string
+                      description: Tipo de transação ou método (ex PIX).
+                    symbol:
+                      type: string
+                      description: Símbolo representativo da moeda (ex R$).
+                    createdDate:
+                      type: string
+                      format: date-time
+                    updatedDate:
+                      type: string
+                      format: date-time
+                    __v:
+                      type: integer
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>

@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ListBlockchainNetworksTester from '@site/src/components/ListBlockchainNetworksTester';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Listar Redes Blockchain
 
@@ -180,5 +181,70 @@ const axios = require("axios");
     }
 })()
 ```
+  </TabItem>
+  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
+    <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Redes Blockchain
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /deposit/company/blockchain-networks:
+    get:
+      summary: Listar Redes Blockchain
+      description: Retorna uma lista de todas as redes blockchain suportadas pela plataforma (ex ERC-20, BEP-20, Polygon). O objeto retornado é obrigatório para montar payloads de saque (cash-out) em criptomoedas.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Sucesso. Lista de redes recuperada corretamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: ID único da rede.
+                    name:
+                      type: string
+                      description: Nome da rede de transferência (ex BEP-20, ERC-20).
+                    chainId:
+                      type: string
+                      description: Identificador da rede na blockchain (ex 56, 1).
+                    chain:
+                      type: string
+                      description: Nome da blockchain principal (ex BSC, Ethereum).
+                    symbol:
+                      type: string
+                      description: Símbolo do token nativo da rede (ex BNB, ETH).
+                    cryptocurrencies:
+                      type: array
+                      items:
+                        type: string
+                    createdDate:
+                      type: string
+                      format: date-time
+                    updatedDate:
+                      type: string
+                      format: date-time
+                    __v:
+                      type: integer
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
   </TabItem>
 </Tabs>
