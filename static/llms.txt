@@ -1,0 +1,63 @@
+# XGate Global
+
+> XGate Global é uma plataforma de pagamentos e conversão via API. Permite criar fluxos de Cash-in (Depósitos) e Cash-out (Saques) com conversão automática entre moeda fiduciária (BRL via Pix) e criptomoedas (USDT). Oferece suporte para saques para carteiras externas, gestão de sub-contas, controle de saldo, webhooks assinados e cotações em tempo real. Toda a API usa REST + JSON e autenticação via Bearer Token. Base URL: `https://api.xgateglobal.com`.
+
+Notas importantes:
+
+- Autenticação: todas as requisições precisam do header `Authorization: Bearer <seu-token-jwt>`.
+- Moedas: BRL (via Pix) e **USDT** (Tether). O USDT deve trafegar apenas em redes suportadas (ERC-20, BEP-20, Polygon).
+- Clientes: Únicos por documento. Use `customerId` (existente) ou o objeto `customer` (criação on-the-fly) em ordens de depósito. Nunca envie ambos.
+- Idempotência: Use `externalId` em todas as transações financeiras para evitar duplicidade.
+- Webhooks: Notificações enviadas via POST. Recomenda-se validar a procedência e usar os endpoints de reenvio em caso de falha na recepção.
+- Saldos: A conta possui saldos distintos para BRL e USDT; saques dependem de saldo disponível na sub-conta correspondente.
+
+## Autenticação
+
+- [POST /auth/token](https://tainan-rezende.github.io/doc/docs/authentication/login): Gera o token JWT. Obrigatórios: `email`, `password`. Validade: 15 dias.
+
+## Clientes (Customers)
+
+- [Referência de Clientes](https://tainan-rezende.github.io/doc/docs/customer/create): Gestão do cadastro de usuários finais.
+- [POST /customer](https://tainan-rezende.github.io/doc/docs/customer/create): Cria um cliente. Obrigatórios: `name`, `document`.
+- [GET /customer/{id}](https://tainan-rezende.github.io/doc/docs/customer/search): Recupera os dados completos de um cliente pelo ID.
+- [PUT /customer/{id}](https://tainan-rezende.github.io/doc/docs/customer/update): Atualiza informações cadastrais.
+
+## Chaves Pix
+
+- [Referência de Chaves Pix](https://tainan-rezende.github.io/doc/docs/fiat/pix/keys): Gestão de chaves para saques BRL.
+- [POST /pix/customer/{clientId}/key](https://tainan-rezende.github.io/doc/docs/fiat/pix/add): Cadastra nova chave (CPF, CNPJ, EMAIL, PHONE, RANDOM).
+- [GET /pix/customer/{clientId}/key](https://tainan-rezende.github.io/doc/docs/fiat/pix/keys): Lista chaves ativas de um cliente.
+- [DELETE /pix/customer/{clientId}/key/remove/{keyId}](https://tainan-rezende.github.io/doc/docs/fiat/pix/delete): Remove uma chave.
+
+## Depósitos (Cash-in)
+
+- [POST /deposit](https://tainan-rezende.github.io/doc/docs/fiat/deposit/create): Cria intenção de depósito Pix. Retorna `code` (copia-e-cola).
+  - [Fiat -> Fiat](https://tainan-rezende.github.io/doc/docs/fiat/deposit/create): Exige objeto `currency` (BRL).
+  - [Fiat -> Crypto](https://tainan-rezende.github.io/doc/docs/crypto/deposit/create): Exige objetos `currency` (BRL) e `cryptocurrency` (USDT).
+- [GET /crypto/customer/{clientId}/wallet](https://tainan-rezende.github.io/doc/docs/crypto/customer/wallet): Retorna endereço `publicKey` fixo para depósitos diretos em USDT.
+
+## Saques (Cash-out)
+
+- [POST /withdraw](https://tainan-rezende.github.io/doc/docs/fiat/withdraw/create): Processa retiradas. Status inicial: `PENDING`.
+  - [Fiat -> Fiat](https://tainan-rezende.github.io/doc/docs/fiat/withdraw/create): Saque via Pix. Exige objeto `pixKey`.
+  - [Crypto -> Fiat](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/create): Converte USDT para BRL e envia via Pix. Exige `pixKey` e `cryptocurrency`.
+  - [Crypto -> Wallet](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/create-external): Envio para carteira externa. Exige `wallet` (address) e `blockchainNetwork`.
+
+## Empresa e Sub-contas (Company)
+
+- [GET /company/balance](https://tainan-rezende.github.io/doc/docs/company/get-balance): Consulta saldos disponíveis (BRL/USDT) da conta principal.
+- [POST /company/sub-account](https://tainan-rezende.github.io/doc/docs/company/sub-account): Cria e gere sub-contas para isolamento de saldo.
+- [POST /company/sub-account/webhook](https://tainan-rezende.github.io/doc/docs/company/sub-account-webhook): Configura URL de notificação específica para sub-contas.
+- [POST /company/sub-account/ip](https://tainan-rezende.github.io/doc/docs/company/sub-account-ip): Whitelist de IPs permitidos para transações via sub-conta.
+
+## Webhooks
+
+- [Referência de Webhooks](https://tainan-rezende.github.io/doc/docs/webhooks/receive): Notificações de eventos de pagamento e transferência.
+- [POST /webhooks/withdraw/resend](https://tainan-rezende.github.io/doc/docs/webhooks/withdraw/resend): Força o reenvio de uma notificação de saque pelo ID da transação.
+- [POST /webhooks/deposit/resend](https://tainan-rezende.github.io/doc/docs/webhooks/deposit/resend): Força o reenvio de uma notificação de depósito pelo ID da transação.
+
+## Cotações e Apoio
+
+- [GET /deposit/company/currencies](https://tainan-rezende.github.io/doc/docs/fiat/deposit/currency): Lista moedas fiat suportadas.
+- [GET /withdraw/company/blockchain-networks](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/network): Lista redes (BEP-20, etc) e suas taxas.
+- [POST /withdraw/transaction/crypto/amount](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/price-external): Simula valor líquido de saque crypto após taxas de rede.

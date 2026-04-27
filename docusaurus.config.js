@@ -113,6 +113,11 @@ const config = {
             label: 'Documentação',
           },
           {
+            type: 'html',
+            position: 'right',
+            value: `<a class="navbar__item navbar__link" style="cursor: pointer; transition: color 0.3s;" onclick="event.preventDefault(); const t = this; t.innerText = 'Copiando...'; fetch('/doc/llms.txt').then(r => r.text()).then(text => { navigator.clipboard.writeText(text); t.innerText = 'Copiado com sucesso!'; t.style.color = 'var(--ifm-color-primary)'; setTimeout(() => { t.innerText = 'LLMs'; t.style.color = ''; }, 2000); });">LLMs</a>`,
+          },
+          {
             href: '/#faq',
             label: 'FAQ',
             position: 'left',

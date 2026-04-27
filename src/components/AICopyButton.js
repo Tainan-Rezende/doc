@@ -9,22 +9,19 @@ export default function AICopyButton({ promptText }) {
 
   const translations = {
     en: {
-      title: "AI Code Generator",
-      description: "Use the OpenAPI specification to generate the integration code in any programming language. Works perfectly with ChatGPT, Claude, GitHub Copilot, and Cursor.",
-      btnNormal: "Copy Integration Prompt",
-      btnCopied: "Prompt copied! Ready to paste."
+      btnNormal: "Copy AI Prompt",
+      btnCopied: "Copied!",
+      tooltip: "Use the OpenAPI specification to generate the integration code."
     },
     es: {
-      title: "Generador de Código IA",
-      description: "Utiliza la especificación OpenAPI para generar el código de integración en cualquier lenguaje. Funciona perfectamente con ChatGPT, Claude, GitHub Copilot y Cursor.",
-      btnNormal: "Copiar Prompt de Integración",
-      btnCopied: "¡Prompt copiado! Listo para pegar."
+      btnNormal: "Copiar Prompt IA",
+      btnCopied: "¡Copiado!",
+      tooltip: "Utiliza la especificación OpenAPI para generar el código de integración."
     },
     pt: {
-      title: "Gerador de Código via IA",
-      description: "Utilize a especificação OpenAPI para gerar o código de integração na sua linguagem preferida. Funciona perfeitamente com ChatGPT, Claude, GitHub Copilot e Cursor.",
       btnNormal: "Copiar Prompt de Integração",
-      btnCopied: "Prompt copiado! Pronto para colar."
+      btnCopied: "Copiado com sucesso!",
+      tooltip: "Utilize a especificação OpenAPI para gerar o código de integração em qualquer linguagem."
     }
   };
 
@@ -36,56 +33,40 @@ export default function AICopyButton({ promptText }) {
     setTimeout(() => setCopied(false), 2500);
   };
 
-  // Ícones SVG minimalistas para um visual mais profissional
   const SparkleIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
       <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
     </svg>
   );
 
   const CheckIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
       <polyline points="20 6 9 17 4 12"></polyline>
     </svg>
   );
 
   return (
-    <div style={{
-      border: '1px solid var(--ifm-color-emphasis-200)',
-      borderRadius: 'var(--ifm-global-radius)',
-      padding: '20px',
-      backgroundColor: 'var(--ifm-background-surface-color)',
-      marginBottom: '1rem'
-    }}>
-      <h3 style={{ margin: '0 0 10px 0', fontSize: '1.1rem', display: 'flex', alignItems: 'center' }}>
-        <SparkleIcon />
-        {t.title}
-      </h3>
-      <p style={{ fontSize: '0.9rem', color: 'var(--ifm-color-emphasis-700)', marginBottom: '20px', lineHeight: '1.5' }}>
-        {t.description}
-      </p>
-      
-      <button
-        onClick={handleCopy}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          padding: '12px 20px',
-          backgroundColor: copied ? 'var(--ifm-color-success)' : 'var(--ifm-color-primary)',
-          color: '#ffffff',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontWeight: '600',
-          fontSize: '0.95rem',
-          transition: 'all 0.2s ease',
-        }}
-      >
-        {copied ? <CheckIcon /> : <SparkleIcon />}
-        {copied ? t.btnCopied : t.btnNormal}
-      </button>
-    </div>
+    <button
+      className={copied ? 'copied' : ''}
+      onClick={handleCopy}
+      title={t.tooltip}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '6px 14px',
+        backgroundColor: copied ? 'var(--ifm-color-primary)' : 'transparent', // Transparente no início
+        color: copied ? '#ffffff' : 'var(--ifm-color-emphasis-600)', // Branco no sucesso, Cinza no início
+        border: copied ? '1px solid var(--ifm-color-primary)' : '1px solid var(--ifm-color-emphasis-300)', // Borda que acende
+        borderRadius: '6px',
+        cursor: 'pointer',
+        fontWeight: '500', // Um pouco menos "gordo" para ficar mais elegante
+        fontSize: '0.85rem',
+        transition: 'all 0.2s ease',
+      }}
+    >
+      {copied ? <CheckIcon /> : <SparkleIcon />}
+      {copied ? t.btnCopied : t.btnNormal}
+    </button>
   );
 }

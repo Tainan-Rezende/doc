@@ -28,3 +28,36 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.markdown>header>h1,
+.markdown>h1:first-child {
+  padding-right: 220px;
+  box-sizing: border-box;
+}
+
+.ai-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -3.5rem;
+  margin-bottom: 2rem;
+}
+
+.ai-btn-wrapper button:not(.copied):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  border-color: var(--ifm-color-primary) !important;
+  background-color: var(--ifm-color-primary-darker) !important;
+  color: #fff !important;
+}
+
+@media screen and (max-width: 996px) {
+  .ai-btn-wrapper {
+    margin-top: 1rem;
+    justify-content: flex-start;
+  }
+
+  .markdown>header>h1,
+  .markdown>h1:first-child {
+    padding-right: 0;
+  }
+}
