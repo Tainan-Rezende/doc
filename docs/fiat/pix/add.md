@@ -72,11 +72,7 @@ components:
     />
 </div>
 
-Este endpoint permite cadastrar uma nova chave Pix (E-mail, CPF, CNPJ, Telefone ou Aleatória) para seu cliente final.
-
-<!-- :::info[Nota sobre Validação]
-O sistema valida automaticamente se o formato da chave corresponde ao `type` informado (ex: se o CPF tem 11 dígitos, se o e-mail é válido, etc).
-::: -->
+Este endpoint permite cadastrar uma nova Chave Pix (E-mail, CPF, CNPJ, Telefone ou Aleatória) para seu cliente final.
 
 ---
 ## Endpoint

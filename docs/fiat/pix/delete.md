@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Remover Chave'
 sidebar_position: 2
+description: 'Este endpoint permite remover a Chave Pix de seu cliente final.'
 ---
 
 import Tabs from '@theme/Tabs';

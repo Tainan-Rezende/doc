@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Criar Depósito'
 sidebar_position: 2
+description: 'Este endpoint permite gerar uma ordem de depósito (intenção de pagamento) para um cliente específico. Ao criar a ordem, o sistema retorna os dados necessários para que o usuário final realize o pagamento via Pix.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,115 @@ import CreatePixDepositTester from '@site/src/components/CreatePixDepositTester'
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Criar Pedido de Depósito
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Pedido de Depósito
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /deposit:
+    post:
+      summary: Criar Pedido de Depósito (Pix)
+      description: Inicia um fluxo de cash-in criando um pedido de depósito. Retorna o código Pix (Copia e Cola) necessário para o pagamento do usuário final.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+              properties:
+                amount:
+                  type: number
+                  description: O valor do depósito (ex 100.50).
+                customerId:
+                  type: string
+                  description: ID único do cliente. Não envie este campo se for utilizar o objeto 'customer'.
+                customer:
+                  type: object
+                  description: Dados para criar o cliente junto com a ordem. Não envie este campo se utilizar o 'customerId'.
+                  required:
+                    - name
+                    - document
+                  properties:
+                    name:
+                      type: string
+                    document:
+                      type: string
+                    phone:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+                currency:
+                  type: object
+                  description: Objeto com a moeda fiduciária para o depósito (obtido na rota de moedas de depósito).
+                  required:
+                    - _id
+                    - name
+                    - type
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    symbol:
+                      type: string
+                externalId:
+                  type: string
+                  description: Identificador de idempotência para controle interno do integrador.
+      responses:
+        '201':
+          description: Sucesso. Retorna a ordem gerada, incluindo o código Pix Copia e Cola no campo data.code.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pix Gerado com Sucesso
+                  data:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        example: WAITING_PAYMENT
+                      code:
+                        type: string
+                        description: Linha digitável (Pix Copia e Cola)
+                      id:
+                        type: string
+                      customerId:
+                        type: string
+        '401':
+          description: Unauthorized. Token inválido, ausente ou IP bloqueado.
+        '404':
+          description: Not Found. O customerId fornecido não existe na base.
+        '409':
+          description: Conflict. Conflito nos dados do customer (nome ou documento já cadastrado).
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 Este endpoint permite gerar uma ordem de depósito (intenção de pagamento) para um cliente específico. Ao criar a ordem, o sistema retorna os dados necessários para que o usuário final realize o pagamento via Pix.
 
@@ -247,113 +357,5 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
     }
 })()
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Criar Pedido de Depósito
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /deposit:
-    post:
-      summary: Criar Pedido de Depósito (Pix)
-      description: Inicia um fluxo de cash-in criando um pedido de depósito. Retorna o código Pix (Copia e Cola) necessário para o pagamento do usuário final.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-                - currency
-              properties:
-                amount:
-                  type: number
-                  description: O valor do depósito (ex 100.50).
-                customerId:
-                  type: string
-                  description: ID único do cliente. Não envie este campo se for utilizar o objeto 'customer'.
-                customer:
-                  type: object
-                  description: Dados para criar o cliente junto com a ordem. Não envie este campo se utilizar o 'customerId'.
-                  required:
-                    - name
-                    - document
-                  properties:
-                    name:
-                      type: string
-                    document:
-                      type: string
-                    phone:
-                      type: string
-                    email:
-                      type: string
-                      format: email
-                currency:
-                  type: object
-                  description: Objeto com a moeda fiduciária para o depósito (obtido na rota de moedas de depósito).
-                  required:
-                    - _id
-                    - name
-                    - type
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    type:
-                      type: string
-                    symbol:
-                      type: string
-                externalId:
-                  type: string
-                  description: Identificador de idempotência para controle interno do integrador.
-      responses:
-        '201':
-          description: Sucesso. Retorna a ordem gerada, incluindo o código Pix Copia e Cola no campo data.code.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Pix Gerado com Sucesso
-                  data:
-                    type: object
-                    properties:
-                      status:
-                        type: string
-                        example: WAITING_PAYMENT
-                      code:
-                        type: string
-                        description: Linha digitável (Pix Copia e Cola)
-                      id:
-                        type: string
-                      customerId:
-                        type: string
-        '401':
-          description: Unauthorized. Token inválido, ausente ou IP bloqueado.
-        '404':
-          description: Not Found. O customerId fornecido não existe na base.
-        '409':
-          description: Conflict. Conflito nos dados do customer (nome ou documento já cadastrado).
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

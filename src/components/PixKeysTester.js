@@ -18,7 +18,7 @@ export default function PixKeysTester() {
 
     const translations = {
         en: {
-            title: "🚀 Test: List Pix Keys",
+            title: "Test: List Pix Keys",
             stepAuth: "Authenticating...",
             stepFetch: "Fetching Keys...",
             errAuth: "Login Failed",
@@ -40,7 +40,7 @@ export default function PixKeysTester() {
             errorLabel: "Error:"
         },
         es: {
-            title: "🚀 Probar: Listar Claves Pix",
+            title: "Probar: Listar Claves Pix",
             stepAuth: "Autenticando...",
             stepFetch: "Buscando Claves...",
             errAuth: "Fallo de Inicio de Sesión",
@@ -62,7 +62,7 @@ export default function PixKeysTester() {
             errorLabel: "Error:"
         },
         pt: {
-            title: "🚀 Testar: Listar chaves pix",
+            title: "Testar: Listar chaves pix",
             stepAuth: "Autenticando...",
             stepFetch: "Buscando Chaves...",
             errAuth: "Falha no Login",

@@ -1,13 +1,64 @@
 import React, { useState } from 'react';
-import CodeBlock from '@theme/CodeBlock'; // 👈 Importe o componente nativo
+import CodeBlock from '@theme/CodeBlock';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function ListDepositCurrenciesTester() {
+  const { i18n } = useDocusaurusContext();
+  const locale = i18n.currentLocale;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const [resultado, setResultado] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const translations = {
+    en: {
+      title: "💰 Test: List Currencies",
+      emailPh: "email@...",
+      pwdPh: "••••••",
+      hidePwd: "Hide password",
+      showPwd: "Show password",
+      btnLoading: "Loading...",
+      btnSubmit: "List Available Currencies",
+      statusLabel: "Status:",
+      statusFail: "Failed",
+      statusOk: "OK",
+      errAuth: "Login failed",
+      errDefault: "Error"
+    },
+    es: {
+      title: "💰 Probar: Listar Monedas",
+      emailPh: "correo@...",
+      pwdPh: "••••••",
+      hidePwd: "Ocultar contraseña",
+      showPwd: "Mostrar contraseña",
+      btnLoading: "Cargando...",
+      btnSubmit: "Listar Monedas Disponibles",
+      statusLabel: "Estado:",
+      statusFail: "Fallo",
+      statusOk: "OK",
+      errAuth: "Inicio de sesión fallido",
+      errDefault: "Error"
+    },
+    pt: {
+      title: "💰 Testar: Listar Moedas",
+      emailPh: "email@...",
+      pwdPh: "••••••",
+      hidePwd: "Ocultar senha",
+      showPwd: "Mostrar senha",
+      btnLoading: "Carregando...",
+      btnSubmit: "Listar Moedas Disponíveis",
+      statusLabel: "Status:",
+      statusFail: "Falha",
+      statusOk: "OK",
+      errAuth: "Login falhou",
+      errDefault: "Erro"
+    }
+  };
+
+  const t = translations[locale] || translations.pt;
 
   const handleList = async (e) => {
     e.preventDefault();
@@ -24,7 +75,7 @@ export default function ListDepositCurrenciesTester() {
       const authData = await authResponse.json();
 
       if (!authResponse.ok || !authData.token) {
-        throw new Error(`Login falhou: ${authData.message}`);
+        throw new Error(`${t.errAuth}: ${authData.message}`);
       }
 
       // 2. GET CURRENCIES
@@ -39,7 +90,7 @@ export default function ListDepositCurrenciesTester() {
       setResultado({ status: response.status, body: data });
 
     } catch (error) {
-      setResultado({ erro: 'Erro', detalhe: error.message });
+      setResultado({ erro: t.errDefault, detalhe: error.message });
     } finally {
       setLoading(false);
     }
@@ -77,12 +128,12 @@ export default function ListDepositCurrenciesTester() {
       backgroundColor: 'var(--ifm-card-background-color)',
       marginTop: '20px',
     }}>
-      <h3 style={{ marginBottom: '15px' }}>💰 Testar: Listar Moedas</h3>
+      <h3 style={{ marginBottom: '15px' }}>{t.title}</h3>
 
       <form onSubmit={handleList} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
           <div style={{ flex: 1 }}>
-            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="email@..." />
+            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder={t.emailPh} />
           </div>
 
           <div style={{ flex: 1, position: 'relative' }}>
@@ -92,13 +143,13 @@ export default function ListDepositCurrenciesTester() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               style={{ ...inputStyle, paddingRight: '40px' }}
-              placeholder="••••••"
+              placeholder={t.pwdPh}
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               style={toggleButtonStyle}
-              title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              title={showPassword ? t.hidePwd : t.showPwd}
             >
               {showPassword ? '🙈' : '👁️'}
             </button>
@@ -106,18 +157,18 @@ export default function ListDepositCurrenciesTester() {
         </div>
 
         <button type="submit" disabled={loading} className="button button--primary button--block">
-          {loading ? 'Carregando...' : 'Listar Moedas Disponíveis'}
+          {loading ? t.btnLoading : t.btnSubmit}
         </button>
       </form>
 
       {resultado && (
         <div style={{ marginTop: '15px' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-            <strong>Status:&nbsp;</strong>
+            <strong>{t.statusLabel}&nbsp;</strong>
             {resultado.erro ? (
-              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-danger)' }}>Falha</span>
+              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-danger)' }}>{t.statusFail}</span>
             ) : (
-              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-success)' }}>{resultado.status} OK</span>
+              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-success)' }}>{resultado.status} {t.statusOk}</span>
             )}
           </div>
 

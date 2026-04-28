@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Receber Webhooks'
 sidebar_position: 6
+description: 'Os Webhooks são notificações automáticas enviadas pela XGate para o seu sistema sempre que o status de uma transação muda.'
 ---
 
 import Tabs from '@theme/Tabs';
