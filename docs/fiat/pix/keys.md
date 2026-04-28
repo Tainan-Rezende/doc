@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Chaves Pix'
 sidebar_position: 1
+description: 'Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,63 @@ import PixKeysTester from '@site/src/components/PixKeysTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Listar Chaves Pix
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Chaves Pix
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /pix/customer/{clientId}/key:
+    get:
+      summary: Listar Chaves Pix do Cliente
+      description: Retorna uma lista (array) com todas as chaves Pix ativas cadastradas para o cliente informado. Útil para recuperar o _id da chave antes de um saque.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) do cliente.
+      responses:
+        '200':
+          description: Lista de chaves Pix recuperada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      description: O valor da chave Pix.
+                    type:
+                      type: string
+                      description: O tipo da chave (ex EMAIL, CPF, PHONE).
+                    _id:
+                      type: string
+                      description: O ID único da chave Pix no sistema.
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou ausente.
+        '404':
+          description: Not Found. Cliente não encontrado.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.
 
@@ -45,9 +103,9 @@ A requisição não requer corpo (`body`), apenas os **Headers** de autenticaç�
 
 #### Parâmetros de URL
 
-| Parâmetro   | Tipo     | Obrigatório | Descrição |
-| :---------- | :------- | :---------: | :-------- |
-| `CLIENT_ID` | `string` | **Sim** | O `_id` do cliente que você deseja consultar a lista de chaves. |
+| Parâmetro   | Tipo     | Obrigatório | Descrição                                                       |
+| :---------- | :------- | :---------: | :-------------------------------------------------------------- |
+| `CLIENT_ID` | `string` |   **Sim**   | O `_id` do cliente que você deseja consultar a lista de chaves. |
 
 ---
 
@@ -179,140 +237,84 @@ Cada informação desse JSON será explicado na <a href={useBaseUrl('/docs/fiat/
     **Exemplo Python:**
     ```py
     import requests
-email = "your_email@domain.com"
-password = "**********"
-customer_id = "12************"
+    email = "your_email@domain.com"
+    password = "**********"
+    customer_id = "12************"
 
-try:
-    url_api = "https://api.xgateglobal.com"
-    
-    # Login
-    login_response = requests.post(f"{url_api}/auth/token", json={"email": email, "password": password})
-    login_response.raise_for_status()  # Levanta um erro se a resposta não for 2xx
-    
-    token = login_response.json().get("token")
+    try:
+        url_api = "https://api.xgateglobal.com"
+        
+        # Login
+        login_response = requests.post(f"{url_api}/auth/token", json={"email": email, "password": password})
+        login_response.raise_for_status()  # Levanta um erro se a resposta não for 2xx
+        
+        token = login_response.json().get("token")
 
-    # Buscar informações PIX
-    headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{url_api}/pix/customer/{customer_id}/key", headers=headers)
-    response.raise_for_status()
+        # Buscar informações PIX
+        headers = {"Authorization": f"Bearer {token}"}
+        response = requests.get(f"{url_api}/pix/customer/{customer_id}/key", headers=headers)
+        response.raise_for_status()
 
-    print(response.json())  # Response
+        print(response.json())  # Response
 
-except requests.exceptions.RequestException as error:
-    print(error.response.json().get("message", "Erro desconhecido"))  # Error
+    except requests.exceptions.RequestException as error:
+        print(error.response.json().get("message", "Erro desconhecido"))  # Error
     ```
   </TabItem>
   <TabItem value="php" label="PHP">
     <p>Exemplo de como obter a lista de chaves pix usando cURL nativo do PHP.</p>
     ```php
     $email = "your_email@domain.com";
-$password = "**********";
-$customerId = "12************";
+    $password = "**********";
+    $customerId = "12************";
 
-try {
-    $url_api = "https://api.xgateglobal.com";
+    try {
+        $url_api = "https://api.xgateglobal.com";
 
-    // Login
-    $login_ch = curl_init("$url_api/auth/token");
-    curl_setopt($login_ch, CURLOPT_POST, true);
-    curl_setopt($login_ch, CURLOPT_POSTFIELDS, json_encode(["email" => $email, "password" => $password]));
-    curl_setopt($login_ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
-    curl_setopt($login_ch, CURLOPT_RETURNTRANSFER, true);
-    
-    $login_response = curl_exec($login_ch);
-    $login_info = json_decode($login_response, true);
-    
-    if (curl_errno($login_ch)) {
-        throw new Exception("Erro ao fazer login: " . curl_error($login_ch));
+        // Login
+        $login_ch = curl_init("$url_api/auth/token");
+        curl_setopt($login_ch, CURLOPT_POST, true);
+        curl_setopt($login_ch, CURLOPT_POSTFIELDS, json_encode(["email" => $email, "password" => $password]));
+        curl_setopt($login_ch, CURLOPT_HTTPHEADER, ["Content-Type: application/json"]);
+        curl_setopt($login_ch, CURLOPT_RETURNTRANSFER, true);
+        
+        $login_response = curl_exec($login_ch);
+        $login_info = json_decode($login_response, true);
+        
+        if (curl_errno($login_ch)) {
+            throw new Exception("Erro ao fazer login: " . curl_error($login_ch));
+        }
+
+        curl_close($login_ch);
+
+        if (!isset($login_info["token"])) {
+            throw new Exception("Token não recebido.");
+        }
+
+        $token = $login_info["token"];
+
+        // Buscar informações PIX
+        $pix_ch = curl_init("$url_api/pix/customer/$customerId/key");
+        curl_setopt($pix_ch, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer $token",
+            "Content-Type: application/json"
+        ]);
+        curl_setopt($pix_ch, CURLOPT_RETURNTRANSFER, true);
+
+        $pix_response = curl_exec($pix_ch);
+        $pix_info = json_decode($pix_response, true);
+
+        if (curl_errno($pix_ch)) {
+            throw new Exception("Erro ao buscar dados PIX: " . curl_error($pix_ch));
+        }
+
+        curl_close($pix_ch);
+
+        print_r($pix_info); // Response
+
+    } catch (Exception $e) {
+        echo "Erro: " . $e->getMessage();
     }
-
-    curl_close($login_ch);
-
-    if (!isset($login_info["token"])) {
-        throw new Exception("Token não recebido.");
-    }
-
-    $token = $login_info["token"];
-
-    // Buscar informações PIX
-    $pix_ch = curl_init("$url_api/pix/customer/$customerId/key");
-    curl_setopt($pix_ch, CURLOPT_HTTPHEADER, [
-        "Authorization: Bearer $token",
-        "Content-Type: application/json"
-    ]);
-    curl_setopt($pix_ch, CURLOPT_RETURNTRANSFER, true);
-
-    $pix_response = curl_exec($pix_ch);
-    $pix_info = json_decode($pix_response, true);
-
-    if (curl_errno($pix_ch)) {
-        throw new Exception("Erro ao buscar dados PIX: " . curl_error($pix_ch));
-    }
-
-    curl_close($pix_ch);
-
-    print_r($pix_info); // Response
-
-} catch (Exception $e) {
-    echo "Erro: " . $e->getMessage();
-}
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Listar Chaves Pix
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /pix/customer/{clientId}/key:
-    get:
-      summary: Listar Chaves Pix do Cliente
-      description: Retorna uma lista (array) com todas as chaves Pix ativas cadastradas para o cliente informado. Útil para recuperar o _id da chave antes de um saque.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: clientId
-          required: true
-          schema:
-            type: string
-          description: O ID único (_id) do cliente.
-      responses:
-        '200':
-          description: Lista de chaves Pix recuperada com sucesso.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    key:
-                      type: string
-                      description: O valor da chave Pix.
-                    type:
-                      type: string
-                      description: O tipo da chave (ex EMAIL, CPF, PHONE).
-                    _id:
-                      type: string
-                      description: O ID único da chave Pix no sistema.
-        '401':
-          description: Unauthorized. Token JWT inválido, expirado ou ausente.
-        '404':
-          description: Not Found. Cliente não encontrado.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

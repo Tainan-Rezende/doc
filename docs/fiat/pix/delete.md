@@ -11,6 +11,61 @@ import AICopyButton from '@site/src/components/AICopyButton';
 
 # Remover Chave Pix
 
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Remover Chave Pix
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /pix/customer/{clientId}/key/remove/{keyId}:
+    delete:
+      summary: Remover Chave Pix
+      description: Remove permanentemente uma chave Pix vinculada a um cliente. A chave não poderá mais ser utilizada para transações de saque.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) do cliente.
+        - in: path
+          name: keyId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) da chave Pix que será removida.
+      responses:
+        '201':
+          description: Sucesso. Chave Pix removida com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Chave Pix removida com sucesso
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou ausente.
+        '404':
+          description: Not Found. Cliente não encontrado ou Chave Pix inexistente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
+
 Este endpoint permite remover a chave pix de seu cliente final.
 
 ---
@@ -246,59 +301,5 @@ if ($response === false) {
 
 curl_close($ch);
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Remover Chave Pix
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /pix/customer/{clientId}/key/remove/{keyId}:
-    delete:
-      summary: Remover Chave Pix
-      description: Remove permanentemente uma chave Pix vinculada a um cliente. A chave não poderá mais ser utilizada para transações de saque.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: clientId
-          required: true
-          schema:
-            type: string
-          description: O ID único (_id) do cliente.
-        - in: path
-          name: keyId
-          required: true
-          schema:
-            type: string
-          description: O ID único (_id) da chave Pix que será removida.
-      responses:
-        '201':
-          description: Sucesso. Chave Pix removida com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Chave Pix removida com sucesso
-        '401':
-          description: Unauthorized. Token JWT inválido, expirado ou ausente.
-        '404':
-          description: Not Found. Cliente não encontrado ou Chave Pix inexistente.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

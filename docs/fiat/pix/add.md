@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Adicionar Chave'
 sidebar_position: 2
+description: 'Este endpoint permite cadastrar uma nova Chave Pix para seu cliente final.'
 ---
 
 import Tabs from '@theme/Tabs';

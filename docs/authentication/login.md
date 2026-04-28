@@ -1,5 +1,6 @@
 ---
 sidebar_label: 'Login'
+description: 'Toda a interação com a API XGATE é protegida e exige autenticação. O primeiro passo para qualquer integração é obter seu token de acesso.'
 ---
 
 import Tabs from '@theme/Tabs';

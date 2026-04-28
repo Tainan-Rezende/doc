@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
 export default function DeletePixKeyTester() {
+  const { i18n } = useDocusaurusContext();
+  const locale = i18n.currentLocale;
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
@@ -13,11 +17,79 @@ export default function DeletePixKeyTester() {
   const [loading, setLoading] = useState(false);
   const [etapa, setEtapa] = useState('');
 
+  const translations = {
+    en: {
+      title: "🗑️ Test: Remove Key",
+      stepAuth: "Authenticating...",
+      stepDelete: "Deleting Key...",
+      errAuth: "Login Failed",
+      errCheckCreds: "Check credentials",
+      errExec: "Execution Error",
+      successMsg: "Key successfully removed.",
+      noDetailsMsg: "Error with no details in response body.",
+      emailPh: "email@domain.com",
+      pwdPh: "password",
+      hidePwd: "Hide password",
+      showPwd: "Show password",
+      lblCustomer: "Customer ID (_id)",
+      lblKeyId: "Pix Key ID (key _id)",
+      phCustomer: "Ex: 66e85...",
+      phKeyId: "Ex: 68fa5...",
+      btnSubmit: "Delete Key Permanently",
+      statusLabel: "Status: ",
+      statusError: "Error"
+    },
+    es: {
+      title: "🗑️ Probar: Eliminar Clave",
+      stepAuth: "Autenticando...",
+      stepDelete: "Eliminando Clave...",
+      errAuth: "Fallo de Inicio de Sesión",
+      errCheckCreds: "Verifique credenciales",
+      errExec: "Error de ejecución",
+      successMsg: "Clave eliminada con éxito.",
+      noDetailsMsg: "Error sin detalles en el cuerpo de la respuesta.",
+      emailPh: "correo@dominio.com",
+      pwdPh: "contraseña",
+      hidePwd: "Ocultar contraseña",
+      showPwd: "Mostrar contraseña",
+      lblCustomer: "Customer ID (_id)",
+      lblKeyId: "Pix Key ID (_id de la clave)",
+      phCustomer: "Ej: 66e85...",
+      phKeyId: "Ej: 68fa5...",
+      btnSubmit: "Eliminar Clave Permanentemente",
+      statusLabel: "Estado: ",
+      statusError: "Error"
+    },
+    pt: {
+      title: "🗑️ Testar: Remover Chave",
+      stepAuth: "Autenticando...",
+      stepDelete: "Deletando Chave...",
+      errAuth: "Falha no Login",
+      errCheckCreds: "Verifique credenciais",
+      errExec: "Erro na execução",
+      successMsg: "Chave removida com sucesso.",
+      noDetailsMsg: "Erro sem detalhes no corpo da resposta.",
+      emailPh: "email@dominio.com",
+      pwdPh: "senha",
+      hidePwd: "Ocultar senha",
+      showPwd: "Mostrar senha",
+      lblCustomer: "Customer ID (_id)",
+      lblKeyId: "Pix Key ID (_id da chave)",
+      phCustomer: "Ex: 66e85...",
+      phKeyId: "Ex: 68fa5...",
+      btnSubmit: "Deletar Chave Permanentemente",
+      statusLabel: "Status: ",
+      statusError: "Erro"
+    }
+  };
+
+  const t = translations[locale] || translations.pt;
+
   const handleDelete = async (e) => {
     e.preventDefault();
     setLoading(true);
     setResultado(null);
-    setEtapa('Autenticando...');
+    setEtapa(t.stepAuth);
 
     try {
       const authResponse = await fetch('https://api.xgateglobal.com/auth/token', {
@@ -28,10 +100,10 @@ export default function DeletePixKeyTester() {
       const authData = await authResponse.json();
 
       if (!authResponse.ok || !authData.token) {
-        throw new Error(`Falha no Login: ${authData.message || 'Verifique credenciais'}`);
+        throw new Error(`${t.errAuth}: ${authData.message || t.errCheckCreds}`);
       }
 
-      setEtapa('Deletando Chave...');
+      setEtapa(t.stepDelete);
 
       const url = `https://api.xgateglobal.com/pix/customer/${customerId}/key/remove/${keyId}`;
       
@@ -49,15 +121,15 @@ export default function DeletePixKeyTester() {
         deleteData = await deleteResponse.json();
       } catch (e) {
         if (deleteResponse.ok) {
-           deleteData = { message: "Chave removida com sucesso." };
+           deleteData = { message: t.successMsg };
         } else {
-           deleteData = { message: "Erro sem detalhes no corpo da resposta." };
+           deleteData = { message: t.noDetailsMsg };
         }
       }
 
       setResultado({ status: deleteResponse.status, body: deleteData });
     } catch (error) {
-      setResultado({ erro: 'Erro na execução', detalhe: error.message });
+      setResultado({ erro: t.errExec, detalhe: error.message });
     } finally {
       setLoading(false);
       setEtapa('');
@@ -101,12 +173,12 @@ export default function DeletePixKeyTester() {
     }}>
       <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '4px', backgroundColor: 'var(--ifm-color-danger)' }}></div>
 
-      <h3 style={{ marginBottom: '15px', color: 'var(--ifm-color-danger)' }}>🗑️ Testar: Remover Chave</h3>
+      <h3 style={{ marginBottom: '15px', color: 'var(--ifm-color-danger)' }}>{t.title}</h3>
 
       <form onSubmit={handleDelete}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
             <div>
-                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder="email@domain.com" />
+                <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder={t.emailPh} />
             </div>
             
             <div style={{ position: 'relative' }}>
@@ -116,13 +188,13 @@ export default function DeletePixKeyTester() {
                     value={password} 
                     onChange={e => setPassword(e.target.value)} 
                     style={{ ...inputStyle, paddingRight: '40px' }}
-                    placeholder="password" 
+                    placeholder={t.pwdPh} 
                 />
                 <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     style={toggleButtonStyle}
-                    title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                    title={showPassword ? t.hidePwd : t.showPwd}
                 >
                     {showPassword ? '🙈' : '👁️'}
                 </button>
@@ -131,22 +203,22 @@ export default function DeletePixKeyTester() {
 
         <hr style={{ border: '0', borderTop: '1px dashed var(--ifm-color-emphasis-300)', margin: '10px 0' }} />
 
-        <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>Customer ID (_id)</label>
-        <input type="text" required value={customerId} onChange={e => setCustomerId(e.target.value)} style={inputStyle} placeholder="Ex: 66e85..." />
+        <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.lblCustomer}</label>
+        <input type="text" required value={customerId} onChange={e => setCustomerId(e.target.value)} style={inputStyle} placeholder={t.phCustomer} />
 
-        <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>Pix Key ID (_id da chave)</label>
-        <input type="text" required value={keyId} onChange={e => setKeyId(e.target.value)} style={inputStyle} placeholder="Ex: 68fa5..." />
+        <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.lblKeyId}</label>
+        <input type="text" required value={keyId} onChange={e => setKeyId(e.target.value)} style={inputStyle} placeholder={t.phKeyId} />
 
         <button type="submit" disabled={loading} className="button button--danger button--block">
-          {loading ? etapa : 'Deletar Chave Permanentemente'}
+          {loading ? etapa : t.btnSubmit}
         </button>
       </form>
 
       {resultado && (
         <div style={{ marginTop: '15px', padding: '10px', background: 'var(--ifm-pre-background)', borderRadius: '5px' }}>
-          <strong>Status: </strong> 
+          <strong>{t.statusLabel} </strong> 
           <span style={{ color: resultado.status >= 200 && resultado.status < 300 ? 'var(--ifm-color-success)' : 'var(--ifm-color-danger)' }}>
-             {resultado.status || 'Erro'}
+             {resultado.status || t.statusError}
           </span>
           <pre style={{ margin: '5px 0 0 0', fontSize: '0.75rem' }}>{JSON.stringify(resultado.body || resultado, null, 2)}</pre>
         </div>
