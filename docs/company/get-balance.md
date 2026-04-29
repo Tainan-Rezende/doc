@@ -2,6 +2,7 @@
 sidebar_label: 'Consultar Saldo'
 sidebar_position: 1
 description: 'Este endpoint permite consultar os saldos disponíveis na sua conta da XGate. Você pode buscar o saldo total (todas as moedas) ou filtrar por uma moeda Fiat ou Criptomoeda específica.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

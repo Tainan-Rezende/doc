@@ -2,6 +2,7 @@
 sidebar_label: 'Fiat to USDT Quote'
 sidebar_position: 4
 description: 'This endpoint allows you to calculate in advance how much the customer will receive in crypto when depositing a specific amount in fiat currency.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -2,6 +2,7 @@
 sidebar_label: 'Cotação USDT para FIAT'
 sidebar_position: 5
 description: 'Este endpoint permite calcular antecipadamente quanto o cliente receberá da moeda fiduciária ao sacar um valor específico em criptomoeda.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

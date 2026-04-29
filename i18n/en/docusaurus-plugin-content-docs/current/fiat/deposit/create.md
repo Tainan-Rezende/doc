@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Create Deposit'
 sidebar_position: 2
-description: ''
+description: 'This endpoint creates a deposit order (payment intent) for a specific customer.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

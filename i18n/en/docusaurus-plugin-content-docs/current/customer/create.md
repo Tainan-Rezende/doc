@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Create Customer'
 sidebar_position: 2
-description: ''
+description: 'This endpoint creates a new customer record in the XGate database.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -43,7 +44,7 @@ import AICopyButton from '@site/src/components/AICopyButton';
                         description: Nome completo do cliente.
                       document:
                         type: string
-                        description: CPF ou CNPJ (apenas números).
+                        description: CPF ou CNPJ.
                       email:
                         type: string
                         format: email
@@ -113,7 +114,7 @@ Simulate creating a customer now. The result will show the generated `_id`.
 | Field      | Type     | Required | Description                            |
 | :--------- | :------- | :------- | :------------------------------------- |
 | `name`     | `string` | Yes      | Customer full name.                    |
-| `document` | `string` | Yes      | CPF or CNPJ (numbers only).            |
+| `document` | `string` | Yes      | CPF or CNPJ.            |
 | `email`    | `string` | No       | Customer email for notifications.      |
 | `phone`    | `string` | No       | Customer phone number.                 |
 

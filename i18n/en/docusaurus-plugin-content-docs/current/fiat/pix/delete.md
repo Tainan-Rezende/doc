@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Remove Pix Key'
 sidebar_position: 2
-description: ''
+description: "This endpoint allows removing a customer's Pix key."
+sidebar_class_name: 'sidebar-method-delete'
 ---
 
 import Tabs from '@theme/Tabs';

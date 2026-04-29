@@ -34,9 +34,6 @@ const config = {
 
   trailingSlash: false,
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'pt-br',
     locales: ['pt-br', 'en'],
@@ -63,10 +60,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   'https://github.com/Tainan-Rezende/doc',
         },
         blog: {
           showReadingTime: true,
@@ -129,10 +122,10 @@ const config = {
           },
         ],
       },
-      footer: {
-        style: 'dark',
-        copyright: `Copyright © ${new Date().getFullYear()} XGate, Inc.`,
-      },
+      // footer: {
+      //   style: 'dark',
+      //   copyright: `Copyright © ${new Date().getFullYear()} XGate, Inc.`,
+      // },
       prism: {
         theme: prismThemes.github,
         darkTheme: prismThemes.dracula,

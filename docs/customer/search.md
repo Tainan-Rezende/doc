@@ -2,6 +2,7 @@
 sidebar_label: 'Consultar'
 sidebar_position: 1
 description: 'Este endpoint consulta o registro de cliente na base da XGATE.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

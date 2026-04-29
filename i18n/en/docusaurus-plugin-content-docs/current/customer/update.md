@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Update'
 sidebar_position: 3
-description: ''
+description: 'This endpoint allows updating the customer record in the XGate database.'
+sidebar_class_name: 'sidebar-method-put'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -83,7 +84,7 @@ This endpoint allows updating the customer record in the XGate database.
 ---
 
 ## Endpoint
-- **Method:** <span className="badge badge--info">PUT</span>
+- **Method:** <span className="badge badge--warning">PUT</span>
 ```bash title="Endpoint URL"
 https://api.xgateglobal.com/customer/CUSTOMER_ID
 ```
@@ -115,7 +116,7 @@ Simulate updating a customer now.
 | Field      | Type     | Required | Description                       |
 | :--------- | :------- | :------- | :-------------------------------- |
 | `name`     | `string` | Yes      | Customer full name.               |
-| `document` | `string` | Yes      | CPF or CNPJ (numbers only).       |
+| `document` | `string` | Yes      | CPF or CNPJ.                      |
 | `email`    | `string` | No       | Customer email for notifications. |
 | `phone`    | `string` | No       | Customer phone number.            |
 

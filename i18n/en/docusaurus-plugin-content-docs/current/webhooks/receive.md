@@ -2,6 +2,7 @@
 sidebar_label: 'Receive Webhooks'
 sidebar_position: 6
 description: 'Webhooks are automatic notifications sent by XGate to your system whenever the status of a transaction changes (e.g. a Pix deposit was paid, a settlement error occurred, or a withdrawal entered processing).'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

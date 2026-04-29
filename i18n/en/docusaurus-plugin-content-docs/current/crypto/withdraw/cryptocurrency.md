@@ -2,6 +2,7 @@
 sidebar_label: 'Cryptocurrencies'
 sidebar_position: 1
 description: 'This endpoint returns all available cryptocurrencies for your account.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

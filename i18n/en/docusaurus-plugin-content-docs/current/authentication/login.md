@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Login'
-description: ''
+description: 'All interaction with the XGate API is secured and requires authentication.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

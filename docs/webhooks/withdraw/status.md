@@ -2,6 +2,7 @@
 sidebar_label: 'Consultar Saque'
 sidebar_position: 1
 description: 'Este endpoint permite a consulta detalhada de uma solicitação de saque previamente criada.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

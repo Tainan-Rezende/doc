@@ -2,6 +2,7 @@
 sidebar_label: 'Listar Redes'
 sidebar_position: 3
 description: 'Este endpoint retorna todas as redes blockchain suportadas.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

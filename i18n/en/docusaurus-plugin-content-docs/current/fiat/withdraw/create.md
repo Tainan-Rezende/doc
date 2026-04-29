@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Create Withdrawal'
 sidebar_position: 2
-description: ''
+description: 'This endpoint creates a withdrawal order for a specific customer.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

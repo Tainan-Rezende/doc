@@ -1,12 +1,5 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
-
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
+  --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
   --ifm-color-primary-darkest: #205d3b;
@@ -15,11 +8,18 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-navbar-link-color: #777;
+  --ifm-navbar-link-hover-color: #1a1a1a;
+  --ifm-navbar-link-active-color: #1a1a1a;
+  --ifm-menu-color: #777;
+  --ifm-menu-color-active: #111827;
+  --ifm-menu-color-background-active: #f3f4f6;
+  --ifm-menu-color-background-hover: #f9fafb;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #25c2a0;
+  /* --ifm-color-primary: #0eb599; */
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
@@ -27,6 +27,13 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-navbar-link-color: #9ca3af;
+  --ifm-navbar-link-hover-color: #ffffff;
+  --ifm-navbar-link-active-color: #ffffff;
+  --ifm-menu-color: #9ca3af;
+  --ifm-menu-color-active: #ffffff;
+  --ifm-menu-color-background-active: rgba(255, 255, 255, 0.1);
+  --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.05);
 }
 
 .markdown>header>h1,
@@ -46,8 +53,67 @@
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   border-color: var(--ifm-color-primary) !important;
-  background-color: var(--ifm-color-primary-darker) !important;
+  background-color: var(--ifm-color-primary) !important;
   color: #fff !important;
+}
+
+.sidebar-method-get .menu__link::before,
+.sidebar-method-post .menu__link::before,
+.sidebar-method-put .menu__link::before,
+.sidebar-method-delete .menu__link::before {
+  display: inline-block;
+  padding: 5px 8px;
+  border-radius: 3px;
+  font-size: 0.55rem;
+  font-weight: 500;
+  margin-right: 7px;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-method-get .menu__link::before { 
+  content: 'GET'; 
+  background-color: #d1fae5; 
+  color: #065f46; 
+}
+
+.sidebar-method-post .menu__link::before { 
+  content: 'POST'; 
+  background-color: #dbeafe; 
+  color: #1e40af; 
+}
+
+.sidebar-method-put .menu__link::before { 
+  content: 'PUT'; 
+  background-color: #fef3c7; 
+  color: #92400e; 
+}
+
+.sidebar-method-delete .menu__link::before { 
+  content: 'DEL'; 
+  background-color: #fee2e2; 
+  color: #991b1b; 
+}
+
+[data-theme='dark'] .sidebar-method-get .menu__link::before {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+}
+
+[data-theme='dark'] .sidebar-method-post .menu__link::before {
+  background-color: rgba(59, 130, 246, 0.15);
+  color: #93c5fd;
+}
+
+[data-theme='dark'] .sidebar-method-put .menu__link::before {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #fcd34d;
+}
+
+[data-theme='dark'] .sidebar-method-delete .menu__link::before {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
 }
 
 @media screen and (max-width: 996px) {

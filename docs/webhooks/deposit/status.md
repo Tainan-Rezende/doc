@@ -1,6 +1,8 @@
 ---
 sidebar_label: 'Consultar Depósito'
 sidebar_position: 1
+description: 'Este endpoint permite a consulta detalhada de uma solicitação de depósito previamente criada.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

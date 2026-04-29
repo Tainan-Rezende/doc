@@ -2,6 +2,7 @@
 sidebar_label: 'Create Subaccount'
 sidebar_position: 2
 description: 'This endpoint allows a Partner (Main Account) to create Subaccounts linked to their profile.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

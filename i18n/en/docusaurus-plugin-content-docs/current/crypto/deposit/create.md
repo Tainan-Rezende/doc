@@ -2,6 +2,7 @@
 sidebar_label: 'Create Deposit'
 sidebar_position: 2
 description: 'This endpoint generates a deposit order with automatic conversion.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

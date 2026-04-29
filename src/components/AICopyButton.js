@@ -28,7 +28,14 @@ export default function AICopyButton({ promptText }) {
   const t = translations[locale] || translations.pt;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(promptText);
+    const regraGlobal = `\n\n# REGRA GLOBAL DE IDIOMA E BOAS PRÁTICAS:
+# O usuário que colar este prompt pode falar outro idioma (Inglês, Espanhol, etc). 
+# Você DEVE gerar os comentários (//) e explicações de texto ESTRITAMENTE no idioma em que o usuário fez o pedido. 
+# NO ENTANTO, seguindo as boas práticas globais de programação, você DEVE manter TODOS os nomes de variáveis, funções e chaves do JSON em Inglês padrão. NUNCA traduza os nomes de variáveis ou chaves da API.`;
+
+    const promptFinal = promptText + regraGlobal;
+
+    navigator.clipboard.writeText(promptFinal);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -55,12 +62,12 @@ export default function AICopyButton({ promptText }) {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '6px 14px',
-        backgroundColor: copied ? 'var(--ifm-color-primary)' : 'transparent', // Transparente no início
-        color: copied ? '#ffffff' : 'var(--ifm-color-emphasis-600)', // Branco no sucesso, Cinza no início
-        border: copied ? '1px solid var(--ifm-color-primary)' : '1px solid var(--ifm-color-emphasis-300)', // Borda que acende
+        backgroundColor: copied ? 'var(--ifm-color-primary)' : 'transparent',
+        color: copied ? '#ffffff' : 'var(--ifm-color-emphasis-600)',
+        border: copied ? '1px solid var(--ifm-color-primary)' : '1px solid var(--ifm-color-emphasis-300)',
         borderRadius: '6px',
         cursor: 'pointer',
-        fontWeight: '500', // Um pouco menos "gordo" para ficar mais elegante
+        fontWeight: '500',
         fontSize: '0.85rem',
         transition: 'all 0.2s ease',
       }}

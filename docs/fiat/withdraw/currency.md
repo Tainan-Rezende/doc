@@ -2,6 +2,7 @@
 sidebar_label: 'Moedas FIAT'
 sidebar_position: 1
 description: 'Este endpoint retorna todas as moédas fiduciárias disponíveis para saque na sua conta.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

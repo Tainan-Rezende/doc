@@ -2,6 +2,7 @@
 sidebar_label: 'USDT to FIAT Quote'
 sidebar_position: 5
 description: 'This endpoint allows you to calculate in advance how much the client will receive in fiat currency when cashing out a specific amount in crypto.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

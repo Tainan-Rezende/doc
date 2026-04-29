@@ -2,6 +2,7 @@
 sidebar_label: 'Liberar IP (Saque)'
 sidebar_position: 4
 description: 'Este endpoint permite cadastrar automaticamente o primeiro IP autorizado para realizar requisições de saque em uma subconta recém-criada.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

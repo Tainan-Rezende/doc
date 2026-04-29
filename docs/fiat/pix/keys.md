@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Chaves Pix'
 sidebar_position: 1
-description: 'Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.'
+description: 'Este endpoint retorna todas as chaves Pix cadastradas para o seu cliente. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -69,7 +70,7 @@ components:
     />
 </div>
 
-Este endpoint retorna todas as chaves Pix cadastradas para a sua conta. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.
+Este endpoint retorna todas as chaves Pix cadastradas para o seu cliente. Use esta rota para consultar quais chaves você já tem ativas antes de tentar cadastrar uma nova.
 
 ---
 ## Endpoint

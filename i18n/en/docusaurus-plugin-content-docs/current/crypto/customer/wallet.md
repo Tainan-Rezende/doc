@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Get Crypto Wallet'
 sidebar_position: 1
-description: ''
+description: 'This endpoint returns the cryptocurrency wallets associated with a specific customer.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

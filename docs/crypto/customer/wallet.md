@@ -2,6 +2,7 @@
 sidebar_label: 'Buscar Carteira'
 sidebar_position: 1
 description: 'Este endpoint retorna as carteiras de criptomoedas associadas a um cliente específico.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

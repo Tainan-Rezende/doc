@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Fiat Currencies'
 sidebar_position: 1
-description: ''
+description: 'This endpoint returns all fiat currencies available for your account.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

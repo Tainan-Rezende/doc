@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Add Pix Key'
 sidebar_position: 2
-description: ''
+description: 'This endpoint allows registering a new Pix key (Email, CPF, CNPJ, Phone or Random) for your end customer.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

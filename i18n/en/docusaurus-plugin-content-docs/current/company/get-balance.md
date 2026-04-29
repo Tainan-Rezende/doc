@@ -2,6 +2,7 @@
 sidebar_label: 'Consult Balance'
 sidebar_position: 1
 description: 'This endpoint allows you to query the available balances in your XGate account.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -2,6 +2,7 @@
 sidebar_label: 'Quote for External Wallet'
 sidebar_position: 6
 description: 'This endpoint allows you to calculate in advance how much the client will receive in crypto when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

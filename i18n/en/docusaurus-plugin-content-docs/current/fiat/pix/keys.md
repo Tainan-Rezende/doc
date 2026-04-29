@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Pix Keys'
 sidebar_position: 1
-description: ''
+description: 'This endpoint returns all Pix keys registered for your customer.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -69,7 +70,7 @@ components:
     />
 </div>
 
-This endpoint returns all Pix keys registered for your account. Use this route to check which keys are already active before attempting to register a new one.
+This endpoint returns all Pix keys registered for your customer. Use this route to check which keys are already active before attempting to register a new one.
 
 ---
 ## Endpoint

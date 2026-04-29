@@ -1,7 +1,8 @@
 ---
 sidebar_label: 'Customer Lookup'
 sidebar_position: 1
-description: ''
+description: 'This endpoint queries the customer record in the XGate database.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -2,6 +2,7 @@
 sidebar_label: 'Cotação para Carteira Externa'
 sidebar_position: 6
 description: 'Este endpoint permite calcular antecipadamente quanto o cliente receberá da criptomoeda de origem ao criar uma solitação de saque para uma carteira externa, já descontando as taxas de gás da rede blockchain vigente.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

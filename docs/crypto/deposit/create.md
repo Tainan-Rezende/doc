@@ -2,6 +2,7 @@
 sidebar_label: 'Criar Depósito'
 sidebar_position: 2
 description: 'Este endpoint gera uma ordem de depósito com conversão automática para criptomoeda.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -2,6 +2,7 @@
 sidebar_label: 'Consult Deposit'
 sidebar_position: 1
 description: 'This endpoint allows for a detailed query of a previously created deposit request.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

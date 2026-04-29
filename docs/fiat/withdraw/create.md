@@ -2,6 +2,7 @@
 sidebar_label: 'Criar Saque'
 sidebar_position: 2
 description: 'Este endpoint permite gerar uma ordem de saque (retirada de fundos) para um cliente específico.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

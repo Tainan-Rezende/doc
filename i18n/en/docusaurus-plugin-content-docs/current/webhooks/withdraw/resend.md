@@ -2,6 +2,7 @@
 sidebar_label: 'Resend Webhook'
 sidebar_position: 2
 description: 'This endpoint allows you to force the resending of a webhook notification for a specific withdrawal transaction.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

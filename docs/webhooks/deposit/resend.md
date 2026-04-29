@@ -1,6 +1,8 @@
 ---
 sidebar_label: 'Reenviar Webhook'
 sidebar_position: 2
+description: 'Este endpoint permite forçar o reenvio de uma notificação de webhook para uma transação de depósito específica.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

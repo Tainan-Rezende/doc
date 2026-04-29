@@ -2,6 +2,7 @@
 sidebar_label: 'Atualizar'
 sidebar_position: 3
 description:: 'Este endpoint permite atualizar o registro de cliente na base de dados da XGATE.'
+sidebar_class_name: 'sidebar-method-put'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -50,7 +51,7 @@ paths:
                   description: Nome completo do cliente atualizado.
                 document:
                   type: string
-                  description: CPF ou CNPJ atualizado (apenas números).
+                  description: CPF ou CNPJ atualizado.
                 email:
                   type: string
                   format: email
@@ -83,7 +84,7 @@ Este endpoint permite atualizar o registro de cliente na base de dados da XGATE.
 ---
 
 ## Endpoint
-- **Método:** <span className="badge badge--info">PUT</span>
+- **Método:** <span className="badge badge--warning">PUT</span>
 ```bash title="URL do Endpoint"
 https://api.xgateglobal.com/customer/CUSTOMER_ID
 ```
@@ -115,7 +116,7 @@ Simule a atualização de um cliente agora mesmo.
 | Campo      | Tipo     | Obrigatório | Descrição                            |
 | :--------- | :------- | :---------- | :----------------------------------- |
 | `name`     | `string` | Sim         | Nome completo do cliente.            |
-| `document` | `string` | Sim         | CPF ou CNPJ (apenas números).        |
+| `document` | `string` | Sim         | CPF ou CNPJ.                         |
 | `email`    | `string` | Não         | E-mail do cliente para notificações. |
 | `phone`    | `string` | Não         | Telefone do cliente.                 |
 

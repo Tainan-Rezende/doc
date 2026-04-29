@@ -2,6 +2,7 @@
 sidebar_label: 'Criptomoedas'
 sidebar_position: 1
 description: 'Este endpoint retorna todas as criptomoedas disponíveis para saque na conta.'
+sidebar_class_name: 'sidebar-method-get'
 ---
 
 import Tabs from '@theme/Tabs';

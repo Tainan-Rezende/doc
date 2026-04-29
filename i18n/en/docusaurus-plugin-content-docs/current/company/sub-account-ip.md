@@ -2,6 +2,7 @@
 sidebar_label: 'Allow IP (Withdraw)'
 sidebar_position: 4
 description: 'This endpoint allows you to automatically register the first authorized IP to make withdrawal requests in a newly created subaccount.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

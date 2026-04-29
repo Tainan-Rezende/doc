@@ -2,6 +2,7 @@
 sidebar_label: 'Criar Depósito'
 sidebar_position: 2
 description: 'Este endpoint permite gerar uma ordem de depósito (intenção de pagamento) para um cliente específico. Ao criar a ordem, o sistema retorna os dados necessários para que o usuário final realize o pagamento via Pix.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

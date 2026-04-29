@@ -2,6 +2,7 @@
 sidebar_label: 'Criar Subconta'
 sidebar_position: 2
 description: 'Este endpoint permite que um Parceiro (Conta Principal) crie Subcontas atreladas ao seu perfil.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

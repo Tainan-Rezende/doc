@@ -2,6 +2,7 @@
 sidebar_label: 'Create Withdrawal for FIAT'
 sidebar_position: 3
 description: 'This endpoint allows the client to redeem their digital assets with automatic conversion to fiat currency. '
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

@@ -2,6 +2,7 @@
 sidebar_label: 'Webhook na Subconta'
 sidebar_position: 3
 description: 'Este endpoint permite cadastrar automaticamente a primeira URL de Webhook para uma subconta recém-criada.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';

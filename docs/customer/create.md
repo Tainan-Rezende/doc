@@ -2,6 +2,7 @@
 sidebar_label: 'Criar Cliente'
 sidebar_position: 2
 description: 'Este endpoint cria um novo registro de cliente na base da XGATE.'
+sidebar_class_name: 'sidebar-method-post'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -43,7 +44,7 @@ paths:
                   description: Nome completo do cliente.
                 document:
                   type: string
-                  description: CPF ou CNPJ (apenas números).
+                  description: CPF ou CNPJ.
                 email:
                   type: string
                   format: email
@@ -111,7 +112,7 @@ Simule a criação de um cliente agora mesmo. O resultado mostrará o `_id` gera
 | Campo      | Tipo     | Obrigatório | Descrição                            |
 | :--------- | :------- | :---------- | :----------------------------------- |
 | `name`     | `string` | Sim         | Nome completo do cliente.            |
-| `document` | `string` | Sim         | CPF ou CNPJ (apenas números).        |
+| `document` | `string` | Sim         | CPF ou CNPJ.                         |
 | `email`    | `string` | Não         | E-mail do cliente para notificações. |
 | `phone`    | `string` | Não         | Telefone do cliente.                 |
 
