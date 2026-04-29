@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Cotação FIAT para USDT'
 sidebar_position: 4
+description: 'Este endpoint permite calcular antecipadamente quanto o cliente receberá na criptomoeda de destino ao depositar um valor específico em moeda fiduciária.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,82 @@ import GetTetherConversionTester from '@site/src/components/GetTetherConversionT
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Cotação FIAT para USDT
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Cotação FIAT para USDT
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /deposit/conversion/tether:
+    post:
+      summary: Cotação FIAT para USDT
+      description: Calcula antecipadamente a conversão de um valor em moeda fiduciária (ex BRL) para USDT com base na taxa de câmbio atual. É uma rota de consulta e não gera um pedido de depósito.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+              properties:
+                amount:
+                  type: number
+                  description: Valor em moeda fiduciária a ser convertido (ex 100.00).
+                currency:
+                  type: object
+                  description: Objeto da moeda fiat de origem (obtido via GET /deposit/company/currencies).
+                  required:
+                    - _id
+                    - name
+                    - type
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    symbol:
+                      type: string
+      responses:
+        '200':
+          description: Sucesso. Retorna o valor convertido e a taxa de câmbio aplicada.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    description: Valor convertido na criptomoeda de destino.
+                  crypto:
+                    type: string
+                    description: Sigla da criptomoeda (ex USDT).
+                  fiatToCryptoExchangeRate:
+                    type: string
+                    description: Taxa de câmbio utilizada no momento da cotação.
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou não informado.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 Este endpoint permite calcular antecipadamente quanto o cliente receberá em **USDT** (Tether) ao depositar um valor específico em moeda fiduciária (BRL).
 
@@ -168,80 +245,5 @@ const axios = require("axios");
     }
 })()
 ```
-  </TabItem>
-  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Cotação FIAT para USDT
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /deposit/conversion/tether:
-    post:
-      summary: Cotação FIAT para USDT
-      description: Calcula antecipadamente a conversão de um valor em moeda fiduciária (ex BRL) para USDT com base na taxa de câmbio atual. É uma rota de consulta e não gera um pedido de depósito.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-                - currency
-              properties:
-                amount:
-                  type: number
-                  description: Valor em moeda fiduciária a ser convertido (ex 100.00).
-                currency:
-                  type: object
-                  description: Objeto da moeda fiat de origem (obtido via GET /deposit/company/currencies).
-                  required:
-                    - _id
-                    - name
-                    - type
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    type:
-                      type: string
-                    symbol:
-                      type: string
-      responses:
-        '200':
-          description: Sucesso. Retorna o valor convertido e a taxa de câmbio aplicada.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  amount:
-                    type: number
-                    description: Valor convertido na criptomoeda de destino.
-                  crypto:
-                    type: string
-                    description: Sigla da criptomoeda (ex USDT).
-                  fiatToCryptoExchangeRate:
-                    type: string
-                    description: Taxa de câmbio utilizada no momento da cotação.
-        '401':
-          description: Unauthorized. Token JWT inválido, expirado ou não informado.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

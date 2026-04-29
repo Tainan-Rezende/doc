@@ -1,13 +1,93 @@
 ---
 sidebar_label: 'Create Subaccount'
 sidebar_position: 2
+description: 'This endpoint allows a Partner (Main Account) to create Subaccounts linked to their profile.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Create Subaccount
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Subconta (Split de Taxas)
+  version: 1.0.0
+  description: Endpoint para criação de Subcontas atreladas à Conta Principal, permitindo configuração de comissões (markup) para depósitos e saques.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /company/subaccount:
+    post:
+      summary: Criar Subconta
+      description: Cria uma subconta independente (saldo, usuários) atrelada à conta principal e configura as taxas retidas (fee) em cada operação.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - user
+                - deposit
+                - withdraw
+              properties:
+                user:
+                  type: object
+                  description: Dados da empresa e credenciais de primeiro acesso (name, email, password, phone).
+                deposit:
+                  type: object
+                  description: Configuração de taxas para depósitos. Contém arrays de moedas e redes.
+                  properties:
+                    currencies:
+                      type: array
+                      description: Lista de moedas fiduciárias com suas respectivas taxas (fee).
+                    blockchainNetworks:
+                      type: array
+                      description: Lista de redes blockchain com suas respectivas taxas (fee).
+                    cryptocurrencies:
+                      type: array
+                      description: Lista de criptomoedas com suas respectivas taxas (fee).
+                withdraw:
+                  type: object
+                  description: Configuração de taxas para saques. Possui a mesma estrutura de arrays que o objeto 'deposit'.
+      responses:
+        '200':
+          description: Sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Subconta cadastrada com sucesso"
+        '401':
+          description: Unauthorized. Token inválido, expirado ou usuário não possui nível "Partner".
+        '500':
+          description: Internal Server Error. Geralmente causado por má formatação nos objetos aninhados do payload.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada.
+# 2. ALERTA DE PAYLOAD COMPLEXO: Como o JSON é muito grande, monte a estrutura do payload de forma modular e limpa no código gerado.
+# 3. Explique que os objetos 'deposit' e 'withdraw' possuem 3 arrays cada: 'currencies', 'blockchainNetworks' e 'cryptocurrencies'.
+# 4. Enfatize que para CADA item nesses arrays, é OBRIGATÓRIO enviar o objeto da moeda/rede e um objeto 'fee' com 'type' ("PERCENTAGE" ou "FIXED") e 'value' (número).
+# 5. DICA DE OURO: Instrua o desenvolvedor a enviar arrays vazios ([]) caso não queira configurar taxas para algum grupo específico.
+# 6. Adicione o Token Bearer no header de Authorization.`} 
+/>
+</div>
 
 This endpoint allows a Partner (Main Account) to create **Subaccounts** linked to their profile. 
 

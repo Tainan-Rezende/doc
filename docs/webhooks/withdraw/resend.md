@@ -1,17 +1,72 @@
 ---
 sidebar_label: 'Reenviar Webhook'
 sidebar_position: 2
+description: 'Este endpoint permite forçar o reenvio de uma notificação de webhook para uma transação de saque específica.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Reenviar Webhook
 
+<div className="ai-btn-wrapper">
+    <AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Reenviar Webhook de Saque
+  version: 1.0.0
+  description: Endpoint para forçar o reenvio de uma notificação de webhook para uma transação de saque específica.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /withdraw/{transactionId}/resend/webhook:
+    post:
+      summary: Reenviar Webhook de Saque
+      description: Rota de contingência para acionar manualmente o envio do payload de webhook de um saque para a URL cadastrada no painel da empresa. Não necessita de corpo (body) na requisição.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: O ID (_id) da transação de saque.
+      responses:
+        '200':
+          description: Sucesso. O gatilho foi acionado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Webhook de saque reenviado com sucesso"
+        '401':
+          description: Não autorizado (Token inválido/expirado ou IP bloqueado).
+        '404':
+          description: Não Encontrado (Transação não existe ou ID é inválido).
+        '500':
+          description: Erro interno do servidor.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada pelo usuário.
+# 2. IMPORTANTE: Esta é uma requisição POST, mas não envia corpo de dados (body vazio/null). O ID da transação vai direto na URL.
+# 3. Inclua a passagem do token Bearer no Header de Autorização.
+# 4. Adicione tratamento de erros com base nas respostas acima (ex: 404 para transação não encontrada).`} 
+/>
+</div>
+
 Este endpoint permite forçar o reenvio de uma notificação de webhook para uma transação de saque específica.
-
-
 
 ---
 
@@ -32,8 +87,8 @@ O valor **ID_TRANSACAO** na URL refere-se ao `_id` do saque. Esta requisição *
 
 ### Headers Obrigatórios
 
-| Header | Valor | Descrição |
-| :--- | :--- | :--- |
+| Header          | Valor                | Descrição                                  |
+| :-------------- | :------------------- | :----------------------------------------- |
 | `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação obtido no login. |
 
 ---
@@ -52,11 +107,11 @@ O comando foi recebido e a XGate reenviou o payload do webhook para a URL cadast
 
 ### Erros Comuns
 
-| Status | Mensagem | Motivo Provável |
-| :--- | :--- | :--- |
-| **401** | `Unauthorized` | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.<br />• Você não tem autorização para realizar essa ação. |
-| **404** | `Not Found` | • ID informado não é válido.<br />• A transação não existe. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte. |
+| Status  | Mensagem                | Motivo Provável                                                                                                                                            |
+| :------ | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.<br />• Você não tem autorização para realizar essa ação. |
+| **404** | `Not Found`             | • ID informado não é válido.<br />• A transação não existe.                                                                                                |
+| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte.                                                                                                 |
 
 ---
 

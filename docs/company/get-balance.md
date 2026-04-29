@@ -1,13 +1,72 @@
 ---
 sidebar_label: 'Consultar Saldo'
 sidebar_position: 1
+description: 'Este endpoint permite consultar os saldos disponíveis na sua conta da XGate. Você pode buscar o saldo total (todas as moedas) ou filtrar por uma moeda Fiat ou Criptomoeda específica.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Consultar Saldo da Empresa
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Consultar Saldo da Empresa
+  version: 1.0.0
+  description: Endpoint para consulta de saldos disponíveis (Fiat e Cripto). Requer Whitelist de IP.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /balance/company:
+    post:
+      summary: Consultar Saldo
+      description: Retorna uma lista com os saldos da conta empresa. É possível filtrar por uma moeda específica ou enviar um corpo vazio para retornar tudo.
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: Opcional. Envie um objeto vazio para saldo total ou detalhe o objeto currency/cryptocurrency para filtrar.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currency:
+                  type: object
+                  description: Filtro para moeda fiduciária.
+                cryptocurrency:
+                  type: object
+                  description: Filtro para criptomoeda.
+            example: {}
+      responses:
+        '200':
+          description: Sucesso. Retorna um Array com os saldos encontrados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        '401':
+          description: Não autorizado (Token inválido ou IP não cadastrado na Whitelist).
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada.
+# 2. AVISO CRÍTICO: Adicione um comentário em destaque no código informando que o IP do servidor deve ser cadastrado obrigatoriamente no painel da XGate (em Configurações > IP Permitidos para consulta de saldo). Sem isso, a API retornará 401.
+# 3. Mostre que para consultar o saldo total, basta enviar um objeto vazio ({}) no corpo do POST.
+# 4. A resposta é sempre um ARRAY. Mostre como iterar ou encontrar um saldo específico (ex: BRL).
+# 5. Adicione tratamento para erro 401 (Unauthorized/IP Block).`} 
+/>
+</div>
 
 Este endpoint permite consultar os saldos disponíveis na sua conta da XGate. Você pode buscar o saldo total (todas as moedas) ou filtrar por uma moeda Fiat ou Criptomoeda específica.
 

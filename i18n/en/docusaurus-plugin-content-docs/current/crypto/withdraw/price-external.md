@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Quote for External Wallet'
 sidebar_position: 6
+description: 'This endpoint allows you to calculate in advance how much the client will receive in crypto when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,96 @@ import GetTetherToExternalTester from '@site/src/components/GetTetherToExternalT
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Quote for External Wallet
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Cotação para Carteira Externa
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw/transaction/crypto/amount:
+    post:
+      summary: Cotação para Saque em Carteira Externa
+      description: Calcula o valor líquido que o cliente receberá em sua carteira externa, descontando antecipadamente as taxas de gás (network fees) da rede blockchain selecionada. Rota apenas de consulta (não gera pedido de saque).
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - cryptocurrency
+                - blockchainNetwork
+              properties:
+                amount:
+                  type: number
+                  description: Valor bruto do saque em criptomoeda (ex 10).
+                cryptocurrency:
+                  type: object
+                  description: Objeto completo com os dados da criptomoeda de origem (ex USDT).
+                  required:
+                    - _id
+                    - name
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    coinGecko:
+                      type: string
+                blockchainNetwork:
+                  type: object
+                  description: Objeto completo com os dados da rede blockchain pela qual a transferência ocorrerá.
+                  required:
+                    - _id
+                    - name
+                    - chainId
+                    - chain
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    chainId:
+                      type: string
+                    chain:
+                      type: string
+                    symbol:
+                      type: string
+      responses:
+        '200':
+          description: Sucesso. Retorna o valor líquido aproximado a ser recebido na carteira externa.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amount:
+                    type: number
+                    description: Valor líquido calculado na mesma criptomoeda.
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint allows you to calculate in advance how much the client will receive in **USDT** (Tether) when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.
 
@@ -210,94 +301,5 @@ const axios = require("axios");
   }
 })()
 ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Cotação para Carteira Externa
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /withdraw/transaction/crypto/amount:
-    post:
-      summary: Cotação para Saque em Carteira Externa
-      description: Calcula o valor líquido que o cliente receberá em sua carteira externa, descontando antecipadamente as taxas de gás (network fees) da rede blockchain selecionada. Rota apenas de consulta (não gera pedido de saque).
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-                - cryptocurrency
-                - blockchainNetwork
-              properties:
-                amount:
-                  type: number
-                  description: Valor bruto do saque em criptomoeda (ex 10).
-                cryptocurrency:
-                  type: object
-                  description: Objeto completo com os dados da criptomoeda de origem (ex USDT).
-                  required:
-                    - _id
-                    - name
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    symbol:
-                      type: string
-                    coinGecko:
-                      type: string
-                blockchainNetwork:
-                  type: object
-                  description: Objeto completo com os dados da rede blockchain pela qual a transferência ocorrerá.
-                  required:
-                    - _id
-                    - name
-                    - chainId
-                    - chain
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    chainId:
-                      type: string
-                    chain:
-                      type: string
-                    symbol:
-                      type: string
-      responses:
-        '200':
-          description: Sucesso. Retorna o valor líquido aproximado a ser recebido na carteira externa.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  amount:
-                    type: number
-                    description: Valor líquido calculado na mesma criptomoeda.
-        '401':
-          description: Unauthorized. Token JWT inválido, expirado ou ausente.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

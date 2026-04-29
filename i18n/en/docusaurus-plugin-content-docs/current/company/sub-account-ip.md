@@ -1,13 +1,77 @@
 ---
 sidebar_label: 'Allow IP (Withdraw)'
 sidebar_position: 4
+description: 'This endpoint allows you to automatically register the first authorized IP to make withdrawal requests in a newly created subaccount.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Allow Withdrawal IP on Subaccount
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Liberar IP de Saque (Subconta)
+  version: 1.0.0
+  description: Endpoint de setup exclusivo para cadastrar o primeiro IP autorizado a realizar saques em uma subconta recém-criada.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /withdraw/allowed-ip/subaccount:
+    post:
+      summary: Cadastrar Primeiro IP de Saque
+      description: Registra o IP do servidor que terá permissão para disparar saques nesta subconta. Retorna erro 400 se a subconta já possuir um IP cadastrado.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ip
+              properties:
+                ip:
+                  type: string
+                  description: Endereço IP (IPv4 ou IPv6) do servidor autorizado.
+                  example: "8.8.8.8"
+      responses:
+        '200':
+          description: Sucesso. O IP foi registrado e autorizado para saques.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Primeiro IP liberado para solicitação de saque cadastrado com sucesso"
+        '400':
+          description: Bad Request. A conta não é uma subconta válida ou já possui um IP cadastrado (limite atingido).
+        '401':
+          description: Unauthorized. Token inválido, expirado ou não informado.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada pelo usuário.
+# 2. AVISO CRÍTICO DE AUTENTICAÇÃO: Coloque um comentário em destaque informando que o Bearer Token utilizado DEVE ser o da SUBCONTA, e não o da Conta Master.
+# 3. AVISO DE USO ÚNICO: Explique no código que esta rota é apenas para o setup inicial. Se a subconta já tiver um IP cadastrado, a API retornará Erro 400. Novos IPs devem ser geridos via Dashboard.
+# 4. AVISO DE ESCOPO: Informe ao desenvolvedor que este IP libera APENAS requisições de saque. Ele NÃO libera a rota de consulta de saldo.
+# 5. O payload exige apenas o campo 'ip' em formato JSON.`} 
+/>
+</div>
 
 This endpoint allows you to automatically register the **first authorized IP** to make withdrawal requests in a newly created subaccount.
 

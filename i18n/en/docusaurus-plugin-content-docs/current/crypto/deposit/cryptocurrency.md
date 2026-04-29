@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Cryptocurrencies'
 sidebar_position: 1
+description: 'This endpoint returns all cryptocurrencies available for your account. '
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,65 @@ import ListCryptoCurrenciesTester from '@site/src/components/ListCryptoCurrencie
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Cryptocurrencies
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Criptomoedas
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /deposit/company/cryptocurrencies:
+    get:
+      summary: Listar Criptomoedas para Depósito
+      description: Retorna uma lista de todas as criptomoedas disponíveis (ex USDT) para a conta da empresa. O objeto retornado é necessário para compor o payload de criação de pedidos de depósito com conversão.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Sucesso. Lista de criptomoedas recuperada corretamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: ID único da criptomoeda.
+                    name:
+                      type: string
+                      description: Nome da criptomoeda (ex USDT).
+                    symbol:
+                      type: string
+                      description: Símbolo representativo da moeda (ex USDT).
+                    coinGecko:
+                      type: string
+                      description: Identificador da moeda na API do CoinGecko.
+                    createdDate:
+                      type: string
+                      format: date-time
+                    updatedDate:
+                      type: string
+                      format: date-time
+                    __v:
+                      type: integer
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint returns all cryptocurrencies available for your account. Use this route to consult the necessary data to create deposit order requests.
 
@@ -165,63 +225,5 @@ const axios = require("axios");
     }
 })()
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Listar Criptomoedas
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /deposit/company/cryptocurrencies:
-    get:
-      summary: Listar Criptomoedas para Depósito
-      description: Retorna uma lista de todas as criptomoedas disponíveis (ex USDT) para a conta da empresa. O objeto retornado é necessário para compor o payload de criação de pedidos de depósito com conversão.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Sucesso. Lista de criptomoedas recuperada corretamente.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                      description: ID único da criptomoeda.
-                    name:
-                      type: string
-                      description: Nome da criptomoeda (ex USDT).
-                    symbol:
-                      type: string
-                      description: Símbolo representativo da moeda (ex USDT).
-                    coinGecko:
-                      type: string
-                      description: Identificador da moeda na API do CoinGecko.
-                    createdDate:
-                      type: string
-                      format: date-time
-                    updatedDate:
-                      type: string
-                      format: date-time
-                    __v:
-                      type: integer
-        '401':
-          description: Unauthorized. Token inválido, expirado ou ausente.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

@@ -52,7 +52,7 @@ Recomendamos fortemente que você configure o firewall do seu servidor ou crie u
 
 Ao criar pedidos de Depósito ou Saque, você pode enviar o campo `externalId`. Ele possui duas funções vitais:
 
-1. **Prevenção de Duplicidade (Idempotência):** Impede que falhas de rede ou "duplo clique" do seu cliente final gerem múltiplas transações iguais na XGate. Se enviarmos duas requisições com o mesmo `externalId`, a segunda será ignorada.
+1. **Prevenção de Duplicidade (Idempotência):** Impede que falhas de rede ou "duplo clique" do seu cliente final gerem múltiplas transações iguais na XGate. Se forem enviadas duas requisições com o mesmo `externalId`, a segunda será ignorada.
 2. **Rastreabilidade:** Funciona como o código único do pedido no *seu* sistema. 
 
 **Nota:** Se você enviar o `externalId` na criação da transação, a XGate o devolverá dentro do payload do webhook, facilitando a busca no seu banco de dados.

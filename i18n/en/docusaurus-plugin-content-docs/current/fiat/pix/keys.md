@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Pix Keys'
 sidebar_position: 1
+description: ''
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,63 @@ import PixKeysTester from '@site/src/components/PixKeysTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Pix Keys
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Chaves Pix
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /pix/customer/{clientId}/key:
+    get:
+      summary: Listar Chaves Pix do Cliente
+      description: Retorna uma lista (array) com todas as chaves Pix ativas cadastradas para o cliente informado. Útil para recuperar o _id da chave antes de um saque.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) do cliente.
+      responses:
+        '200':
+          description: Lista de chaves Pix recuperada com sucesso.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    key:
+                      type: string
+                      description: O valor da chave Pix.
+                    type:
+                      type: string
+                      description: O tipo da chave (ex EMAIL, CPF, PHONE).
+                    _id:
+                      type: string
+                      description: O ID único da chave Pix no sistema.
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou ausente.
+        '404':
+          description: Not Found. Cliente não encontrado.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint returns all Pix keys registered for your account. Use this route to check which keys are already active before attempting to register a new one.
 
@@ -258,61 +316,5 @@ try {
     echo "Erro: " . $e->getMessage();
 }
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Listar Chaves Pix
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /pix/customer/{clientId}/key:
-    get:
-      summary: Listar Chaves Pix do Cliente
-      description: Retorna uma lista (array) com todas as chaves Pix ativas cadastradas para o cliente informado. Útil para recuperar o _id da chave antes de um saque.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: clientId
-          required: true
-          schema:
-            type: string
-          description: O ID único (_id) do cliente.
-      responses:
-        '200':
-          description: Lista de chaves Pix recuperada com sucesso.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    key:
-                      type: string
-                      description: O valor da chave Pix.
-                    type:
-                      type: string
-                      description: O tipo da chave (ex EMAIL, CPF, PHONE).
-                    _id:
-                      type: string
-                      description: O ID único da chave Pix no sistema.
-        '401':
-          description: Unauthorized. Token JWT inválido, expirado ou ausente.
-        '404':
-          description: Not Found. Cliente não encontrado.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

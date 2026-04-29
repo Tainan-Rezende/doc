@@ -6,8 +6,74 @@ sidebar_position: 1
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Consultar Depósito
+
+<div className="ai-btn-wrapper">
+    <AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Consultar Detalhes do Depósito
+  version: 1.0.0
+  description: Endpoint para consulta detalhada de solicitações de depósito (Fiat, Crypto ou Conversão).
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /deposit/{transactionId}/details:
+    get:
+      summary: Consultar Depósito
+      description: Retorna o objeto completo de uma transação de depósito através do ID único da XGate. Útil para verificar status e reconciliar dados.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: O ID (_id) do depósito gerado pela XGate.
+      responses:
+        '200':
+          description: Sucesso. Retorna os detalhes da transação de depósito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  currency:
+                    type: object
+                    description: Dados Fiat (presente em depósitos Pix).
+                  cryptocurrency:
+                    type: object
+                    description: Dados Crypto (presente em depósitos USDT).
+                  document:
+                    type: string
+                  identifiedDocumentPix:
+                    type: boolean
+                  customerId:
+                    type: string
+        '401':
+          description: Não autorizado (Token inválido ou expirado).
+        '404':
+          description: Depósito não encontrado.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada pelo usuário.
+# 2. Utilize o método GET enviando o transactionId como parâmetro de path na URL.
+# 3. A resposta pode conter o objeto 'currency' (Fiat), 'cryptocurrency' (Crypto) ou ambos. 
+# 4. Oriente o desenvolvedor a verificar o campo 'status' (ex: status === "PAID") dentro desses objetos para confirmar a liquidação.
+# 5. Adicione tratamento de erro para o status 404 (transação não encontrada).`} 
+/>
+</div>
 
 Este endpoint permite a consulta detalhada de uma solicitação de depósito previamente criada. Embora seja muito utilizado para verificar o "status do depósito", ele retorna o objeto completo com todas as informações vitais da transação.
 

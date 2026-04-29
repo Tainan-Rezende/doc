@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Create Withdrawal'
 sidebar_position: 2
+description: ''
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,105 @@ import CreatePixWithdrawTester from '@site/src/components/CreatePixWithdrawTeste
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Create Withdrawal Order
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Pedido de Saque
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw:
+    post:
+      summary: Solicitar Saque (Cash-out)
+      description: Cria uma ordem de saque para debitar fundos e transferir para a chave Pix de destino do cliente. Exige o saldo disponível na conta da empresa.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - customerId
+                - currency
+                - pixKey
+              properties:
+                amount:
+                  type: number
+                  description: O valor do saque (ex 100.50).
+                customerId:
+                  type: string
+                  description: O ID único (_id) do cliente que receberá os fundos.
+                externalId:
+                  type: string
+                  description: Identificador de idempotência para controle interno (opcional, mas recomendado).
+                currency:
+                  type: object
+                  description: Objeto com os dados da moeda fiduciária (obtido via GET /withdraw/company/currencies).
+                  required:
+                    - _id
+                    - name
+                    - type
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    type:
+                      type: string
+                    symbol:
+                      type: string
+                pixKey:
+                  type: object
+                  description: O objeto completo da chave Pix do cliente (obtido via GET /pix/customer/{id}/key).
+                  required:
+                    - key
+                    - type
+                    - _id
+                  properties:
+                    key:
+                      type: string
+                    type:
+                      type: string
+                    _id:
+                      type: string
+      responses:
+        '201':
+          description: Sucesso. Retorna o status PENDING e o ID da transação.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Solicitação de Saque realizada com sucesso
+                  status:
+                    type: string
+                    example: PENDING
+                  _id:
+                    type: string
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '404':
+          description: Not Found. O customerId fornecido não existe.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint creates a withdrawal order for a specific customer. When an order is created, the system processes the transfer of funds to the provided destination Pix key.
 
@@ -244,103 +344,5 @@ You can get the list of keys <a href={useBaseUrl('/docs/pix/keys')} target="_bla
     }
 })()
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Criar Pedido de Saque
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /withdraw:
-    post:
-      summary: Solicitar Saque (Cash-out)
-      description: Cria uma ordem de saque para debitar fundos e transferir para a chave Pix de destino do cliente. Exige o saldo disponível na conta da empresa.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-                - customerId
-                - currency
-                - pixKey
-              properties:
-                amount:
-                  type: number
-                  description: O valor do saque (ex 100.50).
-                customerId:
-                  type: string
-                  description: O ID único (_id) do cliente que receberá os fundos.
-                externalId:
-                  type: string
-                  description: Identificador de idempotência para controle interno (opcional, mas recomendado).
-                currency:
-                  type: object
-                  description: Objeto com os dados da moeda fiduciária (obtido via GET /withdraw/company/currencies).
-                  required:
-                    - _id
-                    - name
-                    - type
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    type:
-                      type: string
-                    symbol:
-                      type: string
-                pixKey:
-                  type: object
-                  description: O objeto completo da chave Pix do cliente (obtido via GET /pix/customer/{id}/key).
-                  required:
-                    - key
-                    - type
-                    - _id
-                  properties:
-                    key:
-                      type: string
-                    type:
-                      type: string
-                    _id:
-                      type: string
-      responses:
-        '201':
-          description: Sucesso. Retorna o status PENDING e o ID da transação.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Solicitação de Saque realizada com sucesso
-                  status:
-                    type: string
-                    example: PENDING
-                  _id:
-                    type: string
-        '401':
-          description: Unauthorized. Token inválido, expirado ou ausente.
-        '404':
-          description: Not Found. O customerId fornecido não existe.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

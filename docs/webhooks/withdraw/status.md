@@ -1,13 +1,78 @@
 ---
 sidebar_label: 'Consultar Saque'
 sidebar_position: 1
+description: 'Este endpoint permite a consulta detalhada de uma solicitação de saque previamente criada.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Consultar Saque
+
+<div className="ai-btn-wrapper">
+    <AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Consultar Detalhes do Saque
+  version: 1.0.0
+  description: Endpoint para consulta detalhada de transações de saque (Fiat, Crypto ou Conversão).
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /withdraw/{transactionId}/details:
+    get:
+      summary: Consultar Saque
+      description: Retorna o objeto completo de uma transação de saque através do ID único da XGate.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: O ID (_id) do saque gerado pela XGate.
+      responses:
+        '200':
+          description: Sucesso. Retorna os detalhes da transação.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  currency:
+                    type: object
+                    description: Dados Fiat (presente em saques Pix ou conversão).
+                  cryptocurrency:
+                    type: object
+                    description: Dados Crypto (presente em saques USDT ou conversão).
+                  document:
+                    type: string
+                  customerId:
+                    type: string
+        '401':
+          description: Não autorizado (Token inválido ou expirado).
+        '404':
+          description: Saque não encontrado.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada.
+# 2. Utilize o método GET enviando o transactionId como parâmetro de path na URL.
+# 3. Importante: A resposta pode conter o objeto 'currency' (para operações Fiat), 'cryptocurrency' (para operações Crypto) ou AMBOS (para conversões).
+# 4. Inclua lógica para verificar o campo 'status' dentro desses objetos para confirmar se o pagamento foi realizado (ex: status === "PAID").
+# 5. Adicione tratamento para erro 404 (transação inexistente).`} 
+/>
+</div>
 
 Este endpoint permite a consulta detalhada de uma solicitação de saque previamente criada. Embora seja muito utilizado para verificar o "status do saque", ele retorna o objeto completo com todas as informações vitais da transação.
 

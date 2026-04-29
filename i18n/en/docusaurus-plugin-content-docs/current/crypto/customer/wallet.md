@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Get Crypto Wallet'
 sidebar_position: 1
+description: ''
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,62 @@ import GetCryptoWalletTester from '@site/src/components/GetCryptoWalletTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Get Crypto Wallet
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Buscar Carteira Crypto
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /crypto/customer/{clientId}/wallet:
+    get:
+      summary: Buscar Carteira Crypto do Cliente
+      description: Retorna a carteira de criptomoedas associada a um cliente específico, contendo o endereço (publicKey) e as redes aceitas para depósitos em USDT.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) do cliente.
+      responses:
+        '200':
+          description: Sucesso. Retorna um array com os dados da carteira.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    blockchainNetworks:
+                      type: array
+                      items:
+                        type: string
+                      description: Lista de redes blockchain aceitas (ex Ethereum, ERC-20, BEP-20, Polygon).
+                    publicKey:
+                      type: string
+                      description: Endereço público da carteira gerada para o cliente.
+        '401':
+          description: Unauthorized. Token JWT inválido, expirado ou não informado.
+        '404':
+          description: Not Found. Cliente não encontrado.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint returns the cryptocurrency wallets associated with a specific customer.
 
@@ -159,60 +216,5 @@ When integrating this route, we recommend that your interface displays the infor
     }
 })()
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Buscar Carteira Crypto
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /crypto/customer/{clientId}/wallet:
-    get:
-      summary: Buscar Carteira Crypto do Cliente
-      description: Retorna a carteira de criptomoedas associada a um cliente específico, contendo o endereço (publicKey) e as redes aceitas para depósitos em USDT.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: clientId
-          required: true
-          schema:
-            type: string
-          description: O ID único (_id) do cliente.
-      responses:
-        '200':
-          description: Sucesso. Retorna um array com os dados da carteira.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    blockchainNetworks:
-                      type: array
-                      items:
-                        type: string
-                      description: Lista de redes blockchain aceitas (ex Ethereum, ERC-20, BEP-20, Polygon).
-                    publicKey:
-                      type: string
-                      description: Endereço público da carteira gerada para o cliente.
-        '401':
-          description: Unauthorized. Token JWT inválido, expirado ou não informado.
-        '404':
-          description: Not Found. Cliente não encontrado.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

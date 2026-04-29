@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Add Pix Key'
 sidebar_position: 2
+description: ''
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,66 @@ import AddPixKeyTester from '@site/src/components/AddPixKeyTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Add Pix Key
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Adicionar Chave Pix
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /pix/customer/{clientId}/key:
+    post:
+      summary: Adicionar Chave Pix ao Cliente
+      description: Cadastra uma nova chave Pix vinculada a um cliente específico para possibilitar a realização de saques.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+          description: O ID único (_id) do cliente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - key
+                - type
+              properties:
+                key:
+                  type: string
+                  description: O valor da chave Pix (ex: email, CPF, telefone).
+                type:
+                  type: string
+                  enum: [EMAIL, CPF, CNPJ, PHONE, RANDOM]
+                  description: O tipo da chave informada.
+      responses:
+        '201':
+          description: Chave Pix adicionada com sucesso. Retorna o objeto completo da chave com o \`_id\`.
+        '400':
+          description: Bad Request. A chave informada não é válida.
+        '401':
+          description: Unauthorized. Token JWT inválido ou ausente.
+        '404':
+          description: Not Found. Cliente não encontrado ou chave já registrada.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint allows registering a new Pix key (Email, CPF, CNPJ, Phone or Random) for your end customer.
 
@@ -262,64 +323,5 @@ try {
     echo "Erro ao processar a requisição.";
 }
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Adicionar Chave Pix
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /pix/customer/{clientId}/key:
-    post:
-      summary: Adicionar Chave Pix ao Cliente
-      description: Cadastra uma nova chave Pix vinculada a um cliente específico para possibilitar a realização de saques.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: clientId
-          required: true
-          schema:
-            type: string
-          description: O ID único (_id) do cliente.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - key
-                - type
-              properties:
-                key:
-                  type: string
-                  description: O valor da chave Pix (ex: email, CPF, telefone).
-                type:
-                  type: string
-                  enum: [EMAIL, CPF, CNPJ, PHONE, RANDOM]
-                  description: O tipo da chave informada.
-      responses:
-        '201':
-          description: Chave Pix adicionada com sucesso. Retorna o objeto completo da chave com o \`_id\`.
-        '400':
-          description: Bad Request. A chave informada não é válida.
-        '401':
-          description: Unauthorized. Token JWT inválido ou ausente.
-        '404':
-          description: Not Found. Cliente não encontrado ou chave já registrada.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

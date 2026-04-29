@@ -1,13 +1,82 @@
 ---
 sidebar_label: 'Subaccount Webhook'
 sidebar_position: 3
+description: 'This endpoint allows you to automatically register the first Webhook URL for a newly created subaccount.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Create Subaccount Webhook
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Webhook da Subconta
+  version: 1.0.0
+  description: Endpoint de setup exclusivo para cadastrar a primeira URL de webhook de uma subconta recém-criada.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /webhook/subaccount:
+    post:
+      summary: Cadastrar Primeiro Webhook (Subconta)
+      description: Salva a URL inicial de recebimento de notificações HTTP para a subconta. Retornará erro 400 se a subconta já possuir um webhook configurado.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - externalWebhookUrl
+              properties:
+                name:
+                  type: string
+                  description: Nome interno de identificação do webhook.
+                  example: "Primeiro Webhook - Subconta"
+                externalWebhookUrl:
+                  type: string
+                  description: URL completa do servidor que receberá os payloads da XGate via POST.
+                  example: "https://sua-empresa.com/api/webhooks/xgate"
+      responses:
+        '200':
+          description: Sucesso. O webhook foi registrado e está ativo.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Primeiro Webhook cadastrado com sucesso"
+        '400':
+          description: Bad Request. A conta não é uma subconta válida ou já possui um webhook cadastrado.
+        '401':
+          description: Unauthorized. Token inválido, expirado ou não informado.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada pelo usuário.
+# 2. AVISO CRÍTICO DE AUTENTICAÇÃO: Coloque um comentário bem claro informando que o Bearer Token utilizado nesta requisição DEVE ser o token gerado com as credenciais da SUBCONTA, e não da Conta Principal (Master).
+# 3. AVISO DE USO ÚNICO: Informe no código que esta rota serve apenas para o setup inicial. Se a subconta já tiver um webhook, a API retornará Erro 400.
+# 4. Envie o payload JSON contendo os campos 'name' e 'externalWebhookUrl'.
+# 5. Adicione tratamento de erros com foco no HTTP 400 (limite atingido).`} 
+/>
+</div>
 
 This endpoint allows you to automatically register the **first Webhook URL** for a newly created subaccount.
 

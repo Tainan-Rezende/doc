@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Criar Saque Externo'
 sidebar_position: 4
+description: 'Este endpoint permite que o cliente realize um saque das criptomoedas para uma carteira externa.'
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,114 @@ import WithdrawCryptoToWalletTester from '@site/src/components/WithdrawCryptoToW
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Criar Pedido de Saque para Carteira Externa
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Criar Saque para Carteira Externa (Crypto)
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw:
+    post:
+      summary: Solicitar Saque Crypto para Carteira Externa
+      description: Cria uma ordem de saque de criptomoedas (ex USDT) transferindo os fundos para uma carteira externa do cliente através de uma rede blockchain específica.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - customerId
+                - cryptocurrency
+                - blockchainNetwork
+                - wallet
+              properties:
+                amount:
+                  type: number
+                  description: O valor do saque na criptomoeda escolhida (ex 0.1).
+                customerId:
+                  type: string
+                  description: O ID único (_id) do cliente que fará o saque.
+                wallet:
+                  type: string
+                  description: Endereço público da carteira externa de destino.
+                externalId:
+                  type: string
+                  description: Identificador de idempotência para controle interno (recomendado).
+                cryptocurrency:
+                  type: object
+                  description: Objeto com os dados da criptomoeda de transação (ex USDT).
+                  required:
+                    - _id
+                    - name
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    symbol:
+                      type: string
+                    coinGecko:
+                      type: string
+                blockchainNetwork:
+                  type: object
+                  description: Objeto com os dados da rede blockchain de transferência (ex BEP-20, ERC-20).
+                  required:
+                    - _id
+                    - name
+                    - chainId
+                    - chain
+                    - symbol
+                  properties:
+                    _id:
+                      type: string
+                    name:
+                      type: string
+                    chainId:
+                      type: string
+                    chain:
+                      type: string
+                    symbol:
+                      type: string
+      responses:
+        '201':
+          description: Sucesso. Retorna o status PENDING e o ID da transação.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Solicitação de Saque realizada com sucesso
+                  status:
+                    type: string
+                    example: PENDING
+                  _id:
+                    type: string
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '404':
+          description: Not Found. O customerId fornecido não existe.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 Este endpoint permite que o cliente realize um saque das criptomoedas para uma carteira externa.
 
@@ -346,112 +455,5 @@ const axios = require("axios");
     }
 })()
 ```
-  </TabItem>
-  <TabItem value="ai" label="✨ IA (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Criar Saque para Carteira Externa (Crypto)
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /withdraw:
-    post:
-      summary: Solicitar Saque Crypto para Carteira Externa
-      description: Cria uma ordem de saque de criptomoedas (ex USDT) transferindo os fundos para uma carteira externa do cliente através de uma rede blockchain específica.
-      security:
-        - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - amount
-                - customerId
-                - cryptocurrency
-                - blockchainNetwork
-                - wallet
-              properties:
-                amount:
-                  type: number
-                  description: O valor do saque na criptomoeda escolhida (ex 0.1).
-                customerId:
-                  type: string
-                  description: O ID único (_id) do cliente que fará o saque.
-                wallet:
-                  type: string
-                  description: Endereço público da carteira externa de destino.
-                externalId:
-                  type: string
-                  description: Identificador de idempotência para controle interno (recomendado).
-                cryptocurrency:
-                  type: object
-                  description: Objeto com os dados da criptomoeda de transação (ex USDT).
-                  required:
-                    - _id
-                    - name
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    symbol:
-                      type: string
-                    coinGecko:
-                      type: string
-                blockchainNetwork:
-                  type: object
-                  description: Objeto com os dados da rede blockchain de transferência (ex BEP-20, ERC-20).
-                  required:
-                    - _id
-                    - name
-                    - chainId
-                    - chain
-                    - symbol
-                  properties:
-                    _id:
-                      type: string
-                    name:
-                      type: string
-                    chainId:
-                      type: string
-                    chain:
-                      type: string
-                    symbol:
-                      type: string
-      responses:
-        '201':
-          description: Sucesso. Retorna o status PENDING e o ID da transação.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Solicitação de Saque realizada com sucesso
-                  status:
-                    type: string
-                    example: PENDING
-                  _id:
-                    type: string
-        '401':
-          description: Unauthorized. Token inválido, expirado ou ausente.
-        '404':
-          description: Not Found. O customerId fornecido não existe.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

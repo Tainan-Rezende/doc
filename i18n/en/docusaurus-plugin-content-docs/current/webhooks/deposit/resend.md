@@ -1,13 +1,69 @@
 ---
 sidebar_label: 'Resend Webhook'
 sidebar_position: 2
+description: 'This endpoint allows you to force the resending of a webhook notification for a specific deposit transaction.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Resend Webhook
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Reenviar Webhook de Depósito
+  version: 1.0.0
+  description: Endpoint para forçar o reenvio de uma notificação de webhook para uma transação de depósito específica.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /deposit/{transactionId}/resend/webhook:
+    post:
+      summary: Reenviar Webhook de Depósito
+      description: Rota de contingência para disparar novamente o payload do webhook de um depósito para a URL de notificação configurada.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: O ID (_id) da transação de depósito.
+      responses:
+        '200':
+          description: Sucesso. O comando foi recebido e o reenvio processado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Webhook de depósito reenviado com sucesso"
+        '401':
+          description: Não autorizado (Token inválido ou IP não permitido).
+        '404':
+          description: Transação não encontrada.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada pelo usuário.
+# 2. ATENÇÃO: Esta é uma requisição POST que NÃO aceita corpo (body vazio). O transactionId deve ser passado apenas na URL.
+# 3. Inclua a autenticação via Header Authorization Bearer Token.
+# 4. Trate a resposta de sucesso e exiba a mensagem retornada pela API.
+# 5. Adicione tratamento para erros comuns como 401 e 404.`} 
+/>
+</div>
 
 This endpoint allows you to force the resending of a webhook notification for a specific deposit transaction.
 

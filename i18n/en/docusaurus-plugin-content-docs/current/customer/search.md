@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Customer Lookup'
 sidebar_position: 1
+description: ''
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,68 @@ import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Customer Lookup
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Consultar Cliente
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /customer/{id}:
+    get:
+      summary: Consultar Cliente
+      description: Retorna os dados cadastrais completos de um cliente específico através do seu ID.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID único do cliente gerado pela XGate.
+      responses:
+        '200':
+          description: Dados do cliente encontrados com sucesso.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  document:
+                    type: string
+                  version:
+                    type: integer
+                  createdDate:
+                    type: string
+                    format: date-time
+                  updatedDate:
+                    type: string
+                    format: date-time
+        '401':
+          description: Unauthorized. Token inválido, não informado ou IP bloqueado.
+        '404':
+          description: Not Found. O ID informado não é válido ou o cliente não existe.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint queries the customer record in the XGate database.
 
@@ -144,66 +207,5 @@ const axios = require("axios");
   }
 })()
 ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Consultar Cliente
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /customer/{id}:
-    get:
-      summary: Consultar Cliente
-      description: Retorna os dados cadastrais completos de um cliente específico através do seu ID.
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: ID único do cliente gerado pela XGate.
-      responses:
-        '200':
-          description: Dados do cliente encontrados com sucesso.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  _id:
-                    type: string
-                  name:
-                    type: string
-                  email:
-                    type: string
-                  document:
-                    type: string
-                  version:
-                    type: integer
-                  createdDate:
-                    type: string
-                    format: date-time
-                  updatedDate:
-                    type: string
-                    format: date-time
-        '401':
-          description: Unauthorized. Token inválido, não informado ou IP bloqueado.
-        '404':
-          description: Not Found. O ID informado não é válido ou o cliente não existe.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>

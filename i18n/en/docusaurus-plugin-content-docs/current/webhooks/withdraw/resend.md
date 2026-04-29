@@ -1,13 +1,70 @@
 ---
 sidebar_label: 'Resend Webhook'
 sidebar_position: 2
+description: 'This endpoint allows you to force the resending of a webhook notification for a specific withdrawal transaction.'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import AICopyButton from '@site/src/components/AICopyButton';
 
 # Resend Webhook
+
+<div className="ai-btn-wrapper">
+<AICopyButton 
+  promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Reenviar Webhook de Saque
+  version: 1.0.0
+  description: Endpoint para forçar o reenvio de uma notificação de webhook para uma transação de saque específica.
+servers:
+  - url: https://api.xgateglobal.com
+paths:
+  /withdraw/{transactionId}/resend/webhook:
+    post:
+      summary: Reenviar Webhook de Saque
+      description: Rota de contingência para acionar manualmente o envio do payload de webhook de um saque para a URL cadastrada no painel da empresa. Não necessita de corpo (body) na requisição.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: O ID (_id) da transação de saque.
+      responses:
+        '200':
+          description: Sucesso. O gatilho foi acionado.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Webhook de saque reenviado com sucesso"
+        '401':
+          description: Não autorizado (Token inválido/expirado ou IP bloqueado).
+        '404':
+          description: Não Encontrado (Transação não existe ou ID é inválido).
+        '500':
+          description: Erro interno do servidor.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+# INSTRUÇÕES PARA A IA:
+# 1. Gere o código de integração para a linguagem solicitada pelo usuário.
+# 2. IMPORTANTE: Esta é uma requisição POST, mas não envia corpo de dados (body vazio/null). O ID da transação vai direto na URL.
+# 3. Inclua a passagem do token Bearer no Header de Autorização.
+# 4. Adicione tratamento de erros com base nas respostas acima (ex: 404 para transação não encontrada).`} 
+/>
+</div>
 
 This endpoint allows you to force the resending of a webhook notification for a specific withdrawal transaction.
 

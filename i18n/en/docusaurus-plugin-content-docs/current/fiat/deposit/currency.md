@@ -1,6 +1,7 @@
 ---
 sidebar_label: 'Fiat Currencies'
 sidebar_position: 1
+description: ''
 ---
 
 import Tabs from '@theme/Tabs';
@@ -10,6 +11,65 @@ import ListDepositCurrenciesTester from '@site/src/components/ListDepositCurrenc
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Fiat Currencies
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Moedas FIAT
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /deposit/company/currencies:
+    get:
+      summary: Listar Moedas para Depósito
+      description: Retorna uma lista de todas as moedas fiduciárias disponíveis para a conta da empresa. O objeto retornado é obrigatório na construção do payload de criação de pedidos de depósito.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Sucesso. Lista de moedas recuperada corretamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: ID único da moeda.
+                    name:
+                      type: string
+                      description: Nome/código da moeda (ex BRL).
+                    type:
+                      type: string
+                      description: Tipo de transação ou método (ex PIX).
+                    symbol:
+                      type: string
+                      description: Símbolo representativo da moeda (ex R$).
+                    createdDate:
+                      type: string
+                      format: date-time
+                    updatedDate:
+                      type: string
+                      format: date-time
+                    __v:
+                      type: integer
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
 
 This endpoint returns all fiat currencies available for your account. Use this route to query currencies and build the deposit order request.
 
@@ -155,63 +215,5 @@ const axios = require("axios");
     }
 })()
     ```
-  </TabItem>
-  <TabItem value="ai" label="✨ AI (ChatGPT, Claude)">
-    <AICopyButton 
-      promptText={`openapi: 3.0.3
-info:
-  title: API XGate - Listar Moedas FIAT
-  version: 1.0.0
-servers:
-  - url: https://api.xgateglobal.com
-    description: Servidor de Produção XGate
-paths:
-  /deposit/company/currencies:
-    get:
-      summary: Listar Moedas para Depósito
-      description: Retorna uma lista de todas as moedas fiduciárias disponíveis para a conta da empresa. O objeto retornado é obrigatório na construção do payload de criação de pedidos de depósito.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Sucesso. Lista de moedas recuperada corretamente.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    _id:
-                      type: string
-                      description: ID único da moeda.
-                    name:
-                      type: string
-                      description: Nome/código da moeda (ex BRL).
-                    type:
-                      type: string
-                      description: Tipo de transação ou método (ex PIX).
-                    symbol:
-                      type: string
-                      description: Símbolo representativo da moeda (ex R$).
-                    createdDate:
-                      type: string
-                      format: date-time
-                    updatedDate:
-                      type: string
-                      format: date-time
-                    __v:
-                      type: integer
-        '401':
-          description: Unauthorized. Token inválido, expirado ou ausente.
-        '500':
-          description: Internal Server Error.
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT`}
-    />
   </TabItem>
 </Tabs>
