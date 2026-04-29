@@ -1,19 +1,57 @@
-# Introdução
+# XGate Documentation System 🚀
 
-## O que é a XGate?
+Este repositório contém o código-fonte da documentação oficial da API XGate. O projeto foi desenvolvido utilizando **Docusaurus 3** e **React**, focado em oferecer uma experiência de integração rápida e intuitiva para desenvolvedores.
 
-XGate é uma solução moderna e poderosa para pagamentos e conversões financeiras, projetada para facilitar e automatizar transações via PIX e criptomoedas. Com uma API robusta, é perfeita para desenvolvedores que desejam integrar rapidamente funcionalidades financeiras às suas aplicações.
+## 🛠️ Tecnologias Utilizadas
 
-## Funcionalidades
+- [Docusaurus 3](https://docusaurus.io/) - Framework para documentação estática.
+- [React](https://reactjs.org/) - Biblioteca para interface de usuário.
+- [Infima](https://infima.dev/) - Sistema de design focado em conteúdo.
 
-- Processamento instantâneo via PIX;
-- Conversão automática de moeda FIAT para Crypto
-- Depósitos e saques com suporte a Bitcoin, Ethereum, SHIBA INU, USDT, USDC, BNB e MATIC
-- Monitoramento em tempo real com dashboard avançado
+## 📋 Pré-requisitos
 
-## Pacotes Oficiais
-Para simplificar e acelerar sua integração com a API da XGATE, nós oferecemos Pacotes de Desenvolvimento (SDKs) oficiais.
+Antes de começar, você precisará ter instalado em sua máquina:
+- [Node.js](https://nodejs.org/) (Versão 20.0 ou superior recomendada)
+- [NPM](https://www.npmjs.com/) ou [Yarn](https://yarnpkg.com/)
 
-Em vez de você precisar montar manualmente cada requisição HTTP, gerenciar tokens de autenticação e formatar o `body` de cada chamada, nossos pacotes fazem todo o trabalho pesado para você.
+## 🚀 Instalação e Uso
 
-Basta instalar o pacote correspondente à sua linguagem e chamar as funções já prontas.
+1. **Clone o repositório:**
+  ```bash
+  git clone https://github.com/Tainan-Rezende/doc.git
+  cd doc
+  ```
+
+2. **Instale as dependências:**
+  ```bash
+  npm install
+  ```
+3. **Inicie o servidor de desenvolvimento:**
+   Você pode rodar a documentação no idioma de sua preferência utilizando os atalhos configurados:
+
+   - **Português (Padrão):**
+    ```bash
+    npm start
+    ```
+
+   - **Inglês:**
+    ```bash
+    npm run start:en
+    ```
+
+O site estará disponível em http://localhost:3000.
+
+## 🏗️ Build e Deploy
+
+Para gerar os arquivos estáticos para produção:
+    ```bash
+    npm run build
+    ```
+Os arquivos serão gerados na pasta `/build`, prontos para serem hospedados em qualquer servidor estático (Vercel, Netlify, GitHub Pages, etc).
+
+## 📦 Pacotes Oficiais (SDKs)
+
+A documentação inclui guias para nossos pacotes oficiais, projetados para simplificar a integração com a API XGate em diversas linguagens. Estes SDKs abstraem a complexidade das requisições HTTP e gerenciamento de tokens.
+
+---
+© 2026 Equipe XGate. Todos os direitos reservados.
