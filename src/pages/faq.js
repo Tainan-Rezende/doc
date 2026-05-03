@@ -303,6 +303,41 @@ export default function FAQ() {
               <p>👉 <em><Translate id="homepage.faq.q7.footer">Aprenda a automatizar isso em</Translate> <strong><Link to={useBaseUrl('/docs/company/sub-account')}><Translate id="homepage.faq.q7.footer.link">Criar Subconta</Translate></Link></strong>.</em></p>
             </FAQItem>
 
+            {/* PERGUNTA 8: STATUS CODES (RESPOSTAS DO SERVIDOR) */}
+            <FAQItem question={<Translate id="homepage.faq.q8.title">Quais são os códigos de status (HTTP) retornados pela API?</Translate>}>
+              <p style={{ marginBottom: '20px' }}>
+                <Translate id="homepage.faq.q8.intro">A API da XGate utiliza padrões REST e retorna códigos de status HTTP convencionais para indicar o sucesso ou a falha de uma requisição. Abaixo estão os principais códigos que você encontrará:</Translate>
+              </p>
+
+              <ul style={{ listStyleType: 'none', padding: 0 }}>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-success)' }}>200 OK:</strong> A requisição foi recebida, processada e retornou com sucesso.
+                </li>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(16, 185, 129, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-success)' }}>201 Created:</strong> Sucesso! O recurso (ex: um novo cliente, depósito ou saque) foi criado no servidor.
+                </li>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-danger)' }}>400 Bad Request:</strong> Erro de validação. O corpo da sua requisição está mal formatado ou faltando campos obrigatórios.
+                </li>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-danger)' }}>401 Unauthorized:</strong> Falha de Autenticação. O seu <code>Token Bearer</code> não foi enviado no Header, está expirado ou é inválido.
+                </li>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-warning)' }}>403 Forbidden:</strong> Sem permissão. Você está autenticado, mas a sua conta não tem privilégios para executar esta ação específica.
+                </li>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(245, 158, 11, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-warning)' }}>404 Not Found:</strong> O recurso que você tentou acessar ou buscar (ex: um ID de transação específico) não existe.
+                </li>
+                <li style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(239, 68, 68, 0.1)', borderRadius: '8px' }}>
+                  <strong style={{ color: 'var(--ifm-color-danger)' }}>500 Internal Server Error:</strong> Falha interna no servidor da XGate. Caso isso ocorra, o problema é do nosso lado.
+                </li>
+              </ul>
+
+              <p style={{ marginTop: '20px' }}>
+                <strong>💡 <Translate id="homepage.faq.q8.tip.bold">Dica para debugging:</Translate></strong> <Translate id="homepage.faq.q8.tip">Sempre que a API retornar um erro (série 400 ou 500), o corpo da resposta trará um objeto JSON contendo a propriedade</Translate> <code>message</code> <Translate id="homepage.faq.q8.tip2">com os detalhes exatos do que causou a falha.</Translate>
+              </p>
+            </FAQItem>
+
           </div>
         </div>
       </main>

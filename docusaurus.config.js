@@ -131,6 +131,20 @@ const config = {
         additionalLanguages: ['php'],
       },
     }),
+
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        language: ["pt", "en", "es"],
+        indexDocs: true,
+        indexBlog: false,
+        indexPages: true,
+        highlightSearchTermsOnTargetPage: true
+      },
+    ],
+  ],
 };
 
 export default config;

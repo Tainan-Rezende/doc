@@ -78,28 +78,28 @@ body {
   letter-spacing: 0.5px;
 }
 
-.sidebar-method-get .menu__link::before { 
-  content: 'GET'; 
-  background-color: #d1fae5; 
-  color: #065f46; 
+.sidebar-method-get .menu__link::before {
+  content: 'GET';
+  background-color: #d1fae5;
+  color: #065f46;
 }
 
-.sidebar-method-post .menu__link::before { 
-  content: 'POST'; 
-  background-color: #dbeafe; 
-  color: #1e40af; 
+.sidebar-method-post .menu__link::before {
+  content: 'POST';
+  background-color: #dbeafe;
+  color: #1e40af;
 }
 
-.sidebar-method-put .menu__link::before { 
-  content: 'PUT'; 
-  background-color: #fef3c7; 
-  color: #92400e; 
+.sidebar-method-put .menu__link::before {
+  content: 'PUT';
+  background-color: #fef3c7;
+  color: #92400e;
 }
 
-.sidebar-method-delete .menu__link::before { 
-  content: 'DEL'; 
-  background-color: #fee2e2; 
-  color: #991b1b; 
+.sidebar-method-delete .menu__link::before {
+  content: 'DEL';
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 [data-theme='dark'] .sidebar-method-get .menu__link::before {
@@ -129,6 +129,47 @@ html body details {
 
 html body details summary::before {
   border-color: transparent transparent transparent var(--ifm-color-primary) !important;
+}
+
+html body input.navbar__search-input {
+  color: var(--ifm-font-color-base) !important;
+  border: 1px solid transparent !important;
+  transition: border-color 0.2s ease;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23666666" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="21" y1="21" x2="15.1" y2="15.1"></line></svg>') !important;
+  background-size: 16px !important;
+  background-position: 12px center !important;
+  background-repeat: no-repeat !important;
+}
+
+html body input.navbar__search-input:hover,
+html body input.navbar__search-input:focus {
+  border-color: var(--ifm-color-primary) !important;
+}
+
+html[data-theme='dark'] body input.navbar__search-input {
+  color: rgba(255, 255, 255, 0.9) !important;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23cccccc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><line x1="21" y1="21" x2="15.1" y2="15.1"></line></svg>') !important;
+}
+
+html[data-theme='dark'] body input.navbar__search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+html body kbd.searchHint_iIMx {
+  background-color: var(--ifm-color-emphasis-100) !important;
+  border: 1px solid var(--ifm-color-emphasis-300) !important;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300) !important;
+  box-shadow: none !important;
+  color: var(--ifm-color-emphasis-600) !important;
+  border-radius: 4px !important;
+}
+
+html[data-theme='dark'] body kbd.searchHint_iIMx {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  box-shadow: none !important;
 }
 
 @media screen and (max-width: 996px) {
