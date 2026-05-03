@@ -8,6 +8,8 @@ import CodeBlock from '@theme/CodeBlock';
 import styles from './index.module.css';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Translate from '@docusaurus/Translate';
+import { Redirect } from '@docusaurus/router';
+import React from 'react';
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
@@ -398,16 +400,5 @@ function FAQSection() {
 }
 
 export default function Home() {
-  const { siteConfig } = useDocusaurusContext();
-  return (
-    <Layout
-      title={`${siteConfig.title} | Documentação Oficial`}
-      description="XGate: Solução robusta para pagamentos Pix e Criptomoedas com conversão automática.">
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-        <FAQSection />
-      </main>
-    </Layout>
-  );
+  return <Redirect to={useBaseUrl('/docs/intro')} />;
 }

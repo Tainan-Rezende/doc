@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #29784c;
@@ -19,7 +21,6 @@
 
 [data-theme='dark'] {
   --ifm-color-primary: #25c2a0;
-  /* --ifm-color-primary: #0eb599; */
   --ifm-color-primary-dark: #21af90;
   --ifm-color-primary-darker: #1fa588;
   --ifm-color-primary-darkest: #1a8870;
@@ -34,6 +35,11 @@
   --ifm-menu-color-active: #ffffff;
   --ifm-menu-color-background-active: rgba(255, 255, 255, 0.1);
   --ifm-menu-color-background-hover: rgba(255, 255, 255, 0.05);
+}
+
+body {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300 !important;
 }
 
 .markdown>header>h1,
@@ -114,6 +120,15 @@
 [data-theme='dark'] .sidebar-method-delete .menu__link::before {
   background-color: rgba(239, 68, 68, 0.15);
   color: #fca5a5;
+}
+
+html body details {
+  --ifm-alert-border-color: var(--ifm-color-primary) !important;
+  --ifm-alert-color: var(--ifm-color-primary) !important;
+}
+
+html body details summary::before {
+  border-color: transparent transparent transparent var(--ifm-color-primary) !important;
 }
 
 @media screen and (max-width: 996px) {
