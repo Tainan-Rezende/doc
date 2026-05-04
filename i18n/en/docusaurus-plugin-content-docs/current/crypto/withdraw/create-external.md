@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Create External Withdrawal'
+sidebar_label: 'Crypto to Wallet Withdrawal'
 sidebar_position: 4
 description: 'This endpoint allows the customer to withdraw cryptocurrencies to an external wallet.'
 sidebar_class_name: 'sidebar-method-post'

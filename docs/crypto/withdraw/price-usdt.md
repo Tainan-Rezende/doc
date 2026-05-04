@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cotação USDT para FIAT'
+sidebar_label: 'Cotação (Crypto to FIAT)'
 sidebar_position: 5
 description: 'Este endpoint permite calcular antecipadamente quanto o cliente receberá da moeda fiduciária ao sacar um valor específico em criptomoeda.'
 sidebar_class_name: 'sidebar-method-post'
@@ -11,13 +11,13 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionToFiatTester from '@site/src/components/GetTetherConversionToFiatTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# Cotação USDT para FIAT
+# Cotação Crypto para FIAT
 
 <div className="ai-btn-wrapper">
   <AICopyButton 
       promptText={`openapi: 3.0.3
 info:
-  title: API XGate - Cotação USDT para FIAT
+  title: API XGate - Cotação Crypto para FIAT
   version: 1.0.0
 servers:
   - url: https://api.xgateglobal.com
@@ -25,8 +25,8 @@ servers:
 paths:
   /withdraw/conversion/brl/pix:
     post:
-      summary: Cotação USDT para FIAT (Pix)
-      description: Calcula antecipadamente o valor em moeda fiduciária (BRL) que o cliente receberá ao sacar um valor específico em criptomoeda (USDT). Rota apenas de consulta (não gera pedido de saque).
+      summary: Cotação Crypto para FIAT (Pix)
+      description: Calcula antecipadamente o valor em moeda fiduciária (BRL) que o cliente receberá ao sacar um valor específico em criptomoeda. Rota apenas de consulta (não gera pedido de saque).
       security:
         - bearerAuth: []
       requestBody:
@@ -41,10 +41,10 @@ paths:
               properties:
                 amount:
                   type: number
-                  description: Valor em USDT que se deseja converter e cotar (ex 1.00).
+                  description: Valor em Crypto que se deseja converter e cotar (ex 1.00).
                 cryptocurrency:
                   type: object
-                  description: Objeto completo com os dados da criptomoeda de origem (ex USDT).
+                  description: Objeto completo com os dados da criptomoeda de origem (ex USDT, USDC).
                   required:
                     - _id
                     - name
@@ -88,7 +88,7 @@ components:
     />
 </div>
 
-Este endpoint permite calcular antecipadamente quanto o cliente receberá em **BRL** ao sacar um valor específico em USDT.
+Este endpoint permite calcular antecipadamente quanto o cliente receberá em FIAT ao sacar um valor específico em Crypto.
 
 ---
 ## Endpoint
@@ -102,7 +102,7 @@ https://api.xgateglobal.com/withdraw/conversion/brl/pix
 
 ## Testar Integração
 
-Utilize o formulário abaixo para simular a cotação. O sistema irá buscar automaticamente os dados da criptomoeda e calcular quanto renderia em BRL.
+Utilize o formulário abaixo para simular a cotação. O sistema irá buscar automaticamente os dados da criptomoeda e calcular quanto renderia em FIAT.
 
 <GetTetherConversionToFiatTester />
 
@@ -122,7 +122,7 @@ Utilize o formulário abaixo para simular a cotação. O sistema irá buscar aut
 
 | Campo            | Tipo     | Obrigatório | Descrição                                                                        |
 | :--------------- | :------- | :---------: | :------------------------------------------------------------------------------- |
-| `amount`         | `number` |   **Sim**   | Valor em USDT (Tether) que se deseja calcular a cotação.                         |
+| `amount`         | `number` |   **Sim**   | Valor em Crypto que se deseja calcular a cotação.                         |
 | `cryptocurrency` | `object` |   **Sim**   | O objeto da criptomoeda, obtido na rota de listagem de criptomoedas para saques. |
 
 ---
@@ -156,16 +156,16 @@ Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta
 
 ### O Fluxo Recomendado (UX)
 
-1.  **Input:** O usuário digita "1" (valor em USDT) no seu app/site.
-2.  **Consulta:** Seu sistema chama `POST /withdraw/conversion/brl/pix` enviando o valor 1 USDT e o objeto da criptomoeda.
+1.  **Input:** O usuário digita "1" (valor em Crypto) no seu app/site.
+2.  **Consulta:** Seu sistema chama `POST /withdraw/conversion/brl/pix` enviando o valor 1 Crypto e o objeto da criptomoeda.
 3.  **Exibição:** A API retorna que isso equivale a `5.17`. Você exibe: *"Você receberá aproximadamente R$ 5,17"*.
-4.  **Ação:** Se o usuário concordar, você chama a rota de **Criar Pedido de Saque Conversão Cripto para FIAT** (`POST /withdraw`).
+4.  **Ação:** Se o usuário concordar, você chama a rota de **Criar Pedido de Saque Conversão Crypto para FIAT** (`POST /withdraw`).
 
 ### Exemplo Prático
 
-Siga os passos abaixo para realizar a cotação USDT para FIAT.
+Siga os passos abaixo para realizar a cotação Crypto para FIAT.
 
-**1. Passo:** Insira o valor em USDT para a cotação:
+**1. Passo:** Insira o valor da criptomoeda para a cotação:
 ```json {2}
 {
     "amount": 1,

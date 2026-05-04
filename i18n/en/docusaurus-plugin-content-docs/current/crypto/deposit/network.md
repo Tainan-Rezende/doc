@@ -154,13 +154,16 @@ Returns the list of networks. You will need the **complete object** of the chose
 To perform a **Crypto Withdrawal** (send USDT from XGate to an external wallet), it is not enough to inform the currency and amount. It is mandatory to inform the **Network (Blockchain Network)**.
 
 ### What are these Networks?
-Imagine that **USDT** is the cargo (the money) and the **Blockchain Network** is the highway by which that cargo will pass. We work mainly with:
+Imagine that **USDT** (or another cryptocurrency) is the cargo (the money) and the **Blockchain Network** is the highway this cargo will travel on. We work with the following networks:
 
-* **Ethereum / ERC-20:** The main Ethereum network. Generally has higher gas fees.
-* **BEP-20 (BSC):** The Binance Smart Chain network. Known for lower fees and high speed.
-* **Polygon:** A second-layer network (Layer 2) focused on scalability and low cost.
+* **Ethereum / ERC-20:** The main Ethereum network. It generally has higher gas fees.
+* **Polygon:** A network created to solve Ethereum's scalability issues, offering fast and low-cost transactions.
+* **Tron (TRC-20):** Extremely popular for stablecoin transactions (like USDT), known for its high speed and very low fees.
+* **Solana:** One of the fastest and most efficient networks on the market today, standing out for near-zero transaction costs.
 
-If your customer provides a wallet address on the **Polygon** network, you **must** select the `Polygon` network from this listing. Sending through the wrong network (e.g., sending to a Polygon address using the Ethereum network) can result in transaction failure or unnecessary high costs.
+:::warning[Important]
+If your customer provides a **Solana** network wallet address, you must select the `Solana` network from this list. Sending through the wrong network (e.g., sending to a Tron address using the Ethereum network) will result in a **transaction failure** and the **possible permanent loss of funds**.
+:::
 
 ### The Integration Flow
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cotação para Carteira Externa'
+sidebar_label: 'Cotação (Gas Fee)'
 sidebar_position: 6
 description: 'Este endpoint permite calcular antecipadamente quanto o cliente receberá da criptomoeda de origem ao criar uma solitação de saque para uma carteira externa, já descontando as taxas de gás da rede blockchain vigente.'
 sidebar_class_name: 'sidebar-method-post'
@@ -103,7 +103,7 @@ components:
     />
 </div>
 
-Este endpoint permite calcular antecipadamente quanto o cliente receberá em **USDT** (Tether) ao criar uma solitação de saque para uma carteira externa, já descontando as taxas de gás da rede blockchain vigente.
+Este endpoint permite calcular antecipadamente quanto o cliente receberá em Crypto ao criar uma solitação de saque para uma carteira externa, já descontando as taxas de gás da rede blockchain vigente.
 
 ---
 ## Endpoint
@@ -117,7 +117,7 @@ https://api.xgateglobal.com/withdraw/transaction/crypto/amount
 
 ## Testar Integração
 
-Utilize o formulário abaixo para simular um saque para carteira externa. O sistema irá buscar automaticamente os dados necessários e calcular quanto receberia em USDT.
+Utilize o formulário abaixo para simular um saque para carteira externa. O sistema irá buscar automaticamente os dados necessários e calcular quanto receberia em Crypto.
 
 <GetTetherToExternalTester />
 
@@ -137,7 +137,7 @@ Utilize o formulário abaixo para simular um saque para carteira externa. O sist
 
 | Campo               | Tipo     | Obrigatório | Descrição                                                                        |
 | :------------------ | :------- | :---------: | :------------------------------------------------------------------------------- |
-| `amount`            | `number` |   **Sim**   | Valor em USDT (Tether) que se deseja calcular o saque.                           |
+| `amount`            | `number` |   **Sim**   | Valor em Crypto que se deseja calcular o saque.                                  |
 | `cryptocurrency`    | `object` |   **Sim**   | O objeto da criptomoeda, obtido na rota de listagem de criptomoedas para saques. |
 | `blockchainNetwork` | `object` |   **Sim**   | O objeto da rede blockchain, obtido na listagem de redes blockchain.             |
 
@@ -170,7 +170,7 @@ Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta
 
 ### O Fluxo Recomendado (UX)
 
-1.  **Input:** O usuário digita "10" (USDT) no seu app/site.
+1.  **Input:** O usuário digita "10" (Crypto) no seu app/site.
 2.  **Consulta:** Seu sistema chama `POST /withdraw/transaction/crypto/amount` enviando o valor 10, o objeto da rede e o objeto da criptomoeda.
 3.  **Exibição:** A API retorna que isso equivale a `9.369984879637112 USDT`. Você exibe: *"Você receberá aproximadamente 9.369984879637112 USDT"*.
 4.  **Ação:** Se o usuário concordar, você chama a rota de **Criar Pedido de Saque para Carteira Externa** (`POST /withdraw`).
@@ -179,7 +179,7 @@ Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta
 
 Siga os passos abaixo para realizar a cotação para carteira externa.
 
-**1. Passo:** Insira o valor em USDT para a cotação:
+**1. Passo:** Insira o valor em Crypto para a cotação:
 ```json {2}
 {
     "amount": 10,

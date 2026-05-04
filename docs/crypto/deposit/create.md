@@ -11,13 +11,13 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import CreatePixDepositTester from '@site/src/components/CreatePixDepositTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# Criar Pedido de Depósito (Fiat → Crypto)
+# Depósito com Conversão Crypto
 
 <div className="ai-btn-wrapper">
   <AICopyButton 
       promptText={`openapi: 3.0.3
 info:
-  title: API XGate - Criar Pedido de Depósito (Fiat → Crypto)
+  title: API XGate - Criar Pedido de Depósito FIAT com Conversão Crypto
   version: 1.0.0
 servers:
   - url: https://api.xgateglobal.com
@@ -26,7 +26,7 @@ paths:
   /deposit:
     post:
       summary: Criar Pedido de Depósito com Conversão
-      description: Inicia um fluxo de cash-in onde o cliente paga em Fiat (Pix) e recebe o saldo convertido em Crypto (USDT). Retorna o código Pix (Copia e Cola).
+      description: Inicia um fluxo de cash-in onde o cliente paga em Fiat (Pix) e recebe o saldo convertido em Crypto. Retorna o código Pix (Copia e Cola).
       security:
         - bearerAuth: []
       requestBody:
@@ -81,7 +81,7 @@ paths:
                       type: string
                 cryptocurrency:
                   type: object
-                  description: Criptomoeda de destino para a conversão (ex USDT).
+                  description: Criptomoeda de destino para a conversão (ex USDT ou USDC).
                   required:
                     - _id
                     - name

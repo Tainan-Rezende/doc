@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criar Saque para FIAT'
+sidebar_label: 'Saque (Crypto to FIAT)'
 sidebar_position: 3
 description: 'Este endpoint permite que o cliente realize o saque de suas criptomoedas com conversão automática para moeda fiduciária.'
 sidebar_class_name: 'sidebar-method-post'
@@ -11,7 +11,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import WithdrawFiatToCryptoTester from '@site/src/components/CreateWithdrawConversion';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# Criar Pedido de Saque (Crypto → FIAT)
+# Saque Crypto com Conversão FIAT
 
 <div className="ai-btn-wrapper">
   <AICopyButton 

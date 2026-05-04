@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Create Withdrawal for FIAT'
+sidebar_label: 'Crypto to FIAT Withdrawal'
 sidebar_position: 3
 description: 'This endpoint allows the client to redeem their digital assets with automatic conversion to fiat currency. '
 sidebar_class_name: 'sidebar-method-post'
@@ -11,7 +11,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import WithdrawFiatToCryptoTester from '@site/src/components/CreateWithdrawConversion';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# Create Withdrawal Order (Crypto → FIAT)
+# Crypto Withdrawal with FIAT Conversion
 
 <div className="ai-btn-wrapper">
   <AICopyButton 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Criar Saque Externo'
+sidebar_label: 'Saque Crypto to Wallet'
 sidebar_position: 4
 description: 'Este endpoint permite que o cliente realize um saque das criptomoedas para uma carteira externa.'
 sidebar_class_name: 'sidebar-method-post'

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Quote for External Wallet'
+sidebar_label: 'Quote for Wallet'
 sidebar_position: 6
 description: 'This endpoint allows you to calculate in advance how much the client will receive in crypto when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.'
 sidebar_class_name: 'sidebar-method-post'
@@ -103,7 +103,7 @@ components:
     />
 </div>
 
-This endpoint allows you to calculate in advance how much the client will receive in **USDT** (Tether) when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.
+This endpoint allows you to calculate in advance how much the client will receive in Crypto when creating a withdrawal request to an external wallet, already deducting the blockchain network gas fees.
 
 ---
 ## Endpoint
@@ -117,7 +117,7 @@ https://api.xgateglobal.com/withdraw/transaction/crypto/amount
 
 ## Test Integration
 
-Use the form below to simulate a withdrawal to an external wallet. The system will automatically fetch the necessary data and calculate how much you would receive in USDT.
+Use the form below to simulate a withdrawal to an external wallet. The system will automatically fetch the necessary data and calculate how much you would receive in Crypto.
 
 <GetTetherToExternalTester />
 
@@ -129,17 +129,17 @@ You need to send the authentication **Header** and the JSON body with the value 
 
 #### Required Headers
 
-| Header          | Value                | Description                   |
-| :-------------- | :------------------- | :---------------------------- |
+| Header          | Value                 | Description                      |
+| :-------------- | :-------------------- | :------------------------------- |
 | `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
 #### Body (Request Body)
 
-| Field               | Type     | Required | Description                                                                         |
-| :------------------ | :------- | :------: | :---------------------------------------------------------------------------------- |
-| `amount`            | `number` | **Yes**  | Amount in USDT (Tether) for which you want to calculate the withdrawal.            |
-| `cryptocurrency`    | `object` | **Yes**  | The cryptocurrency object, obtained from the cryptocurrencies listing route.       |
-| `blockchainNetwork` | `object` | **Yes**  | The blockchain network object, obtained from the blockchain networks listing.      |
+| Field               | Type     | Required | Description                                                                   |
+| :------------------ | :------- | :------: | :---------------------------------------------------------------------------- |
+| `amount`            | `number` | **Yes**  | Amount in Crypto for which you want to calculate the withdrawal.              |
+| `cryptocurrency`    | `object` | **Yes**  | The cryptocurrency object, obtained from the cryptocurrencies listing route.  |
+| `blockchainNetwork` | `object` | **Yes**  | The blockchain network object, obtained from the blockchain networks listing. |
 
 ---
 
@@ -157,10 +157,10 @@ Returns the value that approximately will be received at the external wallet.
 
 ### Common Errors
 
-| Status  | Message                 | Likely Reason                                                                                     |
-| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
-| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.         |
-| **500** | `Internal Server Error` | Internal server error. Contact support.                                                         |
+| Status  | Message                 | Likely Reason                                                                         |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                               |
 
 ---
 
@@ -170,7 +170,7 @@ This route **does not generate** a payment order, it is only for **consultation*
 
 ### The Recommended Flow (UX)
 
-1.  **Input:** The user types "10" (USDT) in your app/site.
+1.  **Input:** The user types "10" (Crypto) in your app/site.
 2.  **Consultation:** Your system calls `POST /withdraw/transaction/crypto/amount` sending the value 10, the network object, and the cryptocurrency object.
 3.  **Display:** The API returns that this equals `9.369984879637112 USDT`. You display: *"You will receive approximately 9.369984879637112 USDT"*.
 4.  **Action:** If the user agrees, you call the **Create Withdrawal Request to External Wallet** route (`POST /withdraw`).

@@ -44,7 +44,7 @@ paths:
                       description: ID único da rede.
                     name:
                       type: string
-                      description: Nome da rede de transferência (ex BEP-20, ERC-20).
+                      description: Nome da rede de transferência (ex ERC-20).
                     chainId:
                       type: string
                       description: Identificador da rede na blockchain (ex 56, 1).
@@ -131,7 +131,7 @@ Retorna a lista de redes. Você precisará do **objeto completo** da rede escolh
   },
   {
     "_id": "672c18725a3690d041ea4c8c",
-    "name": "BEP-20",
+    "name": "Polygon",
     "chainId": "56",
     "cryptocurrencies": [...],
     "chain": "BSC",
@@ -154,14 +154,16 @@ Retorna a lista de redes. Você precisará do **objeto completo** da rede escolh
 Para realizar um **Saque Crypto** (enviar USDT da XGate para uma carteira externa), não basta informar a moeda e o valor. É obrigatório informar a **Rede (Blockchain Network)**.
 
 ### O que são essas Redes?
-Imagine que o **USDT** é a carga (o dinheiro) e a **Rede Blockchain** é a rodovia por onde essa carga vai passar. Nós trabalhamos principalmente com:
+Imagine que o **USDT** (ou outra criptomoeda) é a carga (o dinheiro) e a **Rede Blockchain** é a rodovia por onde essa carga vai passar. Nós trabalhamos com as seguintes redes:
 
 * **Ethereum / ERC-20:** A rede principal do Ethereum. Geralmente possui taxas de gás mais elevadas.
-* **BEP-20 (BSC):** A rede da Binance Smart Chain. Conhecida por taxas mais baixas e alta velocidade.
-* **Polygon:** Uma rede de segunda camada (Layer 2) focada em escalabilidade e baixo custo.
+* **Polygon:** Uma rede criada para resolver o problema de escala do Ethereum, oferecendo transações rápidas e com baixo custo.
+* **Tron (TRC-20):** Extremamente popular para transações de stablecoins (como o USDT), conhecida por sua alta velocidade e taxas muito reduzidas.
+* **Solana:** Uma das redes mais rápidas e eficientes do mercado atual, destacando-se por custos de transação quase nulos.
 
-Se o seu cliente fornecer um endereço de carteira da rede **Polygon**, você **deve** selecionar a rede `Polygon` nesta listagem. Enviar pela rede errada (ex: enviar para um endereço Polygon usando a rede Ethereum) pode resultar em falha na transação ou custos elevados desnecessários.
-
+:::warning[Importante]
+Se o seu cliente fornecer um endereço de carteira da rede **Solana**, você deve selecionar a rede `Solana` nesta listagem. Enviar pela rede errada (ex: enviar para um endereço Tron usando a rede Ethereum) resultará em **falha na transação** e na **possível perda permanente dos fundos**.
+:::
 ### O Fluxo de Integração
 
 1.  **Consulte as Redes:** Chame este endpoint para obter as opções disponíveis e seus IDs.

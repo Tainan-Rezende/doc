@@ -140,7 +140,7 @@ export default function GetTetherConversionTester() {
         </div>
 
         <button type="submit" disabled={loading} className="button button--primary button--block">
-          {loading ? etapa : 'Cotar Valor em USDT'}
+          {loading ? etapa : 'Cotar Valor em Crypto'}
         </button>
       </form>
 

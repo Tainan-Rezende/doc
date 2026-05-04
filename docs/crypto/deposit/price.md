@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cotação FIAT para USDT'
+sidebar_label: 'Cotação'
 sidebar_position: 4
 description: 'Este endpoint permite calcular antecipadamente quanto o cliente receberá na criptomoeda de destino ao depositar um valor específico em moeda fiduciária.'
 sidebar_class_name: 'sidebar-method-post'
@@ -11,13 +11,13 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionTester from '@site/src/components/GetTetherConversionTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# Cotação FIAT para USDT
+# Cotação FIAT para Crypto
 
 <div className="ai-btn-wrapper">
   <AICopyButton 
       promptText={`openapi: 3.0.3
 info:
-  title: API XGate - Cotação FIAT para USDT
+  title: API XGate - Cotação FIAT para Crypto
   version: 1.0.0
 servers:
   - url: https://api.xgateglobal.com
@@ -25,8 +25,8 @@ servers:
 paths:
   /deposit/conversion/tether:
     post:
-      summary: Cotação FIAT para USDT
-      description: Calcula antecipadamente a conversão de um valor em moeda fiduciária (ex BRL) para USDT com base na taxa de câmbio atual. É uma rota de consulta e não gera um pedido de depósito.
+      summary: Cotação FIAT para Crypto
+      description: Calcula antecipadamente a conversão de um valor em moeda fiduciária (ex BRL) para Crypto com base na taxa de câmbio atual. É uma rota de consulta e não gera um pedido de depósito.
       security:
         - bearerAuth: []
       requestBody:
@@ -72,7 +72,7 @@ paths:
                     description: Valor convertido na criptomoeda de destino.
                   crypto:
                     type: string
-                    description: Sigla da criptomoeda (ex USDT).
+                    description: Sigla da criptomoeda (ex USDT ou USDC).
                   fiatToCryptoExchangeRate:
                     type: string
                     description: Taxa de câmbio utilizada no momento da cotação.
@@ -89,7 +89,7 @@ components:
     />
 </div>
 
-Este endpoint permite calcular antecipadamente quanto o cliente receberá em **USDT** (Tether) ao depositar um valor específico em moeda fiduciária (BRL).
+Este endpoint permite calcular antecipadamente quanto o cliente receberá em **Crypto** ao depositar um valor específico em moeda fiduciária.
 
 Utilize esta rota para exibir uma "prévia" ou cotação em tempo real na tela do seu usuário antes que ele confirme a geração do pedido de depósito.
 
@@ -105,7 +105,7 @@ https://api.xgateglobal.com/deposit/conversion/tether
 
 ## Testar Integração
 
-Utilize o formulário abaixo para simular uma conversão. O sistema irá buscar automaticamente os dados da moeda BRL e calcular quanto renderia em USDT.
+Utilize o formulário abaixo para simular uma conversão. O sistema irá buscar automaticamente os dados da moed e calcular quanto renderia em Crypto.
 
 <GetTetherConversionTester />
 
@@ -125,8 +125,8 @@ Utilize o formulário abaixo para simular uma conversão. O sistema irá buscar 
 
 | Campo      | Tipo     | Obrigatório | Descrição |
 | :--------- | :------- | :---------: | :-------- |
-| `amount`   | `number` | **Sim** | Valor em Reais (BRL) que se deseja converter. |
-| `currency` | `object` | **Sim** | O objeto da moeda Fiat (BRL), obtido na rota de listagem de moedas. |
+| `amount`   | `number` | **Sim** | Valor em FIAT que se deseja converter. |
+| `currency` | `object` | **Sim** | O objeto da moeda FIAT, obtido na rota de listagem de moedas. |
 
 ---
 
