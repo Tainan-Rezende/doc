@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import CodeBlock from '@theme/CodeBlock';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 export default function ConsultCustomerTester() {
   const { i18n } = useDocusaurusContext();
@@ -24,13 +25,15 @@ export default function ConsultCustomerTester() {
       stepQuery: "Querying Customer...",
       errAuth: "Login failed: Check credentials",
       errExec: "Execution Error",
-      secAdmin: "1. Your Credentials (Admin)",
+      secAdmin: "1. Your Credentials",
       adminEmailLbl: "Your Email",
       adminPwdLbl: "Your Password",
       hidePwd: "Hide password",
       showPwd: "Show password",
       secData: "2. Query Data",
       customerIdLbl: "Customer ID (_id)",
+      noClient: "Don't have a client?",
+      createClient: "Click here to create",
       btnSubmit: "Consult Customer",
       resultLbl: "Result:",
       resultErr: "Error"
@@ -50,6 +53,8 @@ export default function ConsultCustomerTester() {
       showPwd: "Mostrar contraseña",
       secData: "2. Datos de Consulta",
       customerIdLbl: "ID de Cliente (_id)",
+      noClient: "¿No tienes un cliente?",
+      createClient: "Haz clic aquí para crear",
       btnSubmit: "Consultar Cliente",
       resultLbl: "Resultado:",
       resultErr: "Error"
@@ -62,13 +67,15 @@ export default function ConsultCustomerTester() {
       stepQuery: "Consultando Cliente...",
       errAuth: "Falha no Login: Verifique credenciais",
       errExec: "Erro na execução",
-      secAdmin: "1. Suas Credenciais (Admin)",
+      secAdmin: "1. Suas Credenciais",
       adminEmailLbl: "Seu Email",
       adminPwdLbl: "Sua Senha",
       hidePwd: "Ocultar senha",
       showPwd: "Mostrar senha",
       secData: "2. Dados da Consulta",
       customerIdLbl: "ID do Cliente (_id)",
+      noClient: "Não possui cliente?",
+      createClient: "Clique aqui para criar",
       btnSubmit: "Consultar Cliente",
       resultLbl: "Resultado:",
       resultErr: "Erro"
@@ -79,11 +86,11 @@ export default function ConsultCustomerTester() {
 
   const handleConsultCustomer = async (e) => {
     e.preventDefault();
-    
+
     if (!customerId.trim()) {
-      setResultado({ 
-        erro: t.valTitle, 
-        detalhe: t.valMsg 
+      setResultado({
+        erro: t.valTitle,
+        detalhe: t.valMsg
       });
       return;
     }
@@ -108,7 +115,7 @@ export default function ConsultCustomerTester() {
 
       const consultResponse = await fetch(`https://api.xgateglobal.com/customer/${customerId.trim()}`, {
         method: 'GET',
-        headers: { 
+        headers: {
           'Authorization': `Bearer ${authData.token}`
         }
       });
@@ -129,7 +136,7 @@ export default function ConsultCustomerTester() {
 
   return (
     <div style={{ padding: '20px', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: 'var(--ifm-global-radius)', backgroundColor: 'var(--ifm-card-background-color)', boxShadow: 'var(--ifm-global-shadow-lw)', marginTop: '20px' }}>
-      
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', borderBottom: '1px solid var(--ifm-color-emphasis-200)', paddingBottom: '10px' }}>
         <span style={{ fontSize: '1.5rem' }}>🔍</span>
         <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{t.title}</h3>
@@ -139,28 +146,28 @@ export default function ConsultCustomerTester() {
         <div style={{ marginBottom: '10px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
           {t.secAdmin}
         </div>
-        
+
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '15px' }}>
-            <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.adminEmailLbl}</label>
-                <input type="email" required value={adminEmail} onChange={e => setAdminEmail(e.target.value)} style={inputStyle} placeholder="admin@xgate..." />
+          <div>
+            <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.adminEmailLbl}</label>
+            <input type="email" required value={adminEmail} onChange={e => setAdminEmail(e.target.value)} style={inputStyle} placeholder="admin@xgate..." />
+          </div>
+          <div>
+            <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.adminPwdLbl}</label>
+            <div style={{ position: 'relative' }}>
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                value={adminPassword}
+                onChange={e => setAdminPassword(e.target.value)}
+                style={{ ...inputStyle, paddingRight: '45px' }}
+                placeholder="••••••"
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)} style={toggleButtonStyle} title={showPassword ? t.hidePwd : t.showPwd}>
+                {showPassword ? '🙈' : '👁️'}
+              </button>
             </div>
-            <div>
-                <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.adminPwdLbl}</label>
-                <div style={{ position: 'relative' }}>
-                    <input
-                        type={showPassword ? "text" : "password"}
-                        required
-                        value={adminPassword}
-                        onChange={e => setAdminPassword(e.target.value)}
-                        style={{ ...inputStyle, paddingRight: '45px' }}
-                        placeholder="••••••"
-                    />
-                    <button type="button" onClick={() => setShowPassword(!showPassword)} style={toggleButtonStyle} title={showPassword ? t.hidePwd : t.showPwd}>
-                        {showPassword ? '🙈' : '👁️'}
-                    </button>
-                </div>
-            </div>
+          </div>
         </div>
 
         <hr style={{ border: '0', borderTop: '1px dashed var(--ifm-color-emphasis-300)', margin: '20px 0' }} />
@@ -168,12 +175,19 @@ export default function ConsultCustomerTester() {
         <div style={{ marginBottom: '10px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>
           {t.secData}
         </div>
-        
+
         <div style={{ marginBottom: '15px' }}>
-            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', fontSize: '0.85rem' }}>
-              {t.customerIdLbl}
-            </label>
-            <input type="text" required value={customerId} onChange={e => setCustomerId(e.target.value)} style={inputStyle} placeholder="Ex: 697e15d..." />
+          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '5px', fontSize: '0.85rem' }}>
+            {t.customerIdLbl}
+          </label>
+          <input type="text" required value={customerId} onChange={e => setCustomerId(e.target.value)} style={inputStyle} placeholder="Ex: 697e15d..." />
+
+          <div style={{ marginTop: '5px', fontSize: '0.8rem', color: 'var(--ifm-color-emphasis-700)' }}>
+            {t.noClient}{' '}
+            <a href={useBaseUrl('/docs/customer/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>
+              {t.createClient}
+            </a>
+          </div>
         </div>
 
         <button type="submit" disabled={loading} className="button button--primary button--block">
@@ -190,7 +204,7 @@ export default function ConsultCustomerTester() {
             </span>
           </div>
           <CodeBlock language="json">
-             {JSON.stringify(resultado.body || resultado, null, 2)}
+            {JSON.stringify(resultado.body || resultado, null, 2)}
           </CodeBlock>
         </div>
       )}

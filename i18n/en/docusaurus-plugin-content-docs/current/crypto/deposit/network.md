@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-get'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ListBlockchainNetworksTester from '@site/src/components/ListBlockchainNetworksTester';
+import ListDepositBlockchainNetworksTester from '@site/src/components/ListDepositBlockchainNetworksTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Blockchain Networks
@@ -97,7 +97,7 @@ https://api.xgateglobal.com/deposit/company/blockchain-networks
 
 Use the form below to view the available networks.
 
-<ListBlockchainNetworksTester />
+<ListDepositBlockchainNetworksTester />
 
 ---
 

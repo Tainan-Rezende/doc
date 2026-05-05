@@ -3,12 +3,12 @@ import CodeBlock from '@theme/CodeBlock';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-export default function CreatePixDepositTester() {
+export default function CreatePixDepositCryptoTester() {
     const { i18n: { currentLocale } } = useDocusaurusContext();
 
     const i18n = {
         'pt-br': {
-            title: "💲 Testar: Criar Pedido de Depósito",
+            title: "💲 Testar: Criar Depósito (Pix para Crypto)",
             step1: "1. Suas Credenciais",
             step2: "2. Dados do Depósito",
             emailLabel: "Email",
@@ -17,24 +17,28 @@ export default function CreatePixDepositTester() {
             clientPh: "Ex: 66e85...",
             noClient: "Não possui cliente?",
             createClient: "Clique aqui para criar",
-            amountLabel: "Valor (Amount)",
-            btnSubmit: "Gerar Pedido de Depósito",
+            amountLabel: "Valor em BRL (Amount)",
+            btnSubmit: "Gerar Pedido de Depósito Crypto",
             statusLabel: "Status:",
             statusFail: "Falha",
+            statusOk: "OK",
             errorLabel: "Erro:",
             stepAuth: "Autenticando...",
-            stepCurrency: "Buscando Moeda...",
+            stepCurrency: "Buscando Moeda (FIAT)...",
+            stepCrypto: "Buscando Criptomoeda...",
             stepOrder: "Criando Pedido...",
             errAuth: "Falha no Login",
             errCheckCreds: "Verifique credenciais",
-            errCurrency: "Erro ao buscar moedas",
+            errCurrency: "Erro ao buscar moedas FIAT",
             errEmptyCurrency: "Lista de moedas retornou vazia.",
+            errCrypto: "Erro ao buscar criptomoedas",
+            errEmptyCrypto: "Lista de criptomoedas retornou vazia.",
             errExec: "Erro na execução",
             hidePwd: "Ocultar senha",
             showPwd: "Mostrar senha"
         },
         en: {
-            title: "💲 Test: Create Deposit Order",
+            title: "💲 Test: Create Deposit (Pix to Crypto)",
             step1: "1. Your Credentials",
             step2: "2. Deposit Data",
             emailLabel: "Email",
@@ -43,24 +47,28 @@ export default function CreatePixDepositTester() {
             clientPh: "Ex: 66e85...",
             noClient: "Don't have a client?",
             createClient: "Click here to create",
-            amountLabel: "Amount",
-            btnSubmit: "Generate Deposit Order",
+            amountLabel: "Amount in BRL",
+            btnSubmit: "Generate Crypto Deposit Order",
             statusLabel: "Status:",
             statusFail: "Failed",
+            statusOk: "OK",
             errorLabel: "Error:",
             stepAuth: "Authenticating...",
-            stepCurrency: "Fetching Currency...",
+            stepCurrency: "Fetching FIAT Currency...",
+            stepCrypto: "Fetching Cryptocurrency...",
             stepOrder: "Creating Order...",
             errAuth: "Login Failed",
             errCheckCreds: "Check credentials",
-            errCurrency: "Error fetching currencies",
-            errEmptyCurrency: "Currency list returned empty.",
+            errCurrency: "Error fetching FIAT currencies",
+            errEmptyCurrency: "FIAT currency list returned empty.",
+            errCrypto: "Error fetching cryptocurrencies",
+            errEmptyCrypto: "Cryptocurrency list returned empty.",
             errExec: "Execution Error",
             hidePwd: "Hide password",
             showPwd: "Show password"
         },
         es: {
-            title: "💲 Probar: Crear Pedido de Depósito",
+            title: "💲 Probar: Crear Depósito (Pix a Crypto)",
             step1: "1. Sus Credenciales",
             step2: "2. Datos del Depósito",
             emailLabel: "Correo electrónico",
@@ -69,18 +77,22 @@ export default function CreatePixDepositTester() {
             clientPh: "Ej: 66e85...",
             noClient: "¿No tienes un cliente?",
             createClient: "Haz clic aquí para crear",
-            amountLabel: "Monto (Amount)",
-            btnSubmit: "Generar Pedido de Depósito",
+            amountLabel: "Monto en BRL (Amount)",
+            btnSubmit: "Generar Pedido de Depósito Crypto",
             statusLabel: "Estado:",
             statusFail: "Fallo",
+            statusOk: "OK",
             errorLabel: "Error:",
             stepAuth: "Autenticando...",
-            stepCurrency: "Buscando Moneda...",
+            stepCurrency: "Buscando Moneda (FIAT)...",
+            stepCrypto: "Buscando Criptomoneda...",
             stepOrder: "Creando Pedido...",
             errAuth: "Fallo de Inicio de Sesión",
             errCheckCreds: "Verifica tus credenciales",
-            errCurrency: "Error al buscar monedas",
-            errEmptyCurrency: "La lista de monedas está vacía.",
+            errCurrency: "Error al buscar monedas FIAT",
+            errEmptyCurrency: "La lista de monedas FIAT está vacía.",
+            errCrypto: "Error al buscar criptomonedas",
+            errEmptyCrypto: "La lista de criptomonedas está vacía.",
             errExec: "Error de ejecución",
             hidePwd: "Ocultar contraseña",
             showPwd: "Mostrar contraseña"
@@ -98,15 +110,6 @@ export default function CreatePixDepositTester() {
     const [resultado, setResultado] = useState(null);
     const [loading, setLoading] = useState(false);
     const [etapa, setEtapa] = useState('');
-
-    const getStatusText = (code) => {
-        const codes = {
-            200: 'OK', 201: 'Created', 400: 'Bad Request',
-            401: 'Unauthorized', 403: 'Forbidden', 404: 'Not Found',
-            500: 'Internal Server Error',
-        };
-        return codes[code] || 'Unknown';
-    };
 
     const handleCreateOrder = async (e) => {
         e.preventDefault();
@@ -151,6 +154,27 @@ export default function CreatePixDepositTester() {
 
             const selectedCurrency = currencyList[0];
 
+            setEtapa(t.stepCrypto);
+            const cryptoResponse = await fetch(`${baseUrl}/deposit/company/cryptocurrencies`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const cryptoList = await cryptoResponse.json();
+
+            if (!cryptoResponse.ok) {
+                throw new Error(`${t.errCrypto}: ${cryptoList.message || cryptoResponse.statusText}`);
+            }
+
+            if (!Array.isArray(cryptoList) || cryptoList.length === 0) {
+                throw new Error(t.errEmptyCrypto);
+            }
+
+            const selectedCrypto = cryptoList[0];
+
             setEtapa(t.stepOrder);
             const orderResponse = await fetch(`${baseUrl}/deposit`, {
                 method: 'POST',
@@ -161,7 +185,8 @@ export default function CreatePixDepositTester() {
                 body: JSON.stringify({
                     amount: Number(amount),
                     customerId: customerId,
-                    currency: selectedCurrency 
+                    currency: selectedCurrency,
+                    cryptocurrency: selectedCrypto
                 })
             });
 
@@ -230,12 +255,8 @@ export default function CreatePixDepositTester() {
                 <div style={{ marginTop: '15px', animation: 'fade-in 0.3s' }}>
                     <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
                         <strong>{t.statusLabel}&nbsp;</strong>
-                        <span style={{ 
-                            fontWeight: 'bold', 
-                            color: resultado.erro ? 'var(--ifm-color-danger)' : 
-                                  (resultado.status >= 200 && resultado.status < 300 ? 'var(--ifm-color-success)' : 'var(--ifm-color-danger)')
-                        }}>
-                            {resultado.erro ? t.statusFail : `${resultado.status} ${getStatusText(resultado.status)}`}
+                        <span style={{ fontWeight: 'bold', color: resultado.erro ? 'var(--ifm-color-danger)' : 'var(--ifm-color-success)' }}>
+                            {resultado.erro ? t.statusFail : `${resultado.status} ${t.statusOk}`}
                         </span>
                     </div>
                     {resultado.erro && (

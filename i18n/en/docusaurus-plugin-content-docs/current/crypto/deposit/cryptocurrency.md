@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-get'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ListCryptoCurrenciesTester from '@site/src/components/ListCryptoCurrenciesTester';
+import ListDepositCryptoCurrenciesTester from '@site/src/components/ListDepositCryptoCurrenciesTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Cryptocurrencies
@@ -87,7 +87,7 @@ https://api.xgateglobal.com/deposit/company/cryptocurrencies
 
 Use the form below to simulate the list of cryptocurrencies.
 
-<ListCryptoCurrenciesTester />
+<ListDepositCryptoCurrenciesTester />
 
 ---
 

@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-get'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ListBlockchainNetworksTester from '@site/src/components/ListBlockchainNetworksTester';
+import ListWithdrawBlockchainNetworksTester from '@site/src/components/ListWithdrawBlockchainNetworksTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # List Blockchain Networks
@@ -79,9 +79,9 @@ components:
     />
 </div>
 
-This endpoint returns all blockchain networks supported by the platform (e.g., Ethereum, BSC, Polygon).
+This endpoint retrieves all blockchain networks supported by the platform (e.g., Ethereum, BSC, Polygon, and newly integrated networks).
 
-This listing is **essential to withdraw cryptocurrencies** to external wallets. Since USDT exists on various different blockchains, you need to specify which network the transfer should occur on to correctly build the withdrawal payload.
+This listing is **essential for performing cryptocurrency withdrawals** to external wallets. Since stablecoins like **USDT** and **USDC** are multichain assets available across various blockchains, you must specify the correct network when constructing the withdrawal payload to prevent any loss of funds.
 
 ---
 ## Endpoint
@@ -97,7 +97,7 @@ https://api.xgateglobal.com/withdraw/company/blockchain-networks
 
 Use the form below to view the available networks.
 
-<ListBlockchainNetworksTester />
+<ListWithdrawBlockchainNetworksTester />
 
 ---
 

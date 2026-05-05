@@ -11,13 +11,13 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionTester from '@site/src/components/GetTetherConversionTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# Fiat to USDT Quote
+# Fiat to Crypto Quote
 
 <div className="ai-btn-wrapper">
   <AICopyButton 
       promptText={`openapi: 3.0.3
 info:
-  title: API XGate - Cotação FIAT para USDT
+  title: API XGate - Cotação FIAT para Crypto
   version: 1.0.0
 servers:
   - url: https://api.xgateglobal.com
@@ -25,8 +25,8 @@ servers:
 paths:
   /deposit/conversion/tether:
     post:
-      summary: Cotação FIAT para USDT
-      description: Calcula antecipadamente a conversão de um valor em moeda fiduciária (ex BRL) para USDT com base na taxa de câmbio atual. É uma rota de consulta e não gera um pedido de depósito.
+      summary: Cotação FIAT para Crypto
+      description: Calcula antecipadamente a conversão de um valor em moeda fiduciária (ex BRL) para Crypto com base na taxa de câmbio atual. É uma rota de consulta e não gera um pedido de depósito.
       security:
         - bearerAuth: []
       requestBody:
@@ -72,7 +72,7 @@ paths:
                     description: Valor convertido na criptomoeda de destino.
                   crypto:
                     type: string
-                    description: Sigla da criptomoeda (ex USDT).
+                    description: Sigla da criptomoeda.
                   fiatToCryptoExchangeRate:
                     type: string
                     description: Taxa de câmbio utilizada no momento da cotação.
@@ -89,7 +89,7 @@ components:
     />
 </div>
 
-This endpoint allows you to calculate in advance how much the customer will receive in **USDT** (Tether) when depositing a specific amount in fiat currency (BRL).
+This endpoint allows you to calculate in advance how much the customer will receive in Crypto when depositing a specific amount in fiat currency.
 
 Use this route to display a "preview" or real-time quote on your user's screen before they confirm the generation of the deposit order.
 
@@ -105,7 +105,7 @@ https://api.xgateglobal.com/deposit/conversion/tether
 
 ## Test Integration
 
-Use the form below to simulate a conversion. The system will automatically fetch BRL currency data and calculate how much it would yield in USDT.
+Use the form below to simulate a conversion. The system will automatically fetch BRL currency data and calculate how much it would yield in Crypto.
 
 <GetTetherConversionTester />
 
@@ -123,10 +123,10 @@ You must send the **authentication Header** and the JSON body with the amount an
 
 #### Body (Request Body)
 
-| Field      | Type     | Required | Description                                                               |
-| :--------- | :------- | :------: | :------------------------------------------------------------------------ |
-| `amount`   | `number` | **Yes**  | Amount in Reais (BRL) that you want to convert.                           |
-| `currency` | `object` | **Yes**  | The Fiat currency object (BRL), obtained from the currency listing route. |
+| Field      | Type     | Required | Description                                                         |
+| :--------- | :------- | :------: | :------------------------------------------------------------------ |
+| `amount`   | `number` | **Yes**  | Amount in FIAT Currency that you want to convert.                   |
+| `currency` | `object` | **Yes**  | The Fiat currency object, obtained from the currency listing route. |
 
 ---
 

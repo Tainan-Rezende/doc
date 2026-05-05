@@ -12,7 +12,7 @@ XGate is a modern and powerful solution for payments and financial conversions, 
 
 - Instant PIX processing;
 - Automatic FIAT to Crypto currency conversion
-- Deposits and withdrawals supporting Bitcoin, Ethereum, SHIBA INU, USDT, USDC, BNB, and MATIC
+- Deposits and withdrawals supporting BRL, USDT and USDC
 - Real-time monitoring with advanced dashboard
 
 ## Official Packages

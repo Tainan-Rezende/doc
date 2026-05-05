@@ -81,6 +81,8 @@ Creating a customer is the first step in the integration, as it returns the **Cu
 2.  Generating collection QR Codes.
 3.  Performing Withdrawals.
 
+💡 **Note:** When creating a customer, the system automatically and in parallel generates all individualized cryptocurrency wallet addresses for them.
+
 ---
 
 ## Endpoint

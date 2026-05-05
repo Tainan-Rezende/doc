@@ -2,64 +2,52 @@ import React, { useState } from 'react';
 import CodeBlock from '@theme/CodeBlock';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 
-export default function ListDepositCurrenciesTester() {
+export default function ListWithdrawCryptoCurrenciesTester() {
   const { i18n: { currentLocale } } = useDocusaurusContext();
 
-  const translations = {
+  const i18n = {
     'pt-br': {
-      title: "💰 Testar: Listar Moedas",
-      step1: "1. Suas Credenciais",
-      emailLabel: "Email",
-      emailPh: "email@...",
-      pwdLabel: "Senha",
-      pwdPh: "••••••",
-      hidePwd: "Ocultar senha",
-      showPwd: "Mostrar senha",
-      btnLoading: "Carregando...",
-      btnSubmit: "Listar Moedas Disponíveis",
-      statusLabel: "Status:",
-      statusFail: "Falha",
-      statusOk: "OK",
-      errAuth: "Login falhou",
-      errDefault: "Erro"
+      title: 'Testar: Listar Criptomoedas de Saque',
+      step1: '1. Suas Credenciais',
+      emailLabel: 'Email',
+      emailPlaceholder: 'email@...',
+      pwdLabel: 'Senha',
+      btnExecute: 'Listar Criptos Disponíveis',
+      btnLoading: 'Carregando...',
+      status: 'Status',
+      statusFail: 'Falha',
+      errorAuth: 'Login falhou',
+      errorGeneral: 'Erro'
     },
     en: {
-      title: "💰 Test: List Currencies",
-      step1: "1. Your Credentials",
-      emailLabel: "Email",
-      emailPh: "email@...",
-      pwdLabel: "Password",
-      pwdPh: "••••••",
-      hidePwd: "Hide password",
-      showPwd: "Show password",
-      btnLoading: "Loading...",
-      btnSubmit: "List Available Currencies",
-      statusLabel: "Status:",
-      statusFail: "Failed",
-      statusOk: "OK",
-      errAuth: "Login failed",
-      errDefault: "Error"
+      title: 'Test: List Withdrawal Cryptocurrencies',
+      step1: '1. Your Credentials',
+      emailLabel: 'Email',
+      emailPlaceholder: 'email@...',
+      pwdLabel: 'Password',
+      btnExecute: 'List Available Cryptos',
+      btnLoading: 'Loading...',
+      status: 'Status',
+      statusFail: 'Failed',
+      errorAuth: 'Login failed',
+      errorGeneral: 'Error'
     },
     es: {
-      title: "💰 Probar: Listar Monedas",
-      step1: "1. Sus Credenciales",
-      emailLabel: "Correo electrónico",
-      emailPh: "correo@...",
-      pwdLabel: "Contraseña",
-      pwdPh: "••••••",
-      hidePwd: "Ocultar contraseña",
-      showPwd: "Mostrar contraseña",
-      btnLoading: "Cargando...",
-      btnSubmit: "Listar Monedas Disponibles",
-      statusLabel: "Estado:",
-      statusFail: "Fallo",
-      statusOk: "OK",
-      errAuth: "Inicio de sesión fallido",
-      errDefault: "Error"
+      title: 'Probar: Listar Criptomonedas de Retiro',
+      step1: '1. Sus Credenciales',
+      emailLabel: 'Correo electrónico',
+      emailPlaceholder: 'correo@...',
+      pwdLabel: 'Contraseña',
+      btnExecute: 'Listar Criptos Disponibles',
+      btnLoading: 'Cargando...',
+      status: 'Estado',
+      statusFail: 'Fallo',
+      errorAuth: 'Autenticación fallida',
+      errorGeneral: 'Error'
     }
   };
 
-  const t = translations[currentLocale] || translations.en;
+  const t = i18n[currentLocale] || i18n.en;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -75,6 +63,7 @@ export default function ListDepositCurrenciesTester() {
 
     try {
       const baseUrl = 'https://api.xgateglobal.com';
+      
       const authResponse = await fetch(`${baseUrl}/auth/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -83,10 +72,10 @@ export default function ListDepositCurrenciesTester() {
       const authData = await authResponse.json();
 
       if (!authResponse.ok || !authData.token) {
-        throw new Error(`${t.errAuth}: ${authData.message}`);
+        throw new Error(`${t.errorAuth}: ${authData.message}`);
       }
 
-      const response = await fetch(`${baseUrl}/deposit/company/currencies`, {
+      const response = await fetch(`${baseUrl}/withdraw/company/cryptocurrencies`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${authData.token}`
@@ -97,7 +86,7 @@ export default function ListDepositCurrenciesTester() {
       setResultado({ status: response.status, body: data });
 
     } catch (error) {
-      setResultado({ erro: t.errDefault, detalhe: error.message });
+      setResultado({ erro: t.errorGeneral, detalhe: error.message });
     } finally {
       setLoading(false);
     }
@@ -109,15 +98,17 @@ export default function ListDepositCurrenciesTester() {
   return (
     <div style={{ padding: '20px', border: '1px solid var(--ifm-color-emphasis-200)', borderRadius: 'var(--ifm-global-radius)', backgroundColor: 'var(--ifm-card-background-color)', boxShadow: 'var(--ifm-global-shadow-lw)', marginTop: '20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px', borderBottom: '1px solid var(--ifm-color-emphasis-200)', paddingBottom: '10px' }}>
-        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{t.title}</h3>
+          <span style={{ fontSize: '1.5rem' }}>🪙</span>
+          <h3 style={{ margin: 0, fontSize: '1.1rem' }}>{t.title}</h3>
       </div>
 
       <form onSubmit={handleList}>
         <div style={{ marginBottom: '10px', fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--ifm-color-primary)' }}>{t.step1}</div>
+        
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '15px' }}>
           <div>
             <label style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>{t.emailLabel}</label>
-            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder={t.emailPh} />
+            <input type="email" required value={email} onChange={e => setEmail(e.target.value)} style={inputStyle} placeholder={t.emailPlaceholder} />
           </div>
 
           <div>
@@ -129,13 +120,12 @@ export default function ListDepositCurrenciesTester() {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 style={{ ...inputStyle, paddingRight: '45px' }}
-                placeholder={t.pwdPh}
+                placeholder="••••••"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 style={toggleButtonStyle}
-                title={showPassword ? t.hidePwd : t.showPwd}
               >
                 {showPassword ? '🙈' : '👁️'}
               </button>
@@ -144,18 +134,18 @@ export default function ListDepositCurrenciesTester() {
         </div>
 
         <button type="submit" disabled={loading} className="button button--primary button--block">
-          {loading ? t.btnLoading : t.btnSubmit}
+          {loading ? t.btnLoading : t.btnExecute}
         </button>
       </form>
 
       {resultado && (
         <div style={{ marginTop: '15px', animation: 'fade-in 0.3s' }}>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
-            <strong>{t.statusLabel}&nbsp;</strong>
+            <strong>{t.status}:&nbsp;</strong>
             {resultado.erro ? (
               <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-danger)' }}>{t.statusFail}</span>
             ) : (
-              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-success)' }}>{resultado.status} {t.statusOk}</span>
+              <span style={{ fontWeight: 'bold', color: 'var(--ifm-color-success)' }}>{resultado.status} OK</span>
             )}
           </div>
 

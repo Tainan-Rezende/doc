@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-post'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import CreatePixDepositTester from '@site/src/components/CreatePixDepositTester';
+import CreatePixConversionDepositTester from '@site/src/components/CreatePixConversionDepositTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Crypto Deposit with Conversion
@@ -157,7 +157,7 @@ https://api.xgateglobal.com/deposit
 
 Use the form below to simulate the creation of an order and generate the QR Code.
 
-<CreatePixDepositTester />
+<CreatePixConversionDepositTester />
 
 ---
 

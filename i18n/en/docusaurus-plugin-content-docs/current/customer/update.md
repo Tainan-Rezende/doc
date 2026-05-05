@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-put'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
+import UpdateCustomerTester from '@site/src/components/UpdateCustomerTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Update Customer
@@ -99,7 +99,7 @@ The **CUSTOMER_ID** value refers to the `_id` returned when creating a customer.
 
 Simulate updating a customer now.
 
-<CreateCustomerTester />
+<UpdateCustomerTester />
 
 ---
 

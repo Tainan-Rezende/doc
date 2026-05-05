@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-get'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import CreateCustomerTester from '@site/src/components/CreateCustomerTester';
+import ConsultCustomerTester from '@site/src/components/ConsultCustomerTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Customer Lookup
@@ -99,7 +99,7 @@ The XGate API uses the `name` field as a validation key for customers. If you lo
 
 Simulate creating a customer now. The result will show the generated `_id`.
 
-<CreateCustomerTester />
+<ConsultCustomerTester />
 
 ---
 

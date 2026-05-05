@@ -11,7 +11,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionToFiatTester from '@site/src/components/GetTetherConversionToFiatTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
-# USDT to FIAT Quote
+# Crypto to FIAT Quote
 
 <div className="ai-btn-wrapper">
   <AICopyButton 
@@ -102,7 +102,7 @@ https://api.xgateglobal.com/withdraw/conversion/brl/pix
 
 ## Test Integration
 
-Use the form below to simulate the quote. The system will automatically fetch the cryptocurrency data and calculate how much it would yield in BRL.
+Use the form below to simulate the quote. The system will automatically fetch the cryptocurrency data and calculate how much it would yield in Fiat.
 
 <GetTetherConversionToFiatTester />
 
