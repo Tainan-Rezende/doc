@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Liberar IP (Saque)'
+sidebar_label: 'IPs Permitidos (Saque e Cripto)'
 sidebar_position: 4
 description: 'Este endpoint permite cadastrar automaticamente o primeiro IP autorizado para realizar requisições de saque em uma subconta recém-criada.'
 sidebar_class_name: 'sidebar-method-post'
@@ -78,6 +78,10 @@ Este endpoint permite cadastrar automaticamente o **primeiro IP autorizado** par
 
 :::warning[Regra de Uso Único]
 Esta rota foi desenhada exclusivamente para a configuração inicial (setup) da subconta. **Ela permite salvar apenas o primeiro IP**. Caso a subconta já possua um IP de saque configurado, a API retornará um erro e novos IPs deverão ser adicionados via Dashboard.
+:::
+
+:::info[IPs permitidos também valem para a API de cripto]
+A mesma lista de IPs permitidos da empresa é **obrigatória** para toda a <a href={useBaseUrl('/docs/buy-sell/overview')}>API de Compra e Venda de Cripto</a>. Sem lista cadastrada, as rotas `/crypto/*` respondem `403 ALLOWED_IPS_REQUIRED`; uma requisição de IP fora da lista recebe `403 CLIENT_IP_NOT_ALLOWED`.
 :::
 
 :::info[Atenção: Saque vs Saldo]

@@ -30,8 +30,13 @@ Siga los pasos a continuación para configurar la entrega de notificaciones:
    * **URL:** La dirección completa del endpoint alojado en su servidor (por ejemplo, `https://your-company.com/api/webhooks/xgate`).
 
 4. **Events:** Seleccione qué notificaciones desea que XGate envíe a esta URL. Los eventos se dividen en:
-   * **CRYPTOCURRENCY:** Transacciones en criptomonedas.
    * **CURRENCY:** Transacciones en moneda fiduciaria (Pix, incluyendo aprobación, rechazo, errores y todo el flujo de reembolso y disputa).
+   * **CRYPTO_PURCHASE (Compras de Cripto):** Cambios de estado de las compras de cripto. Vea <a href={useBaseUrl('/docs/buy-sell/webhooks')}>Webhooks de Compra</a>.
+   * **CRYPTOCURRENCY:** Transacciones en criptomonedas de los flujos heredados. **Descontinuado el 29/10/2026**: el tipo sale del catálogo y deja de enviarse.
+
+:::info[Los eventos de cripto usan otro formato]
+Los eventos `CRYPTO_PURCHASE` usan un envoltorio propio (`id`, `type`, `createdAt`, `data`), diferente del formato plano descrito en esta página. Los tipos `CRYPTO_PURCHASE` solo aparecen para empresas con cripto habilitada.
+:::
 
 :::tip[Consejo de integración]
 Nuestra recomendación es que **active todos los eventos disponibles**. Esto garantiza que su base de datos tenga un reflejo perfecto de lo que ocurre en XGate, evitando que las transacciones se queden en estados desactualizados. Sin embargo, la decisión final es suya.
@@ -75,6 +80,10 @@ Su servidor **DEBE** devolver el estado HTTP `200` (OK) inmediatamente después 
 ## Formato y variaciones de la solicitud
 
 El formato del payload varía ligeramente según si la transacción involucra solo Fiat (Pix) o criptomonedas (USDT).
+
+:::warning[Ejemplos de cripto descontinuados el 29/10/2026]
+Los ejemplos 2 a 5 a continuación pertenecen a los flujos heredados de cripto (conversión, retiro y depósito cripto), descontinuados el 29/10/2026. A partir de esa fecha, el payload de este formato pasa a ser solo el de Pix en BRL (ejemplo 1).
+:::
 
 - **Método:** <span className="badge badge--info">POST</span>
 

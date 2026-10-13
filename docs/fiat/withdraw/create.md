@@ -104,6 +104,8 @@ paths:
           description: Unauthorized. Token inválido, expirado ou ausente.
         '404':
           description: Not Found. O customerId fornecido não existe.
+        '422':
+          description: Política de recebedor da empresa violada. Corpo { reason, message } com reason RECIPIENT_DOCUMENT_REQUIRED, RECIPIENT_TYPE_NOT_ALLOWED ou PIX_POLICY_REQUIRES_PIX_V2.
         '500':
           description: Internal Server Error.
 components:
@@ -188,9 +190,20 @@ Retorna o objeto do pedido criado, contendo o `_id` da transação e o `status` 
 
 | Status  | Mensagem                | Motivo Provável                                                                                  |
 | :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
+| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido.<br />• `COMPANY_WITHDRAW_API_IS_BLOCKED`: saque pela API bloqueado para a empresa. |
 | **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
+| **422** | `{ reason, message }`   | Violação da política de recebedor da empresa. Veja a tabela abaixo.                              |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+
+#### Política de recebedor
+
+Cada empresa pode ter regras para o favorecido do saque: tipo (PF/PJ) e titularidade. Quando a regra é violada, a API responde `422` com o corpo `{ "reason", "message" }`:
+
+| Reason                        | Motivo                                                                      |
+| :---------------------------- | :-------------------------------------------------------------------------- |
+| `RECIPIENT_DOCUMENT_REQUIRED` | A política exige o documento do favorecido e ele não está disponível.       |
+| `RECIPIENT_TYPE_NOT_ALLOWED`  | O tipo do favorecido (PF/PJ) não é permitido pela política da empresa.      |
+| `PIX_POLICY_REQUIRES_PIX_V2`  | A política configurada exige o Pix v2, não disponível para esta conta.      |
 
 ---
 
@@ -277,7 +290,7 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
 | `createdDate` | `string` |   **Não**   | Data em que a moeda foi criada no sistema.                  |
 | `updatedDate` | `string` |   **Não**   | Data da última atualização das informações da moeda.        |
 | `__v`         | `number` |   **Não**   | Versão do registro da moeda no banco de dados.              |
-| `symbol`      | `number` |   **Sim**   | Símbolo da moeda.                                           |
+| `symbol`      | `string` |   **Sim**   | Símbolo da moeda.                                           |
 
 **3. Dado:** Você deve obter a lista de chave pix do cliente e selecionar uma para colocar na requisição.
 

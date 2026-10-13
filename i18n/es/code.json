@@ -817,5 +817,21 @@
   },
   "homepage.faq.q8.tip2": {
     "message": "detallando exactamente qué causó el fallo."
+  },
+  "cryptoDeprecation.title": {
+    "message": "Descontinuado el 29/10/2026",
+    "description": "Title of the crypto deprecation notice on legacy crypto pages"
+  },
+  "cryptoDeprecation.body": {
+    "message": "Este flujo de cripto deja de existir en el corte del 29/10/2026 (30/10 a las 03:00 UTC). A partir de esa fecha, XGate ya no custodia cripto de empresas y las rutas de este flujo pasan a responder 410 FEATURE_DISCONTINUED.",
+    "description": "Body of the crypto deprecation notice"
+  },
+  "cryptoDeprecation.replacement": {
+    "message": "Para obtener USDT o USDC, utilice la nueva API de",
+    "description": "Text before the link to the new buy/sell crypto API"
+  },
+  "cryptoDeprecation.link": {
+    "message": "Compra y Venta de Cripto",
+    "description": "Link label to the buy/sell crypto API overview"
   }
 }

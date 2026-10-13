@@ -108,10 +108,27 @@ paths:
                         type: string
                       customerId:
                         type: string
+                      externalId:
+                        type: string
+                        description: Returned when sent in the request.
+                  warnings:
+                    type: array
+                    description: Non-blocking warnings. E.g. CRYPTOCURRENCY_FIELD_IGNORED when the cryptocurrency field is sent (ignored as of 10/29/2026).
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
         '401':
           description: Unauthorized. Token inválido, ausente ou IP bloqueado.
         '404':
           description: Not Found. O customerId fornecido não existe na base.
+        '422':
+          description: Company payer policy violated. Body { reason, message } with reason PAYER_TYPE_NOT_ALLOWED, DEPOSIT_TITULARITY_CUSTOMER_DOCUMENT_REQUIRED, PAYER_DOCUMENT_MISSING, PIX_POLICY_REQUIRES_PIX_V2 or PIX_POLICY_PROVIDER_WITHOUT_PAYER.
+        '503':
+          description: PIX_POLICY_NOT_CONFIGURED. The company's Pix policy is not configured.
         '409':
           description: Conflict. Conflito nos dados do customer (nome ou documento já cadastrado).
         '500':
@@ -168,6 +185,10 @@ You must provide the authentication **Header** and the request **Body** with the
 | `externalId`            | `string`  |  **No**  | Idempotency identifier.                                               |
 | `identifiedDocumentPix` | `boolean` |  **No**  | When `true`, forces Pix document ownership verification.              |
 
+:::warning[`cryptocurrency` field ignored as of October 29, 2026]
+Deposits with conversion to crypto are discontinued on October 29, 2026. From that date on, send only `currency`: if the `cryptocurrency` field is sent, it is **ignored**, the deposit is created in BRL and the response includes the `CRYPTOCURRENCY_FIELD_IGNORED` warning in `warnings`. To obtain crypto, use <a href={useBaseUrl('/docs/buy-sell/overview')}>Crypto Purchase</a> with your BRL balance.
+:::
+
 :::info[About ownership validation]
 Sending the `identifiedDocumentPix` parameter with the value `false` (or omitting it) **does not disable** the ownership check if it is configured as **mandatory** in the XGate administrative panel for your account. 
 
@@ -199,8 +220,34 @@ Returns the created order object, including the `code` (Pix Copia e Cola) for th
     "status": "WAITING_PAYMENT",
     "code": "00020126850014br.gov.bcb.pix2563pi************************************************************************************",
     "id": "696e28a43e09**************",
-    "customerId": "68e7b8f0db**************"
+    "customerId": "68e7b8f0db**************",
+    "externalId": "order-7781"
   }
+}
+```
+
+The `externalId` field is returned when it was sent in the request.
+
+#### Warnings (`warnings`)
+
+The response may include warnings that **do not prevent** the deposit from being created. Example, when the `cryptocurrency` field is sent as of October 29, 2026:
+
+```json
+{
+  "message": "Pix Gerado com Sucesso",
+  "data": {
+    "status": "WAITING_PAYMENT",
+    "code": "00020126850014br.gov.bcb.pix2563pi************",
+    "id": "696e28a43e09**************",
+    "customerId": "68e7b8f0db**************",
+    "externalId": "order-7781"
+  },
+  "warnings": [
+    {
+      "code": "CRYPTOCURRENCY_FIELD_IGNORED",
+      "message": "The cryptocurrency field is no longer supported; the deposit was created in BRL. Use purchase{} to buy crypto."
+    }
+  ]
 }
 ```
 
@@ -211,7 +258,37 @@ Returns the created order object, including the `code` (Pix Copia e Cola) for th
 | **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.                   |
 | **404** | `Not Found`             | The `customerId` provided does not exist.                                                               |
 | **409** | `Conflict`              | • The provided customer name is already registered.<br />• The provided document is already registered. |
+| **422** | `{ reason, message }`   | Violation of the company's payer policy. See the table below.                                           |
 | **500** | `Internal Server Error` | Internal server error. Contact support.                                                                 |
+| **503** | `PIX_POLICY_NOT_CONFIGURED` | The company's Pix policy is not configured. Contact support.                                        |
+
+#### Payer policy
+
+Each company may have rules for deposits made through the API: payer type (individual/PF or legal entity/PJ), ownership (customer document or company CNPJ) and limits. When a rule is violated when creating the deposit, the API responds `422` with the body `{ "reason", "message" }`:
+
+| Reason                                          | Cause                                                                                    |
+| :---------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| `PAYER_TYPE_NOT_ALLOWED`                        | The payer type (PF/PJ) is not allowed by the company's policy.                           |
+| `DEPOSIT_TITULARITY_CUSTOMER_DOCUMENT_REQUIRED` | The policy requires ownership and the customer has no document.                          |
+| `PAYER_DOCUMENT_MISSING`                        | The payer's document is required and was not provided.                                   |
+| `PIX_POLICY_REQUIRES_PIX_V2`                    | The configured policy requires Pix v2, which is not available for this account.          |
+| `PIX_POLICY_PROVIDER_WITHOUT_PAYER`             | The Pix provider does not report the payer, which is required by the policy.             |
+
+#### `PAYER_REJECTED` status
+
+When a paid Pix violates a payer rule that could not be blocked when the charge was created (e.g. PF/PJ type without the payer's document), the deposit gets the `PAYER_REJECTED` status and **the amount is refunded to the payer**. Querying the deposit returns the `payerRuleViolation` object:
+
+```json
+{
+  "status": "PAYER_REJECTED",
+  "payerRuleViolation": {
+    "reason": "PAYER_TYPE_NOT_ALLOWED",
+    "at": "2026-10-13T14:00:00.000Z",
+    "refundedAt": "2026-10-13T14:00:05.000Z",
+    "payer": { "name": "John Doe", "document": "***.456.789-**", "bank": "Example Bank" }
+  }
+}
+```
 
 ---
 
@@ -226,7 +303,7 @@ The most important return value is the `code` field. It contains the "Pix Copia 
 1.  **Create/Identify the Customer:** Ensure the user exists in XGate (POST /customer) and obtain their `_id`.
 2.  **Create the Order:** Call this endpoint with the amount and the customer ID (or customer object).
 3.  **Show the Pix:** Take the `code` from the response and present it to the user.
-4.  **Wait for Payment:** The initial status will be `PENDING`. Once the user pays, the status will update (via Webhook or polling).  
+4.  **Wait for Payment:** The initial status will be `WAITING_PAYMENT`. Once the user pays, the status will update (via Webhook or polling).  
 
 ### Practical Example
 

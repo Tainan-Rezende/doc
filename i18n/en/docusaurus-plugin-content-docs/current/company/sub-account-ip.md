@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Allow IP (Withdraw)'
+sidebar_label: 'Allowed IPs (Withdraw and Crypto)'
 sidebar_position: 4
 description: 'This endpoint allows you to automatically register the first authorized IP to make withdrawal requests in a newly created subaccount.'
 sidebar_class_name: 'sidebar-method-post'
@@ -78,6 +78,10 @@ This endpoint allows you to automatically register the **first authorized IP** t
 
 :::warning[Single Use Rule]
 This route was designed exclusively for the initial setup of the subaccount. **It only allows saving the first IP**. If the subaccount already has a withdrawal IP configured, the API will return an error and new IPs must be added via the Dashboard.
+:::
+
+:::info[Allowed IPs also apply to the crypto API]
+The company's same allowed IP list is **mandatory** for the entire <a href={useBaseUrl('/docs/buy-sell/overview')}>Crypto Buy & Sell API</a>. Without a registered list, the `/crypto/*` routes respond `403 ALLOWED_IPS_REQUIRED`; a request from an IP outside the list receives `403 CLIENT_IP_NOT_ALLOWED`.
 :::
 
 :::info[Attention: Withdraw vs Balance]

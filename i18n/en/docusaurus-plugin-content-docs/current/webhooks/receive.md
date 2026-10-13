@@ -30,8 +30,13 @@ Follow the steps below to configure notification delivery:
    * **URL:** The full endpoint address hosted on your server (e.g. `https://your-company.com/api/webhooks/xgate`).
 
 4. **Events:** Select which notifications you want XGate to send to this URL. Events are divided into:
-   * **CRYPTOCURRENCY:** Crypto transactions.
    * **CURRENCY:** Fiat currency transactions (Pix, including approval, rejection, errors, and the full refund/dispute workflow).
+   * **CRYPTO_PURCHASE (Crypto Purchases):** Status changes of crypto purchases. See <a href={useBaseUrl('/docs/buy-sell/webhooks')}>Purchase Webhooks</a>.
+   * **CRYPTOCURRENCY:** Crypto transactions from the legacy flows. **Discontinued on October 29, 2026**: the type is removed from the catalog and is no longer sent.
+
+:::info[Crypto events use a different format]
+`CRYPTO_PURCHASE` events use their own envelope (`id`, `type`, `createdAt`, `data`), different from the flat format described on this page. `CRYPTO_PURCHASE` types only appear for companies with crypto enabled.
+:::
 
 :::tip[Integration Tip]
 Our recommendation is that you **enable all available events**. This ensures your database has a perfect mirror of what is happening in XGate, preventing transactions from getting stuck in outdated statuses. However, the final choice is yours.
@@ -75,6 +80,10 @@ Your server **MUST** return HTTP status `200` (OK) immediately after receiving t
 ## Request Format and Variations
 
 The payload format varies slightly depending on whether the transaction involves only Fiat (Pix) or Cryptocurrencies (USDT).
+
+:::warning[Crypto examples discontinued on October 29, 2026]
+Examples 2 to 5 below belong to the legacy crypto flows (conversion, crypto withdrawal and crypto deposit), discontinued on October 29, 2026. From that date on, the payload in this format will only be the BRL Pix one (example 1).
+:::
 
 - **Method:** <span className="badge badge--info">POST</span>
 
@@ -136,7 +145,7 @@ The `type` field is omitted in operations that involve crypto balances.
 }
 ```
 
-**4. Deposit (Crypto to Crypto)**
+**5. Deposit (Crypto to Crypto)**
 
 ```json
 {

@@ -10,8 +10,11 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import WithdrawFiatToCryptoTester from '@site/src/components/CreateWithdrawConversion';
 import AICopyButton from '@site/src/components/AICopyButton';
+import CryptoDeprecationNotice from '@site/src/components/CryptoDeprecationNotice';
 
 # Retiro de criptomonedas con conversión a FIAT
+
+<CryptoDeprecationNotice />
 
 <div className="ai-btn-wrapper">
   <AICopyButton 

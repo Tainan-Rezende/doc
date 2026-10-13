@@ -10,8 +10,11 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import GetTetherConversionToFiatTester from '@site/src/components/GetTetherConversionToFiatTester';
 import AICopyButton from '@site/src/components/AICopyButton';
+import CryptoDeprecationNotice from '@site/src/components/CryptoDeprecationNotice';
 
 # Cotización de Cripto a FIAT
+
+<CryptoDeprecationNotice />
 
 <div className="ai-btn-wrapper">
   <AICopyButton 

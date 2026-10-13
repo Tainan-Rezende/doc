@@ -10,8 +10,11 @@ import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import ListCryptoCurrenciesTester from '@site/src/components/ListCryptoCurrenciesTester';
 import AICopyButton from '@site/src/components/AICopyButton';
+import CryptoDeprecationNotice from '@site/src/components/CryptoDeprecationNotice';
 
 # Listar Criptomoedas
+
+<CryptoDeprecationNotice />
 
 <div className="ai-btn-wrapper">
   <AICopyButton 

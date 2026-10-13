@@ -6,13 +6,13 @@ sidebar_position: 1
 
 ## O que é a XGate?
 
-XGate é uma solução moderna e poderosa para pagamentos e conversões financeiras, projetada para facilitar e automatizar transações via PIX e criptomoedas. Com uma API robusta, é perfeita para desenvolvedores que desejam integrar rapidamente funcionalidades financeiras às suas aplicações.
+XGate é uma solução moderna e poderosa para pagamentos, projetada para facilitar e automatizar transações via PIX e a compra e venda de criptomoedas. Com uma API robusta, é perfeita para desenvolvedores que desejam integrar rapidamente funcionalidades financeiras às suas aplicações.
 
 ## Funcionalidades
 
-- Processamento instantâneo via PIX;
-- Conversão automática de moeda FIAT para Crypto
-- Depósitos e saques com suporte a **BRL**, **USDT** e **USDC**
+- Processamento instantâneo via PIX
+- Depósitos e saques em **BRL**
+- [Compra e venda](./buy-sell/overview.md) de **USDT** e **USDC** com o saldo em reais
 - Monitoramento em tempo real com dashboard avançado
 
 ## Pacotes Oficiais

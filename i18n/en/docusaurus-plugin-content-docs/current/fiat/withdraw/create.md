@@ -104,6 +104,8 @@ paths:
           description: Unauthorized. Token inválido, expirado ou ausente.
         '404':
           description: Not Found. O customerId fornecido não existe.
+        '422':
+          description: Company recipient policy violated. Body { reason, message } with reason RECIPIENT_DOCUMENT_REQUIRED, RECIPIENT_TYPE_NOT_ALLOWED or PIX_POLICY_REQUIRES_PIX_V2.
         '500':
           description: Internal Server Error.
 components:
@@ -187,9 +189,20 @@ Returns the created order object, containing the transaction `_id` and the order
 
 | Status  | Message                 | Likely Reason                                                                                         |
 | :------ | :---------------------- | :---------------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Missing or malformed Authorization header.<br />• IP not allowed. |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Missing or malformed Authorization header.<br />• IP not allowed.<br />• `COMPANY_WITHDRAW_API_IS_BLOCKED`: API withdrawals blocked for the company. |
 | **404** | `Not Found`             | The `customerId` provided does not exist.                                                             |
+| **422** | `{ reason, message }`   | Violation of the company's recipient policy. See the table below.                                     |
 | **500** | `Internal Server Error` | Server internal error. Contact support.                                                               |
+
+#### Recipient policy
+
+Each company may have rules for the withdrawal recipient: type (individual/PF or legal entity/PJ) and ownership. When a rule is violated, the API responds `422` with the body `{ "reason", "message" }`:
+
+| Reason                        | Cause                                                                       |
+| :---------------------------- | :-------------------------------------------------------------------------- |
+| `RECIPIENT_DOCUMENT_REQUIRED` | The policy requires the recipient's document and it is not available.       |
+| `RECIPIENT_TYPE_NOT_ALLOWED`  | The recipient type (PF/PJ) is not allowed by the company's policy.          |
+| `PIX_POLICY_REQUIRES_PIX_V2`  | The configured policy requires Pix v2, which is not available for this account. |
 
 ---
 
@@ -276,7 +289,7 @@ See the details of each property in the `currency` object to build your request.
 | `createdDate` | `string` |  **No**  | Date when the currency was added to the system.                     |
 | `updatedDate` | `string` |  **No**  | Date of the last update to the currency information.                |
 | `__v`         | `number` |  **No**  | Version of the currency record in the database.                     |
-| `symbol`      | `number` | **Yes**  | Currency symbol.                                                    |
+| `symbol`      | `string` | **Yes**  | Currency symbol.                                                    |
 
 **3. Data:** Obtain the customer's Pix keys list and select one to include in the request.
 

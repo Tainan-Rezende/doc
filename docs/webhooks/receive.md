@@ -30,8 +30,13 @@ Siga os passos abaixo para configurar o envio das notificações:
    * **URL:** O endereço completo do endpoint hospedado no seu servidor (ex: `https://sua-empresa.com/api/webhooks/xgate`).
 
 4. **Eventos:** Selecione quais notificações você deseja que a XGate envie para esta URL. Os eventos são divididos em:
-   * **CRYPTOCURRENCY:** Transações via Crypto.
    * **CURRENCY:** Transações via Moeda Fiduciária (Pix, incluindo aprovação, rejeição, erros, e toda a esteira de estornos/contestações).
+   * **CRYPTO_PURCHASE (Compras de Cripto):** Mudanças de status das compras de cripto. Veja <a href={useBaseUrl('/docs/buy-sell/webhooks')}>Webhooks de Compra</a>.
+   * **CRYPTOCURRENCY:** Transações via Crypto dos fluxos legados. **Descontinuado em 29/10/2026**: o tipo sai do catálogo e deixa de ser enviado.
+
+:::info[Eventos de cripto usam outro formato]
+Os eventos `CRYPTO_PURCHASE` usam um envelope próprio (`id`, `type`, `createdAt`, `data`), diferente do formato plano descrito nesta página. Os tipos `CRYPTO_PURCHASE` só aparecem para empresas com cripto liberada.
+:::
 
 :::tip[Dica de Integração]
 Nossa recomendação é que você **habilite todos os eventos disponíveis**. Isso garante que o seu banco de dados possua um espelhamento perfeito do que está acontecendo na XGate, evitando que transações fiquem presas em status desatualizados. No entanto, a escolha final fica a seu critério.
@@ -75,6 +80,10 @@ Seu servidor **DEVE** retornar o status HTTP `200` (OK) imediatamente após rece
 ## Formato da Requisição e Variações
 
 O formato do Payload varia ligeiramente dependendo se a transação envolve apenas Fiat (Pix) ou Criptomoedas (USDT).
+
+:::warning[Exemplos de cripto descontinuados em 29/10/2026]
+Os exemplos 2 a 5 abaixo pertencem aos fluxos legados de cripto (conversão, saque e depósito cripto), descontinuados em 29/10/2026. A partir dessa data, o payload deste formato passa a ser apenas o de Pix em BRL (exemplo 1).
+:::
 
 - **Método:** <span className="badge badge--info">POST</span>
 
@@ -136,7 +145,7 @@ O campo `type` é omitido nas operações que envolvem saldos cripto.
 }
 ```
 
-**4. Depósito (Crypto para Crypto)**
+**5. Depósito (Crypto para Crypto)**
 
 ```json
 {
