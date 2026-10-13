@@ -94,5 +94,17 @@
   "sidebar.tutorialSidebar.category.saques-crypto-wallet": {
     "message": "Cripto (wallet)",
     "description": "La etiqueta para la categoría 'Crypto (Wallet)' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.compra-venda-cripto": {
+    "message": "Compra y Venta de Cripto",
+    "description": "The label for category 'Compra e Venda de Cripto' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.compra-venda-compras": {
+    "message": "Compras",
+    "description": "The label for category 'Compras' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.compra-venda-vendas": {
+    "message": "Ventas",
+    "description": "The label for category 'Vendas' in sidebar 'tutorialSidebar'"
   }
 }

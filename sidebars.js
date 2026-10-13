@@ -84,6 +84,33 @@ const sidebars = {
     },
     {
       type: 'category',
+      label: 'Compra e Venda de Cripto',
+      key: 'compra-venda-cripto',
+      items: [
+        'buy-sell/overview',
+        'buy-sell/conventions',
+        'buy-sell/options',
+        'buy-sell/quotes',
+        {
+          type: 'category',
+          label: 'Compras',
+          key: 'compra-venda-compras',
+          items: [
+            'buy-sell/purchases/create',
+            'buy-sell/purchases/list',
+            'buy-sell/purchases/receipt'
+            // 'buy-sell/purchases/from-deposit' (draft: publicar quando o canal for ligado)
+          ]
+        },
+        // Onda 2 (novembro), páginas em draft:
+        // { type: 'category', label: 'Vendas', key: 'compra-venda-vendas',
+        //   items: ['buy-sell/sales/sell', 'buy-sell/sales/list', 'buy-sell/sales/beneficiaries'] },
+        'buy-sell/webhooks',
+        'buy-sell/errors'
+      ]
+    },
+    {
+      type: 'category',
       label: 'Webhooks',
       items: [
         'webhooks/receive',

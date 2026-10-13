@@ -1,15 +1,16 @@
 # XGate Global
 
-> XGate Global é uma plataforma de pagamentos e conversão via API. Permite criar fluxos de Cash-in (Depósitos) e Cash-out (Saques) com conversão automática entre moeda fiduciária (BRL via Pix) e criptomoedas (USDT). Oferece suporte para saques para carteiras externas, gestão de sub-contas, controle de saldo, webhooks assinados e cotações em tempo real. Toda a API usa REST + JSON e autenticação via Bearer Token. Base URL: `https://api.xgateglobal.com`.
+> XGate Global é uma plataforma de pagamentos via API. Permite criar fluxos de Cash-in (Depósitos) e Cash-out (Saques) em BRL via Pix e comprar USDT/USDC com o saldo em reais, com entrega na carteira da empresa. Oferece gestão de sub-contas, controle de saldo, webhooks e cotações em tempo real. Os fluxos legados de cripto (conversão no depósito/saque, saque cripto e carteira de customer) são descontinuados em 29/10/2026 e passam a responder 410 FEATURE_DISCONTINUED. Toda a API usa REST + JSON e autenticação via Bearer Token. Base URL: `https://api.xgateglobal.com`.
 
 Notas importantes:
 
 - Autenticação: todas as requisições precisam do header `Authorization: Bearer <seu-token-jwt>`.
-- Moedas: BRL (via Pix) e **USDT** (Tether). O USDT deve trafegar apenas em redes suportadas (ERC-20, BEP-20, Polygon).
+- Moedas: BRL (via Pix). Cripto apenas pela API de compra: USDT em POLYGON, ETHEREUM, TRON e SOLANA; USDC em POLYGON, ETHEREUM e SOLANA.
+- API de cripto (/crypto/*): valores monetários sempre como string decimal ("1500.00"); erros no envelope { reason, message, traceId }; exige lista de IPs permitidos; idempotência da compra por externalId.
 - Clientes: Únicos por documento. Use `customerId` (existente) ou o objeto `customer` (criação on-the-fly) em ordens de depósito. Nunca envie ambos.
 - Idempotência: Use `externalId` em todas as transações financeiras para evitar duplicidade.
 - Webhooks: Notificações enviadas via POST. Recomenda-se validar a procedência e usar os endpoints de reenvio em caso de falha na recepção.
-- Saldos: A conta possui saldos distintos para BRL e USDT; saques dependem de saldo disponível na sub-conta correspondente.
+- Saldos: Após 29/10/2026 a empresa só tem saldo em BRL; a cripto comprada vai direto para a carteira da empresa.
 
 ## Autenticação
 
@@ -42,6 +43,18 @@ Notas importantes:
   - [Fiat -> Fiat](https://tainan-rezende.github.io/doc/docs/fiat/withdraw/create): Saque via Pix. Exige objeto `pixKey`.
   - [Crypto -> Fiat](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/create): Converte USDT para BRL e envia via Pix. Exige `pixKey` e `cryptocurrency`.
   - [Crypto -> Wallet](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/create-external): Envio para carteira externa. Exige `wallet` (address) e `blockchainNetwork`.
+
+## Compra e Venda de Cripto
+
+- [Visão geral](https://tainan-rezende.github.io/doc/docs/buy-sell/overview): Compra de USDT/USDC com o saldo BRL; ativos, redes e habilitação.
+- [Convenções](https://tainan-rezende.github.io/doc/docs/buy-sell/conventions): Autenticação, IPs permitidos, permissões CRYPTO.VIEW/CRYPTO.EXECUTE, valores em string, erros, paginação por cursor, limites.
+- [GET /crypto/options](https://tainan-rezende.github.io/doc/docs/buy-sell/options): Ativos, redes, taxas, limites de compra, endereços salvos, validade da cotação.
+- [POST /crypto/quotes e /crypto/quotes/estimate](https://tainan-rezende.github.io/doc/docs/buy-sell/quotes): Cotação com quoteId (30 s) ou estimativa sem reserva. Body: asset, network, amount (BRL string).
+- [POST /crypto/purchases](https://tainan-rezende.github.io/doc/docs/buy-sell/purchases/create): Compra com quoteId ou a mercado (asset, network, amount). Obrigatórios: externalId e address ou addressId.
+- [GET /crypto/purchases e /crypto/purchases/{id}](https://tainan-rezende.github.io/doc/docs/buy-sell/purchases/list): Lista paginada e consulta de compras.
+- [GET /crypto/purchases/{id}/receipt](https://tainan-rezende.github.io/doc/docs/buy-sell/purchases/receipt): Comprovante HTML de compra DELIVERED.
+- [Webhooks de Compra](https://tainan-rezende.github.io/doc/docs/buy-sell/webhooks): Tipo CRYPTO_PURCHASE, envelope { id, type, createdAt, data }, eventos purchase.*.
+- [Códigos de Erro](https://tainan-rezende.github.io/doc/docs/buy-sell/errors): Reasons por status HTTP e motivos de recusa da compra.
 
 ## Empresa e Sub-contas (Company)
 

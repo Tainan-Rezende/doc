@@ -817,5 +817,21 @@
   },
   "homepage.faq.q8.tip2": {
     "message": "detailing exactly what caused the failure."
+  },
+  "cryptoDeprecation.title": {
+    "message": "Discontinued on October 29, 2026",
+    "description": "Title of the deprecation notice shown on legacy crypto pages"
+  },
+  "cryptoDeprecation.body": {
+    "message": "This crypto flow ends at the October 29, 2026 cutoff (October 30 at 03:00 UTC). From that date on, XGate no longer holds crypto for companies and the routes of this flow respond 410 FEATURE_DISCONTINUED.",
+    "description": "Body of the deprecation notice shown on legacy crypto pages"
+  },
+  "cryptoDeprecation.replacement": {
+    "message": "To obtain USDT or USDC, use the new",
+    "description": "Text before the link to the new Crypto Buy & Sell API in the deprecation notice"
+  },
+  "cryptoDeprecation.link": {
+    "message": "Crypto Buy & Sell API",
+    "description": "Link label to the new Crypto Buy & Sell API in the deprecation notice"
   }
 }

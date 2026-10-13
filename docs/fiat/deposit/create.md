@@ -108,10 +108,27 @@ paths:
                         type: string
                       customerId:
                         type: string
+                      externalId:
+                        type: string
+                        description: Retornado quando enviado na requisição.
+                  warnings:
+                    type: array
+                    description: Avisos não bloqueantes. Ex. CRYPTOCURRENCY_FIELD_IGNORED quando o campo cryptocurrency é enviado (ignorado a partir de 29/10/2026).
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
         '401':
           description: Unauthorized. Token inválido, ausente ou IP bloqueado.
         '404':
           description: Not Found. O customerId fornecido não existe na base.
+        '422':
+          description: Política de pagador da empresa violada. Corpo { reason, message } com reason PAYER_TYPE_NOT_ALLOWED, DEPOSIT_TITULARITY_CUSTOMER_DOCUMENT_REQUIRED, PAYER_DOCUMENT_MISSING, PIX_POLICY_REQUIRES_PIX_V2 ou PIX_POLICY_PROVIDER_WITHOUT_PAYER.
+        '503':
+          description: PIX_POLICY_NOT_CONFIGURED. A política de Pix da empresa não está configurada.
         '409':
           description: Conflict. Conflito nos dados do customer (nome ou documento já cadastrado).
         '500':
@@ -168,6 +185,10 @@ Utilize o formulário abaixo para simular a criação de um pedido e gerar o QR 
 | `externalId`            | `string`  |   **Não**   | Idempotência                                                            |
 | `identifiedDocumentPix` | `boolean` |   **Não**   | Quando `true`, força a verificação de titularidade do documento no Pix. |
 
+:::warning[Campo `cryptocurrency` ignorado a partir de 29/10/2026]
+O depósito com conversão para cripto é descontinuado em 29/10/2026. A partir dessa data, envie apenas `currency`: se o campo `cryptocurrency` for enviado, ele é **ignorado**, o depósito é criado em BRL e a resposta traz o aviso `CRYPTOCURRENCY_FIELD_IGNORED` em `warnings`. Para obter cripto, use a <a href={useBaseUrl('/docs/buy-sell/overview')}>Compra de Cripto</a> com o saldo em BRL.
+:::
+
 :::info[Sobre a validação de titularidade]
 O envio do parâmetro `identifiedDocumentPix` com o valor `false` (ou a ausência dele) **não desativa** a checagem de titularidade caso ela esteja configurada como **obrigatória** no painel administrativo da XGate para a sua conta. 
 
@@ -199,8 +220,34 @@ Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o u
     "status": "WAITING_PAYMENT",
     "code": "00020126850014br.gov.bcb.pix2563pi************************************************************************************",
     "id": "696e28a43e09**************",
-    "customerId": "68e7b8f0db**************"
+    "customerId": "68e7b8f0db**************",
+    "externalId": "pedido-7781"
   }
+}
+```
+
+O campo `externalId` é retornado quando foi enviado na requisição.
+
+#### Avisos (`warnings`)
+
+A resposta pode trazer avisos que **não impedem** a criação do depósito. Exemplo, quando o campo `cryptocurrency` é enviado a partir de 29/10/2026:
+
+```json
+{
+  "message": "Pix Gerado com Sucesso",
+  "data": {
+    "status": "WAITING_PAYMENT",
+    "code": "00020126850014br.gov.bcb.pix2563pi************",
+    "id": "696e28a43e09**************",
+    "customerId": "68e7b8f0db**************",
+    "externalId": "pedido-7781"
+  },
+  "warnings": [
+    {
+      "code": "CRYPTOCURRENCY_FIELD_IGNORED",
+      "message": "O campo cryptocurrency não é mais suportado; o depósito foi criado em BRL. Use purchase{} para comprar cripto."
+    }
+  ]
 }
 ```
 
@@ -211,7 +258,37 @@ Retorna o objeto do pedido criado, contendo o `code` (Pix Copia e Cola) para o u
 | **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br />• IP não permitido. |
 | **404** | `Not Found`             | Cliente informado no campo `customerId` não existe.                                              |
 | **409** | `Conflict`              | • Nome do cliente informado já está cadastrado.<br />• Documento informado já está cadastrado.   |
+| **422** | `{ reason, message }`   | Violação da política de pagador da empresa. Veja a tabela abaixo.                                |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                         |
+| **503** | `PIX_POLICY_NOT_CONFIGURED` | A política de Pix da empresa não está configurada. Entrar em contato com suporte.            |
+
+#### Política de pagador
+
+Cada empresa pode ter regras para depósitos pela API: tipo de pagador (PF/PJ), titularidade (documento do customer ou CNPJ da empresa) e limites. Quando a regra é violada na criação do depósito, a API responde `422` com o corpo `{ "reason", "message" }`:
+
+| Reason                                          | Motivo                                                                                   |
+| :---------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| `PAYER_TYPE_NOT_ALLOWED`                        | O tipo de pagador (PF/PJ) não é permitido pela política da empresa.                      |
+| `DEPOSIT_TITULARITY_CUSTOMER_DOCUMENT_REQUIRED` | A política exige titularidade e o customer não tem documento.                            |
+| `PAYER_DOCUMENT_MISSING`                        | O documento do pagador é necessário e não foi informado.                                 |
+| `PIX_POLICY_REQUIRES_PIX_V2`                    | A política configurada exige o Pix v2, não disponível para esta conta.                   |
+| `PIX_POLICY_PROVIDER_WITHOUT_PAYER`             | O provedor do Pix não informa o pagador, o que é exigido pela política.                  |
+
+#### Status `PAYER_REJECTED`
+
+Quando um Pix pago viola uma regra de pagador que não pôde ser barrada na criação da cobrança (ex: tipo PF/PJ sem documento do pagador), o depósito fica com status `PAYER_REJECTED` e **o valor é devolvido ao pagador**. A consulta do depósito traz o objeto `payerRuleViolation`:
+
+```json
+{
+  "status": "PAYER_REJECTED",
+  "payerRuleViolation": {
+    "reason": "PAYER_TYPE_NOT_ALLOWED",
+    "at": "2026-10-13T14:00:00.000Z",
+    "refundedAt": "2026-10-13T14:00:05.000Z",
+    "payer": { "name": "Fulano de Tal", "document": "***.456.789-**", "bank": "Banco Exemplo" }
+  }
+}
+```
 
 ---
 
@@ -226,7 +303,7 @@ O retorno mais importante aqui é o campo `code`. Ele contém a string do "Pix C
 1.  **Crie/Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank"><a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a></a>) e tenha o `_id` dele.
 2.  **Crie o Pedido:** Chame este endpoint passando o valor e o ID do cliente.
 3.  **Exiba o Pix:** Pegue o `code` da resposta e mostre ao usuário.
-4.  **Aguarde o Pagamento:** O status inicial será `PENDING`. Assim que o usuário pagar, o status mudará (via Webhook ou consulta).  
+4.  **Aguarde o Pagamento:** O status inicial será `WAITING_PAYMENT`. Assim que o usuário pagar, o status mudará (via Webhook ou consulta).  
 
 ### Exemplo Prático
 

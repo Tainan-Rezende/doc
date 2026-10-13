@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Permitir IP (retiro)'
+sidebar_label: 'IPs permitidos (retiro y cripto)'
 sidebar_position: 4
 description: 'Este endpoint permite registrar automáticamente el primer IP autorizado para realizar solicitudes de retiro en una subcuenta recién creada.'
 sidebar_class_name: 'sidebar-method-post'
@@ -78,6 +78,10 @@ Este endpoint permite registrar automáticamente el **primer IP autorizado** par
 
 :::warning[Regla de uso único]
 Esta ruta fue diseñada exclusivamente para la configuración inicial de la subcuenta. **Solo permite guardar el primer IP**. Si la subcuenta ya tiene un IP de retiro configurado, la API devolverá un error y los nuevos IP deberán agregarse desde el panel.
+:::
+
+:::info[Las IPs permitidas también aplican a la API de cripto]
+La misma lista de IPs permitidas de la empresa es **obligatoria** para toda la <a href={useBaseUrl('/docs/buy-sell/overview')}>API de Compra y Venta de Cripto</a>. Sin una lista registrada, las rutas `/crypto/*` responden `403 ALLOWED_IPS_REQUIRED`; una solicitud desde una IP fuera de la lista recibe `403 CLIENT_IP_NOT_ALLOWED`.
 :::
 
 :::info[Atención: retiro vs saldo]
