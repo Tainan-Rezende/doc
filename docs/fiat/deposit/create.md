@@ -81,6 +81,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para controle interno do integrador.
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
       responses:
         '201':
           description: Sucesso. Retorna a ordem gerada, incluindo o código Pix Copia e Cola no campo data.code.
@@ -156,23 +159,29 @@ Utilize o formulário abaixo para simular a criação de um pedido e gerar o QR 
 
 #### Body (Corpo da Requisição)
 
-| Campo        | Tipo     | Obrigatório | Descrição                                                               |
-| :----------- | :------- | :---------: | :---------------------------------------------------------------------- |
-| `amount`     | `number` |   **Sim**   | O valor do depósito (ex: `100.50`).                                     |
-| `customerId` | `string` |   **Não**   | O ID único (`_id`) do cliente que fará o depósito.                      |
-| `customer`   | `object` |   **Não**   | Dados para a criação do cliente junto da criação do pedido de depósito. |
-| `currency`   | `string` |   **Sim**   | A moeda da transação (ex: `BRL`).                                       |
-| `externalId` | `string` |   **Não**   | Idempotência                                                            |
+| Campo                   | Tipo      | Obrigatório | Descrição                                                               |
+| :---------------------- | :-------- | :---------: | :---------------------------------------------------------------------- |
+| `amount`                | `number`  |   **Sim**   | O valor do depósito (ex: `100.50`).                                     |
+| `customerId`            | `string`  |   **Não**   | O ID único (`_id`) do cliente que fará o depósito.                      |
+| `customer`              | `object`  |   **Não**   | Dados para a criação do cliente junto da criação do pedido de depósito. |
+| `currency`              | `string`  |   **Sim**   | A moeda da transação (ex: `BRL`).                                       |
+| `externalId`            | `string`  |   **Não**   | Idempotência                                                            |
+| `identifiedDocumentPix` | `boolean` |   **Não**   | Quando `true`, força a verificação de titularidade do documento no Pix. |
 
+:::info[Sobre a validação de titularidade]
+O envio do parâmetro `identifiedDocumentPix` com o valor `false` (ou a ausência dele) **não desativa** a checagem de titularidade caso ela esteja configurada como **obrigatória** no painel administrativo da XGate para a sua conta. 
 
-:::warning[Importante]
-Apesar dos dados da string `customerId` e do objeto `customer` não serem obrigatórios, é **OBRIGATÓRIO** utilizar um deles. 
-
-**Não se deve utilizar `customerId` e `customer` na mesma requisição**
+Este parâmetro serve estritamente para **forçar** a validação (enviando `true`) em contas onde a regra padrão do painel está desativada. Para desativar a verificação de titularidade de forma definitiva, é necessário alinhar comercialmente via contrato.
 :::
 
-:::warning[Importante]
-Recomendamos a inclusão dado de `externalId` na requisição pois a mesmo evita o envio do pedido mais de uma vez, que pode acontecer acidentalmente.
+:::warning[Importante: Identificação do Cliente]
+Para criar um depósito, é **obrigatório** identificar o utilizador. Você deve enviar o `customerId` (caso o cliente já exista) **OU** o objeto `customer` (para criar um novo cliente no momento do pedido). 
+
+Nunca envie ambos os campos na mesma requisição, pois isso resultará em falha na transação.
+:::
+
+:::tip[Boas Práticas: Prevenção de Duplicidade]
+Recomendamos fortemente o envio do campo `externalId`. Ele atua como uma chave de idempotência, garantindo que o mesmo pedido de depósito não seja criado em duplicidade em caso de falha de rede, cliques duplos ou retentativas acidentais pelo seu sistema.
 :::
 
 ---
@@ -246,14 +255,15 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
         "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
     </TabItem>
     <TabItem value="no-client" label="Sem Cliente">
     **1.1. Você deve passar o objeto `customer` que irá criar o cliente ao mesmo tempo em que cria o pedido de depósito:**
     ```json {3-8}
-    {
+{
     "amount": 0.2,
     "customer": {
         "name": "Client Name",
@@ -269,7 +279,8 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
         "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "identifiedDocumentPix": true
 }
     ```
     :::warning[Importante]
@@ -287,14 +298,15 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/deposit/currency'
     "amount": 0.2,
     "customerId": "696d1f3331117************",
     "currency": {
-        "_id": "6722ba**************",
+      "_id": "6722ba**************",
         "name": "BRL",
         "type": "PIX",
         "createdDate": "202*********************",
         "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -346,7 +358,8 @@ Veja os detalhes de cada informação no objeto `currency` para montar sua requi
         const { data } = await axios.post(`${url_api}/deposit`, {
             amount,
             customerId,
-            currency: currencies.data[0]
+            currency: currencies.data[0],
+            identifiedDocumentPix: true
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

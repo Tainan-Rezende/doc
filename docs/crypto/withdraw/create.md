@@ -98,6 +98,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para evitar duplicidade na solicitação de saque.
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
       responses:
         '201':
           description: Sucesso. Retorna o status PENDING e o ID da transação.
@@ -161,14 +164,25 @@ Utilize o formulário abaixo para simular a criação de um pedido de conversão
 
 #### Body (Corpo da Requisição)
 
-| Campo            | Tipo     | Obrigatório | Descrição                                       |
-| :--------------- | :------- | :---------: | :---------------------------------------------- |
-| `amount`         | `number` |   **Sim**   | O valor do saque em USDT (ex: `0.1` min).       |
-| `customerId`     | `string` |   **Sim**   | O ID único (`_id`) do cliente que fará o saque. |
-| `currency`       | `object` |   **Sim**   | A moeda da transação (ex: `BRL`).               |
-| `cryptocurrency` | `object` |   **Sim**   | A criptomoeda da transação (ex: `USDT`).        |
-| `pixKey`         | `object` |   **Sim**   | A chave pix do cliente para realizar o saque.   |
-| `externalId`     | `string` |   **Não**   | Idempotência.                                   |
+| Campo                   | Tipo      | Obrigatório | Descrição                                                               |
+| :---------------------- | :-------- | :---------: | :---------------------------------------------------------------------- |
+| `amount`                | `number`  |   **Sim**   | O valor do saque em USDT (ex: `0.1` min).                               |
+| `customerId`            | `string`  |   **Sim**   | O ID único (`_id`) do cliente que fará o saque.                         |
+| `currency`              | `object`  |   **Sim**   | A moeda da transação (ex: `BRL`).                                       |
+| `cryptocurrency`        | `object`  |   **Sim**   | A criptomoeda da transação (ex: `USDT`, ou `USDC`).                     |
+| `pixKey`                | `object`  |   **Sim**   | A chave pix do cliente para realizar o saque.                           |
+| `externalId`            | `string`  |   **Não**   | Idempotência.                                                           |
+| `identifiedDocumentPix` | `boolean` |   **Não**   | Quando `true`, força a verificação de titularidade do documento no Pix. |
+
+:::info[Sobre a validação de titularidade]
+O envio do parâmetro `identifiedDocumentPix` com o valor `false` (ou a ausência dele) **não desativa** a checagem de titularidade caso ela esteja configurada como **obrigatória** no painel administrativo da XGate para a sua conta. 
+
+Este parâmetro serve estritamente para **forçar** a validação (enviando `true`) em contas onde a regra padrão do painel está desativada. Para desativar a verificação de titularidade de forma definitiva, é necessário alinhar comercialmente via contrato.
+:::
+
+:::tip[Boas Práticas: Prevenção de Duplicidade]
+Recomendamos fortemente o envio do campo `externalId`. Ele atua como uma chave de idempotência, garantindo que a mesma ordem de saque não seja criada em duplicidade em caso de falha de rede, cliques duplos ou retentativas acidentais pelo seu sistema.
+:::
 
 ---
 
@@ -204,7 +218,7 @@ A finalidade deste endpoint é iniciar o fluxo de saída de dinheiro com convers
 
 1.  **Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) e tenha o `_id` dele.
 2.  **Cadastre uma Chave Pix:** Após criar o cliente, é necessário estar cadastrando uma chave pix para o mesmo em <a href={useBaseUrl('/docs/fiat/pix/add')} target="_blank">Adicionar Chave Pix</a>.
-3.  **Dados de moeda:** Será necessário buscar os dados da moeda e criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">Moedas FIAT</a> e <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Criptomoedas</a>.
+3.  **Dados de moeda:** Será necessário buscar os dados da moeda e criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target="_blank">Moedas FIAT</a> e <a href={useBaseUrl('/docs/crypto/withdraw/conversion/cryptocurrency/')} target="_blank">Criptomoedas</a>.
 4.  **Crie o Pedido:** Chame este endpoint enviando os dados de amount, customerId, currency, cryptocurrency e pixKey.
 5.  **Aguarde o Pagamento:** O status inicial será `PENDING`.
 
@@ -246,7 +260,8 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -281,7 +296,8 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/withdraw/currency
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -330,7 +346,8 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/crypto
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -379,7 +396,8 @@ Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/f
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -411,7 +429,8 @@ Você pode obter a lista das chaves pix cadastradas <a href={useBaseUrl('/docs/f
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 

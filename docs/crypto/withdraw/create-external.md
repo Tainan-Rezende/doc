@@ -72,7 +72,7 @@ paths:
                       type: string
                 blockchainNetwork:
                   type: object
-                  description: Objeto com os dados da rede blockchain de transferência (ex BEP-20, ERC-20).
+                  description: Objeto com os dados da rede blockchain de transferência (ex TRC-20, ERC-20).
                   required:
                     - _id
                     - name
@@ -153,14 +153,14 @@ Utilize o formulário abaixo para simular a criação de um pedido de saque cryp
 
 #### Body (Corpo da Requisição)
 
-| Campo               | Tipo     | Obrigatório | Descrição                                       |
-| :------------------ | :------- | :---------: | :---------------------------------------------- |
-| `amount`            | `number` |   **Sim**   | O valor do saque em USDT (ex: `0.1` min).       |
-| `customerId`        | `string` |   **Sim**   | O ID único (`_id`) do cliente que fará o saque. |
-| `cryptocurrency`    | `object` |   **Sim**   | A criptomoeda da transação (ex: `USDT`).        |
-| `blockchainNetwork` | `object` |   **Sim**   | Informações sobre a rede blockchain.            |
-| `wallet`            | `string` |   **Sim**   | A carteira para onde os valores serão enviados. |
-| `externalId`        | `string` |   **Não**   | Idempotência.                                   |
+| Campo               | Tipo     | Obrigatório | Descrição                                          |
+| :------------------ | :------- | :---------: | :------------------------------------------------- |
+| `amount`            | `number` |   **Sim**   | O valor do saque em USDT (ex: `0.1` min).          |
+| `customerId`        | `string` |   **Sim**   | O ID único (`_id`) do cliente que fará o saque.    |
+| `cryptocurrency`    | `object` |   **Sim**   | A criptomoeda da transação (ex: `USDT` ou `USDC`). |
+| `blockchainNetwork` | `object` |   **Sim**   | Informações sobre a rede blockchain.               |
+| `wallet`            | `string` |   **Sim**   | A carteira para onde os valores serão enviados.    |
+| `externalId`        | `string` |   **Não**   | Idempotência.                                      |
 
 ---
 
@@ -195,7 +195,7 @@ A finalidade deste endpoint é iniciar o fluxo de saída de dinheiro com convers
 ### O Fluxo de Integração
 
 1.  **Identifique o Cliente:** Certifique-se de que o usuário existe na XGate (<a href={useBaseUrl('/docs/customer/create')} target="_blank">POST /customer</a>) e tenha o `_id` dele.
-2.  **Dados da Criptomoeda:** Será necessário buscar os dados da criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">Criptomoedas</a>.
+2.  **Dados da Criptomoeda:** Será necessário buscar os dados da criptomoeda para adicionar na requisição, você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/wallet/cryptocurrency/')} target="_blank">Criptomoedas</a>.
 3.  **Dados da rede:** Será necessário buscar os dados da rede (network), você pode obter em <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">Redes Blockchain</a>.
 4.  **Destino:** Adicione a chave pública da carteira de quem receberá o saque na carteira externa.
 5.  **Envie o pedido:** Envie a solicitação para a XGate, o tempo de aprovação pode variar dependendo da rede.
@@ -216,24 +216,16 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -242,7 +234,7 @@ Você pode estar **<a href={useBaseUrl('/docs/customer/create')} target="_blank"
 
 **2. Passo:** Você deve obter a criptomoeda com os dados para saque. 
 
-Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">clicando aqui</a>.
+Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/wallet/cryptocurrency/')} target="_blank">clicando aqui</a>.
 
 ```json {4-12}
 {
@@ -258,15 +250,10 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/crypto
         "__v": 0
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
+        "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -295,29 +282,21 @@ Veja os detalhes de cada informação no objeto `cryptocurrency` para montar sua
 
 Você pode obter a lista delas <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">clicando aqui</a>.
 
-```json {13-23}
+```json {10-15}
 {
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -332,43 +311,35 @@ Caso sua integração utilize uma rede fixa para todas as operações de saque, 
 
 Veja os detalhes de cada informação no objeto `blockchainNetwork` para montar sua requisição.
 
-| Campo              | Tipo     | Obrigatório | Descrição                                               |
-| :----------------- | :------- | :---------: | :------------------------------------------------------ |
-| `_id`              | `string` |   **Sim**   | Identificador único da rede blockchain no sistema.      |
-| `name`             | `string` |   **Sim**   | Nome técnico do padrão da rede (ex: BEP-20, ERC-20).    |
-| `chainId`          | `string` |   **Sim**   | ID numérico da rede (ex: 56 para BSC, 1 para Ethereum). |
-| `cryptocurrencies` | `array`  |   **Não**   | Lista de IDs das criptomoedas suportadas nesta rede.    |
-| `updatedDate`      | `string` |   **Não**   | Data da última atualização dos parâmetros da rede.      |
-| `createdDate`      | `string` |   **Não**   | Data de criação do registro da rede no sistema.         |
-| `__v`              | `number` |   **Não**   | Versão interna do registro no banco de dados.           |
-| `chain`            | `string` |   **Sim**   | Nome simplificado da blockchain (ex: BSC, ETH).         |
-| `symbol`           | `string` |   **Sim**   | Símbolo da moeda nativa da rede (ex: BNB, ETH).         |
+| Campo              | Tipo     | Obrigatório | Descrição                                                               |
+| :----------------- | :------- | :---------: | :---------------------------------------------------------------------- |
+| `_id`              | `string` |   **Sim**   | Identificador único da rede blockchain no sistema.                      |
+| `name`             | `string` |   **Sim**   | Nome técnico do padrão da rede (ex: TRC-20, ERC-20, Solana ou Polygon). |
+| `chainId`          | `string` |   **Sim**   | ID numérico da rede (ex: 1 para Ethereum).                              |
+| `cryptocurrencies` | `array`  |   **Não**   | Lista de IDs das criptomoedas suportadas nesta rede.                    |
+| `updatedDate`      | `string` |   **Não**   | Data da última atualização dos parâmetros da rede.                      |
+| `createdDate`      | `string` |   **Não**   | Data de criação do registro da rede no sistema.                         |
+| `__v`              | `number` |   **Não**   | Versão interna do registro no banco de dados.                           |
+| `chain`            | `string` |   **Sim**   | Nome simplificado da blockchain (ex: ETH).                              |
+| `symbol`           | `string` |   **Sim**   | Símbolo da moeda nativa da rede (ex: ETH).                              |
 
 **3. Passo:** Você deve obter a chave publica da carteira para onde será enviado os valores do saque.
 
-```json {24}
+```json {16}
 {
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -376,34 +347,24 @@ Veja os detalhes de cada informação no objeto `blockchainNetwork` para montar 
 ```
 
 **4. Passo (Opcional):** Adicione o `externalId` ao final do código, ele irá evitar que o cliente envie mais de 1 (uma) vez a solicitação de saque, **evitando duplicidade**.
-```json {27}
+```json {17}
 {
     "amount": 2,
     "customerId": "672f40**************",
-    "currency": {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
-    },
     "cryptocurrency": {
-        "_id": "67ce09d**************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "usdt",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
-    "pixKey": {
-        "key": "123**************",
-        "type": "CPF",
-        "_id": "152535**************"
+    "blockchainNetwork": {
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
-    "externalId": "67ce09d**************"
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
 }
 ```
 
@@ -444,7 +405,7 @@ const axios = require("axios");
             wallet,
             customerId,
             cryptocurrency: blockchains.data[0].cryptocurrencies[1].cryptocurrency, // USDT
-            blockchainNetwork: blockchains.data[0], // BEP-20
+            blockchainNetwork: blockchains.data[0],
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

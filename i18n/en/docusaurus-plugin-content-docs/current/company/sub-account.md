@@ -136,9 +136,9 @@ In the example below, the main account is configuring a **1% fee (`"value": 1`)*
 ```json
 {
     "user": {
-        "name": "Nome da Subconta Ltda",
-        "email": "contato@subconta.com",
-        "password": "SenhaSegura123!",
+        "name": "First User",
+        "email": "contact@subaccount.com",
+        "password": "Password@123",
         "phone": {
             "type": "mobile",
             "number": "999999999",
@@ -219,14 +219,10 @@ In the example below, the main account is configuring a **1% fee (`"value": 1`)*
         "blockchainNetworks": [
             {
                 "blockchainNetwork": {
-                    "_id": "6733a3a20************",
-                    "__v": 0,
-                    "chain": "BSC",
-                    "chainId": "56",
-                    "createdDate": "202************",
-                    "name": "BEP-20",
-                    "symbol": "BNB",
-                    "updatedDate": "202************"
+                    "_id": "69ea849098**************",
+                    "chain": "Solana",
+                    "name": "Solana",
+                    "symbol": "SOL"
                 },
                 "fee": {
                     "type": "PERCENTAGE",
@@ -337,18 +333,18 @@ Below is a base example in Node.js showing how to structure and send this large 
         try {
             const url_api = "https://api.xgateglobal.com";
             
-            // 1. Get Main Account token
+            // 1. Obter token da Conta Principal
             const login = await axios.post(`${url_api}/auth/token`, { 
                 email: emailMaster, 
                 password: passwordMaster 
             });
             
-            // 2. Build Subaccount payload (Summarized for example)
+            // 2. Montar o payload da Subconta (Resumido para o exemplo)
             const subAccountData = {
                 user: {
-                    name: "Minha Subconta Revenda",
-                    email: "admin@subconta.com",
-                    password: "SenhaForte123",
+                    name: "Admin",
+                    email: "admin@subaccount.com",
+                    password: "Strong,Pass@123}{",
                     phone: { type: "mobile", number: "999999999", areaCode: "11", countryCode: "55" }
                 },
                 deposit: {
@@ -365,7 +361,7 @@ Below is a base example in Node.js showing how to structure and send this large 
                     currencies: [
                         {
                             currency: { "_id": "67339fc00076c0dd9822b874", "name": "BRL", "type": "PIX" },
-                            // Example using FIXED fee on withdrawal
+                            // Exemplo usando taxa FIXA no saque
                             fee: { "type": "FIXED", "value": 1.5 }
                         }
                     ],
@@ -374,7 +370,7 @@ Below is a base example in Node.js showing how to structure and send this large 
                 }
             };
             
-            // 3. Create Subaccount
+            // 3. Criar a Subconta
             const { data } = await axios.post(`${url_api}/company/subaccount`, subAccountData, {
                 headers: {
                     "Authorization": `Bearer ${login.data.token}`,
@@ -382,11 +378,11 @@ Below is a base example in Node.js showing how to structure and send this large 
                 }
             });
             
-            console.log("Response:", data); 
-            // Expected: { message: 'Subconta cadastrada com sucesso' }
+            console.log("Resposta:", data); 
+            // Esperado: { message: 'Subconta cadastrada com sucesso' }
 
         } catch (error) {
-            console.error("Error creating subaccount:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
+            console.error("Erro ao criar subconta:", error.response ? JSON.stringify(error.response.data, null, 2) : error.message);
         }
     })();
     ```

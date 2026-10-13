@@ -151,7 +151,8 @@ Retorna o valor que aproximadamente será recebido na carteira externa.
 
 ```json
 {
-    "amount": 9.369984879637112
+  "amount": 99.521567,
+  "cryptocurrency": "USDC"
 }
 ```
 
@@ -166,14 +167,18 @@ Retorna o valor que aproximadamente será recebido na carteira externa.
 
 ## Como usar
 
-Esta rota **não gera** um pedido de pagamento, ela serve apenas para **consulta**.
+:::info[Apenas Consulta]
+Esta rota **não gera** um pedido de saque ou movimenta fundos. Ela serve **estritamente para consulta** de cotação e previsão de taxas da rede.
+:::
 
 ### O Fluxo Recomendado (UX)
 
-1.  **Input:** O usuário digita "10" (Crypto) no seu app/site.
-2.  **Consulta:** Seu sistema chama `POST /withdraw/transaction/crypto/amount` enviando o valor 10, o objeto da rede e o objeto da criptomoeda.
-3.  **Exibição:** A API retorna que isso equivale a `9.369984879637112 USDT`. Você exibe: *"Você receberá aproximadamente 9.369984879637112 USDT"*.
-4.  **Ação:** Se o usuário concordar, você chama a rota de **Criar Pedido de Saque para Carteira Externa** (`POST /withdraw`).
+Para oferecer a melhor experiência aos seus clientes, recomendamos o seguinte fluxo de integração:
+
+1. **Input do Usuário:** O cliente digita o valor que deseja sacar (ex: `10`) em seu aplicativo ou site.
+2. **Consulta de Cotação:** Em background, seu sistema chama o endpoint `POST /withdraw/transaction/crypto/amount` enviando o valor de `10`, junto com os objetos da **rede** e da **criptomoeda** selecionadas.
+3. **Exibição do Valor Líquido:** A API calcula os custos da blockchain e retorna o valor exato que chegará na carteira de destino (ex: `9.369984879637112 USDT`). Você exibe na tela algo como: *"Você receberá aproximadamente 9.36 USDT"*.
+4. **Ação / Confirmação:** Se o usuário concordar com as taxas e o valor líquido, seu sistema então chama a rota definitiva de **Criar Pedido de Saque** (`POST /withdraw`) para efetivar a transação.
 
 ### Exemplo Prático
 
@@ -182,16 +187,14 @@ Siga os passos abaixo para realizar a cotação para carteira externa.
 **1. Passo:** Insira o valor em Crypto para a cotação:
 ```json {2}
 {
-    "amount": 10,
+    "amount": 100,
     "blockchainNetwork": {
-        "_id": "6733a3a20076c0dd9822b87a",
-        "name": "BEP-20",
-        "chainId": "56",
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
     },
     "cryptocurrency": {
-        "_id": "6733a2a90076c0dd9822b86a",
+        "_id": "6733a2a9007**************",
         "name": "USDT",
         "symbol": "USDT",
         "coinGecko": "tether"
@@ -201,18 +204,16 @@ Siga os passos abaixo para realizar a cotação para carteira externa.
 
 **2. Passo:** Você deve buscar e injetar o objeto da rede blockchain dentro de `blockchainNetwork`:
 
-```json {3-9}
+```json {3-7}
 {
-    "amount": 10,
+    "amount": 100,
     "blockchainNetwork": {
-        "_id": "6733a3a20076c0dd9822b87a",
-        "name": "BEP-20",
-        "chainId": "56",
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
     },
     "cryptocurrency": {
-        "_id": "6733a2a90076c0dd9822b86a",
+        "_id": "6733a2a9007**************",
         "name": "USDT",
         "symbol": "USDT",
         "coinGecko": "tether"
@@ -223,18 +224,16 @@ Você pode obter a lista de redes blockchain <a href={useBaseUrl('/docs/crypto/w
 
 **3. Passo:** Você deve buscar e injetar o objeto da criptomoeda dentro de `cryptocurrency`:
 
-```json {10-15}
+```json {8-13}
 {
-    "amount": 10,
+    "amount": 100,
     "blockchainNetwork": {
-        "_id": "6733a3a20076c0dd9822b87a",
-        "name": "BEP-20",
-        "chainId": "56",
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
     },
     "cryptocurrency": {
-        "_id": "6733a2a90076c0dd9822b86a",
+        "_id": "6733a2a9007**************",
         "name": "USDT",
         "symbol": "USDT",
         "coinGecko": "tether"
@@ -277,7 +276,7 @@ const axios = require("axios");
     // 2. Buscar Redes e Criptomoedas
     const blockchains = await axios.get(`${url_api}/withdraw/company/blockchain-networks`, config);
             
-    // Seleciona a primeira rede disponível (Ex: BEP-20)
+    // Seleciona a primeira rede disponível
     const selectedNetwork = blockchains.data[0];
 
     // Busca especificamente pelo objeto do USDT dentro da lista de criptos da rede

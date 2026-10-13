@@ -742,5 +742,80 @@
   },
   "homepage.faq.q4.footer.link": {
     "message": "Create External Withdrawal"
+  },
+  "homepage.faq.test_env.title": {
+    "message": "Where do integration tests take place?"
+  },
+  "homepage.faq.test_env.desc1": {
+    "message": "All integration tests are performed directly in our"
+  },
+  "homepage.faq.test_env.prod": {
+    "message": "Production environment"
+  },
+  "homepage.faq.test_env.warning.title": {
+    "message": "Attention to Ownership (Cash-in and Cash-out):"
+  },
+  "homepage.faq.test_env.warning.desc": {
+    "message": "Unless otherwise agreed in the contract (disabling ownership validation for your company), the document (CPF/CNPJ) provided during customer creation must be valid and belong to the exact same person or company making the bank transfers. Ownership discrepancies will cause test transactions (both deposits and withdrawals) to be rejected."
+  },
+  "homepage.faq.min_values.title": {
+    "message": "What are the minimum values for deposits and withdrawals?"
+  },
+  "homepage.faq.min_values.desc": {
+    "message": "To ensure successful transactions, observe the minimum required limits, which vary depending on the channel used:"
+  },
+  "homepage.faq.min_values.api.title": {
+    "message": "Operations via API"
+  },
+  "homepage.faq.min_values.api.fiat": {
+    "message": "Fiat Deposits and Withdrawals (BRL):"
+  },
+  "homepage.faq.min_values.api.fiat_crypto": {
+    "message": "Deposits with conversion (BRL ➔ USDT/USDC):"
+  },
+  "homepage.faq.min_values.api.crypto_fiat": {
+    "message": "Withdrawals with conversion (USDT/USDC ➔ BRL):"
+  },
+  "homepage.faq.min_values.api.crypto_crypto": {
+    "message": "Crypto ➔ Crypto Withdrawals (Network Minimum):"
+  },
+  "homepage.faq.min_values.dashboard.title": {
+    "message": "Operations via Dashboard"
+  },
+  "homepage.faq.min_values.dash.fiat": {
+    "message": "Fiat Withdrawals (BRL ➔ BRL):"
+  },
+  "homepage.faq.min_values.dash.fiat_crypto": {
+    "message": "Withdrawals with conversion (BRL ➔ USDT/USDC):"
+  },
+  "homepage.faq.min_values.dash.fiat_crypto_note": {
+    "message": "(regardless of network)"
+  },
+  "homepage.faq.min_values.dash.crypto": {
+    "message": "Crypto ➔ Crypto Withdrawals:"
+  },
+  "homepage.faq.min_values.dash.crypto_note": {
+    "message": "Follow the same minimum limits required by the networks in the API."
+  },
+  "homepage.faq.min_values.dash.note.title": {
+    "message": "Important Note:"
+  },
+  "homepage.faq.min_values.dash.note.desc": {
+    "message": "XGate does not support direct conversions between cryptocurrencies (e.g., USDT to USDC or vice versa), either through the API or the Dashboard."
+  },
+  "homepage.faq.q8.title": {
+    "message": "What are the HTTP status codes returned by the API?"
+  },
+  "homepage.faq.q8.intro": {
+    "message": "The XGate API follows REST standards and returns conventional HTTP status codes to indicate the success or failure of a request. Below are the main codes you will encounter:"
+  },
+  "homepage.faq.q8.tip.bold": {
+    "message": "Debugging tip:"
+  },
+  "homepage.faq.q8.tip": {
+    "message": "Whenever the API returns an error (400 or 500 series), the response body will contain a JSON object with the property"
+  },
+  "homepage.faq.q8.tip2": {
+    "message": "detailing exactly what caused the failure."
   }
 }

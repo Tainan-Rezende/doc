@@ -109,7 +109,7 @@ O campo `type` é omitido nas operações que envolvem saldos cripto.
 }
 ```
 
-**3. Depósito (Pix convertido para USDT ou USDT direto):**
+**3. Depósito (Pix convertido para Crypto):**
 
 ```json
 {
@@ -122,18 +122,47 @@ O campo `type` é omitido nas operações que envolvem saldos cripto.
 }
 ```
 
+**4. Saque (Crypto para Crypto)**
+
+```json
+{
+  "id": "6a3a844fe2**************",
+  "status": "PAID",
+  "name": "USDT",
+  "amount": 1,
+  "operation": "WITHDRAW",
+  "customerId": "6a1a379e1f**************",
+  "txHash": "54vpJgzQ8C2ktDj7************************"
+}
+```
+
+**4. Depósito (Crypto para Crypto)**
+
+```json
+{
+  "id": "6a3da45e116****************",
+  "status": "PAID",
+  "name": "USDT",
+  "amount": 4.7,
+  "operation": "DEPOSIT",
+  "customerId": "6a1a379e1fe****************",
+  "txHash": "mtVZznAKV6m1eEjWrWaX****************"
+}
+```
+
 ### Descrição dos Campos
 
-| Campo        | Tipo     | Descrição                                                                                |
-| :----------- | :------- | :--------------------------------------------------------------------------------------- |
-| `id`         | `string` | ID único da transação gerado pela XGate.                                                 |
-| `status`     | `string` | O status atual da transação (veja a tabela abaixo).                                      |
-| `name`       | `string` | A moeda base da transação (ex: `BRL`, `USDT`).                                           |
-| `type`       | `string` | *(Condicional)* O método utilizado (ex: `PIX`). Geralmente ausente em transações cripto. |
-| `amount`     | `number` | O valor processado na transação.                                                         |
-| `operation`  | `string` | Define se é uma entrada ou saída (`DEPOSIT` ou `WITHDRAW`).                              |
-| `customerId` | `string` | ID do cliente vinculado à transação.                                                     |
-| `externalId` | `string` | *(Opcional)* O ID do pedido no seu sistema, retornado apenas se enviado na criação.      |
+| Campo | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `id` | `string` | ID único da transação gerado pela XGate. |
+| `status` | `string` | O status atual da transação (ex: `PAID`, `PROCESSING`). |
+| `name` | `string` | A moeda base da transação (ex: `BRL`, `USDT`). |
+| `type` | `string` | *(Condicional)* O método utilizado (ex: `PIX`). Geralmente ausente em transações envolvendo saldo cripto. |
+| `amount` | `number` | O valor processado na transação. |
+| `operation` | `string` | Define se é uma entrada ou saída (`DEPOSIT` ou `WITHDRAW`). |
+| `customerId` | `string` | ID do cliente vinculado à transação. |
+| `externalId` | `string` | *(Opcional)* O ID do pedido no seu sistema. Retornado apenas se foi enviado por você na criação da transação. |
+| `txHash` | `string` | *(Condicional)* Hash da transação registrada na blockchain. Retornado apenas em operações 100% crypto. |
 
 ---
 
@@ -146,7 +175,7 @@ Seu sistema deve estar preparado para processar os status de fluxo normal e os s
 | Status                                                     | Significado                                                                   | Ação Recomendada                                                                  |
 | :--------------------------------------------------------- | :---------------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
 | <span className="badge badge--secondary">PROCESSING</span> | A transação está sendo processada.                                            | Apenas registrar o andamento (comum em saques).                                   |
-| <span className="badge badge--success">PAID</span>         | Transação concluída e paga com sucesso.                                       | **Liberar o saldo/produto ou confirmar o saque.**                                 |
+| <span className="badge badge--success">PAID</span>         | Transação concluída e paga com sucesso.                                       | **Liberar o saldo/produto e confirmar depósito ou saque.**                        |
 | <span className="badge badge--danger">ERROR</span>         | Falha na operação (ex: chave Pix incorreta em saques, titularidade inválida). | Avisar o usuário final sobre a falha e sugerir verificar informações cadastradas. |
 | <span className="badge badge--danger">REJECTED</span>      | Rejeitado pela liquidante/parceiro bancário.                                  | Raro de acontecer, tratar como falha definitiva.                                  |
 
@@ -159,3 +188,4 @@ Seu sistema deve estar preparado para processar os status de fluxo normal e os s
 | <span className="badge badge--danger">EXPIRED_DISPUTE</span>             | O prazo para enviar as provas de contestação do estorno expirou.                  | Registrar perda da disputa.                          |
 | <span className="badge badge--success">REFUND_CANCELED</span>            | O estorno foi cancelado pelo banco (você ganhou a disputa).                       | O valor retido é devolvido à sua conta.              |
 | <span className="badge badge--danger">REFUND_APPROVED</span>             | O estorno foi aprovado pelo banco (você perdeu a disputa).                        | O valor é devolvido ao cliente final em definitivo.  |
+

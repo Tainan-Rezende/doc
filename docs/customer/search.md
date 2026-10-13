@@ -137,7 +137,7 @@ Os dados do cliente foram encontrados.
 | Status  | Mensagem                | Motivo Provável                                                                                                                                            |
 | :------ | :---------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido.<br />• Você não tem autorização para realizar essa ação. |
-| **404** | `Not Found`             | • ID informado não é válido.<br />O cliente não existe.                                                                                                    |
+| **404** | `Not Found`             | • ID informado não é válido.<br />• O cliente não existe.                                                                                                  |
 | **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com suporte.                                                                                                   |
 
 ---

@@ -137,9 +137,9 @@ No exemplo abaixo, a conta principal está configurando uma taxa de **1% (`"valu
 ```json
 {
     "user": {
-        "name": "Nome da Subconta Ltda",
-        "email": "contato@subconta.com",
-        "password": "SenhaSegura123!",
+        "name": "First User",
+        "email": "contact@subaccount.com",
+        "password": "Password@123",
         "phone": {
             "type": "mobile",
             "number": "999999999",
@@ -220,14 +220,10 @@ No exemplo abaixo, a conta principal está configurando uma taxa de **1% (`"valu
         "blockchainNetworks": [
             {
                 "blockchainNetwork": {
-                    "_id": "6733a3a20************",
-                    "__v": 0,
-                    "chain": "BSC",
-                    "chainId": "56",
-                    "createdDate": "202************",
-                    "name": "BEP-20",
-                    "symbol": "BNB",
-                    "updatedDate": "202************"
+                    "_id": "69ea849098**************",
+                    "chain": "Solana",
+                    "name": "Solana",
+                    "symbol": "SOL"
                 },
                 "fee": {
                     "type": "PERCENTAGE",
@@ -347,9 +343,9 @@ Abaixo, um exemplo base em Node.js mostrando como estruturar e enviar essa grand
             // 2. Montar o payload da Subconta (Resumido para o exemplo)
             const subAccountData = {
                 user: {
-                    name: "Minha Subconta Revenda",
-                    email: "admin@subconta.com",
-                    password: "SenhaForte123",
+                    name: "Admin",
+                    email: "admin@subaccount.com",
+                    password: "Strong,Pass@123}{",
                     phone: { type: "mobile", number: "999999999", areaCode: "11", countryCode: "55" }
                 },
                 deposit: {

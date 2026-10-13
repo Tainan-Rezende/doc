@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-get'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ListCryptoCurrenciesTester from '@site/src/components/ListCryptoCurrenciesTester';
+import ListDepositCryptoCurrenciesTester from '@site/src/components/ListDepositCryptoCurrenciesTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Listar Criptomoedas
@@ -26,7 +26,7 @@ paths:
   /deposit/company/cryptocurrencies:
     get:
       summary: Listar Criptomoedas para Depósito
-      description: Retorna uma lista de todas as criptomoedas disponíveis (ex USDT) para a conta da empresa. O objeto retornado é necessário para compor o payload de criação de pedidos de depósito com conversão.
+      description: Retorna uma lista de todas as criptomoedas disponíveis (ex USDT ou USDC) para a conta da empresa. O objeto retornado é necessário para compor o payload de criação de pedidos de depósito com conversão.
       security:
         - bearerAuth: []
       responses:
@@ -87,7 +87,7 @@ https://api.xgateglobal.com/deposit/company/cryptocurrencies
 
 Utilize o formulário abaixo para simular a listagem de criptomoedas.
 
-<ListCryptoCurrenciesTester />
+<ListDepositCryptoCurrenciesTester />
 
 ---
 
@@ -112,13 +112,24 @@ Retorna uma lista (array) de objetos, onde cada objeto é uma criptomoeda.
 ```json
 [
   {
-    "_id": "67339b18ca5******************",
+    "_id": "67339b18ca5**************",
     "name": "USDT",
     "symbol": "USDT",
     "coinGecko": "tether",
-    "updatedDate": "2024-1****************",
-    "createdDate": "2024-1*****************",
-    "__v": 0
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K88H**************"
+  },
+  {
+    "_id": "67339b2bca5**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
   }
 ]
 ```
@@ -150,13 +161,24 @@ A resposta deste endpoint fornece o **Objeto Completo** da criptomoeda, permitin
 ```json
 [
   {
-    "_id": "67339b18ca5******************",
+    "_id": "67339b18ca5**************",
     "name": "USDT",
     "symbol": "USDT",
     "coinGecko": "tether",
-    "updatedDate": "2024-1****************",
-    "createdDate": "2024-1*****************",
-    "__v": 0
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K88H**************"
+  },
+  {
+    "_id": "67339b2bca5**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
   }
 ]
 ```
@@ -164,27 +186,28 @@ A resposta deste endpoint fornece o **Objeto Completo** da criptomoeda, permitin
 **2. Como você deve enviar no depósito (POST /deposit):**
 
 Você vai pegar o objeto acima e injetá-lo dentro de `cryptocurrency`:
-```json {13-21}
+```json {13-22}
 {
   "amount": 2,
   "customerId": "672f40**************",
   "currency": {
-    "_id": "6722ba**************",
+    "_id": "6728f0a2cb************",
     "name": "BRL",
     "type": "PIX",
-    "createdDate": "202*********************",
-    "updatedDate": "202*********************",
+    "createdDate": "2024-1************",
+    "updatedDate": "2026-0************",
     "__v": 0,
     "symbol": "R$"
   },
   "cryptocurrency": {
-    "_id": "67ce09d**************",
-    "name": "USDT",
-    "symbol": "USDT",
-    "coinGecko": "usdt",
-    "updatedDate": "202*********************",
-    "createdDate": "202*********************",
-    "__v": 0
+    "_id": "67339b2bca5**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
   },
   "externalId": "67ce09d**************"
 }

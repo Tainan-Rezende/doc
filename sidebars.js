@@ -64,7 +64,7 @@ const sidebars = {
           label: 'Crypto (com Conversão)',
           key: 'saques-crypto-conversao',
           items: [
-            'crypto/withdraw/cryptocurrency',
+            'crypto/withdraw/conversion/cryptocurrency',
             'crypto/withdraw/create',
             'crypto/withdraw/price-usdt'
           ]
@@ -75,7 +75,7 @@ const sidebars = {
           key: 'saques-crypto-wallet',
           items: [
             'crypto/withdraw/network',
-            'crypto/withdraw/cryptocurrency',
+            'crypto/withdraw/wallet/cryptocurrency',
             'crypto/withdraw/create-external',
             'crypto/withdraw/price-external'
           ]

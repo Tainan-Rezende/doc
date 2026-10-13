@@ -26,7 +26,7 @@ paths:
   /withdraw/company/blockchain-networks:
     get:
       summary: Listar Redes Blockchain para Saque
-      description: Retorna uma lista de todas as redes blockchain suportadas pela plataforma (ex ERC-20, BEP-20, Polygon). O objeto retornado é obrigatório para montar payloads de saque (cash-out) enviando criptomoedas para carteiras externas.
+      description: Retorna uma lista de todas as redes blockchain suportadas pela plataforma (ex ERC-20, TRC-20, Solana Polygon). O objeto retornado é obrigatório para montar payloads de saque (cash-out) enviando criptomoedas para carteiras externas.
       security:
         - bearerAuth: []
       responses:
@@ -44,16 +44,16 @@ paths:
                       description: ID único da rede.
                     name:
                       type: string
-                      description: Nome da rede de transferência (ex BEP-20, ERC-20).
+                      description: Nome da rede de transferência (ex TRC-20, ERC-20).
                     chainId:
                       type: string
                       description: Identificador da rede na blockchain (ex 56, 1).
                     chain:
                       type: string
-                      description: Nome da blockchain principal (ex BSC, Ethereum).
+                      description: Nome da blockchain principal (ex Ethereum).
                     symbol:
                       type: string
-                      description: Símbolo do token nativo da rede (ex BNB, ETH).
+                      description: Símbolo do token nativo da rede (ex ETH).
                     cryptocurrencies:
                       type: array
                       items:
@@ -79,7 +79,7 @@ components:
     />
 </div>
 
-This endpoint retrieves all blockchain networks supported by the platform (e.g., Ethereum, BSC, Polygon, and newly integrated networks).
+This endpoint retrieves all blockchain networks supported by the platform (e.g., Ethereum, Polygon, Tron e Solana).
 
 This listing is **essential for performing cryptocurrency withdrawals** to external wallets. Since stablecoins like **USDT** and **USDC** are multichain assets available across various blockchains, you must specify the correct network when constructing the withdrawal payload to prevent any loss of funds.
 
@@ -122,20 +122,50 @@ Returns the list of networks. You will need the **complete object** of the chose
 ```json
 [
   {
-    "_id": "672c15919c9877bbeebb2fb7",
+    "_id": "672c15919**************",
     "name": "ERC-20",
     "chainId": "1",
     "cryptocurrencies": [...],
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
     "chain": "Ethereum",
-    "__v": 0
+    "uid": "01KH7NPXAX**************"
   },
   {
-    "_id": "672c18725a3690d041ea4c8c",
-    "name": "BEP-20",
-    "chainId": "56",
+    "_id": "672c19adc**************",
+    "name": "Polygon",
+    "chainId": "137",
     "cryptocurrencies": [...],
-    "chain": "BSC",
-    "__v": 0
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "chain": "Polygon",
+    "symbol": "MATIC",
+    "uid": "01KH7N1B2D**************"
+  },
+  {
+    "_id": "69ea823198**************",
+    "__v": 0,
+    "chain": "Tron",
+    "chainId": "728126428",
+    "createdDate": "2026-0**************",
+    "cryptocurrencies": [...],
+    "name": "TRC-20",
+    "symbol": "TRX",
+    "uid": "01KHM0PNDZBSGFDE7DP6AQA72N",
+    "updatedDate": "2026-0**************"
+  },
+  {
+    "_id": "69ea849098**************",
+    "__v": 0,
+    "chain": "Solana",
+    "createdDate": "2026-0**************",
+    "cryptocurrencies": [...],
+    "name": "Solana",
+    "symbol": "SOL",
+    "uid": "01KKZWMEH6**************",
+    "updatedDate": "2026-0**************"
   }
 ]
 ```
@@ -149,47 +179,50 @@ Returns the list of networks. You will need the **complete object** of the chose
 
 ---
 
-## How to Use
+## How to use
 
-To perform a **Crypto Withdrawal** (send USDT from XGate to an external wallet), it is not enough to provide the currency and amount. It is mandatory to provide the **Network (Blockchain Network)**.
+To perform a **Crypto Withdrawal** (sending USDT or USDC from XGate to an external wallet), providing just the currency and the amount isn't enough. It is mandatory to specify the **Blockchain Network**.
 
-### What Are These Networks?
-Imagine that **USDT** is the cargo (the money) and the **Blockchain Network** is the highway that cargo travels on. We mainly work with:
+### What are these Networks?
+Imagine that the cryptocurrency is the cargo (the money) and the **Blockchain Network** is the highway the cargo will travel on. We primarily work with:
 
-* **Ethereum / ERC-20:** The main Ethereum network. Usually has higher gas fees.
-* **BEP-20 (BSC):** The Binance Smart Chain network. Known for lower fees and high speed.
-* **Polygon:** A second-layer network (Layer 2) focused on scalability and low cost.
+* **Ethereum / ERC-20:** The main Ethereum network. It generally has higher gas fees.
+* **Polygon:** A network created to solve Ethereum's scaling issues, offering fast and low-cost transactions.
+* **Tron (TRC-20):** Extremely popular for stablecoin transactions (**used only for USDT transactions on XGate**), known for its high speed and very low fees.
+* **Solana:** One of the fastest and most efficient networks on the market today, standing out for near-zero transaction costs.
 
-If your customer provides a wallet address from the **Polygon** network, you **must** select the `Polygon` network in this listing. Sending through the wrong network (e.g., sending to a Polygon address using the Ethereum network) can result in transaction failure or unnecessary high costs.
+:::warning[Attention]
+If your client provides a **Polygon** network wallet address, you **must** select the `Polygon` network from this list. Sending via the wrong network (e.g., sending to a Polygon address using the Ethereum network) can result in transaction failure or unnecessarily high costs.
+:::
 
 ### The Integration Flow
 
-1.  **Check the Networks:** Call this endpoint to get the available options and their IDs.
-2.  **Select the Network:** Let your user choose (e.g., "Select the destination network: ERC-20, BEP-20, or Polygon") or select via system based on the wallet address.
-3.  **Build the Payload:** Take the **complete object** of the chosen network and insert it in the `blockchainNetwork` field of the withdrawal payload.
+1.  **Consult the Networks:** Call this endpoint to retrieve the available options and their IDs.
+2.  **Select the Network:** Let your user choose (e.g., "Select the destination network: ERC-20, TRC-20, Solana, or Polygon") or systematically select it based on the wallet address.
+3.  **Build the Payload:** Take the **complete object** of the chosen network and insert it into the `blockchainNetwork` field of the withdrawal payload.
 
 ### Practical Example
 
-**1. Network object you received in this listing (e.g., BEP-20):**
+**1. Network object you received in this listing (e.g., SOLANA):**
 ```json
 {
-    "_id": "6733a3a200**************",
-    "name": "BEP-20",
-    "chainId": "56",
-    "cryptocurrencies": [],
-    "updatedDate": "202******************",
-    "createdDate": "202******************",
-    "__v": 0,
-    "chain": "BSC",
-    "symbol": "BNB"
-},
+  "_id": "69ea849098**************",
+  "__v": 0,
+  "chain": "Solana",
+  "createdDate": "2026-0**************",
+  "cryptocurrencies": [...],
+  "name": "Solana",
+  "symbol": "SOL",
+  "uid": "01KKZWMEH6**************",
+  "updatedDate": "2026-0**************"
+}
 ```
 
 **2. How to send in Crypto Withdrawal (POST /withdraw):**
 
 Notice how the object above is injected in the `blockchainNetwork` field:
 
-```json {9-19}
+```json {9-14}
 {
     "amount": 2,
     "customerId": "6759a16f20***************",
@@ -199,15 +232,10 @@ Notice how the object above is injected in the `blockchainNetwork` field:
         "symbol": "USDT"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
+        "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"

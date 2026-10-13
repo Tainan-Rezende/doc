@@ -111,15 +111,25 @@ Returns a list (array) of objects, where each object is a currency.
 
 ```json
 [
-    {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
+  {
+    "_id": "6728f0a2cb************",
+    "name": "BRL",
+    "type": "PIX",
+    "createdDate": "2024-1************",
+    "updatedDate": "2026-0************",
+    "__v": 0,
+    "symbol": "R$",
+    "supplierFeeByActivity": {
+      "xgatetreeal": {
+        "type": "FIXED",
+        "value": 0.0
+      },
+      "xgatetreealliquidity": {
+        "type": "PERCENTAGE",
+        "value": 0.00
+      }
     }
+  }
 ]
 ```
 
@@ -150,13 +160,23 @@ The response from this endpoint provides the **Full Object** of the currency, wh
 ```json
 [
   {
-    "_id": "6728f0a2cba**************",
+    "_id": "6728f0a2cb************",
     "name": "BRL",
     "type": "PIX",
-    "createdDate": "2024-1**************Z",
-    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1************",
+    "updatedDate": "2026-0************",
     "__v": 0,
-    "symbol": "R$"
+    "symbol": "R$",
+    "supplierFeeByActivity": {
+      "xgatetreeal": {
+        "type": "FIXED",
+        "value": 0.0
+      },
+      "xgatetreealliquidity": {
+        "type": "PERCENTAGE",
+        "value": 0.00
+      }
+    }
   }
 ]
 ```
@@ -164,18 +184,28 @@ The response from this endpoint provides the **Full Object** of the currency, wh
 **2. How you should send it in the deposit (POST /deposit):**
 
 You will take the object above and inject it inside `currency`:
-```json {4-12}
+```json {4-22}
 {
     "amount": 0.2,
     "customerId": "68e7b8****************",
     "currency": {
-        "_id": "6728f0a2cba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "2024-1**************Z",
-        "updatedDate": "2024-1**************",
-        "__v": 0,
-        "symbol": "R$"
+      "_id": "6728f0a2cb************",
+      "name": "BRL",
+      "type": "PIX",
+      "createdDate": "2024-1************",
+      "updatedDate": "2026-0************",
+      "__v": 0,
+      "symbol": "R$",
+      "supplierFeeByActivity": {
+        "xgatetreeal": {
+          "type": "FIXED",
+          "value": 0.0
+        },
+        "xgatetreealliquidity": {
+          "type": "PERCENTAGE",
+          "value": 0.00
+        }
+      }
     }
 }
 ```

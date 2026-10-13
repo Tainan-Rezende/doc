@@ -50,6 +50,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para controle interno (opcional, mas recomendado).
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
                 currency:
                   type: object
                   description: Objeto com os dados da moeda fiduciária (obtido via GET /withdraw/company/currencies).
@@ -146,15 +149,22 @@ You must send the authentication **Header** and the request **Body** with the or
 
 #### Body (Request Body)
 
-| Field        | Type     | Required | Description                                               |
-| :----------- | :------- | :------: | :-------------------------------------------------------- |
-| `amount`     | `number` | **Yes**  | The withdrawal amount (e.g., `100.50`).                   |
-| `customerId` | `string` |  **No**  | The unique customer ID (`_id`) associated with the order. |
-| `currency`   | `string` | **Yes**  | The transaction currency (e.g., `BRL`).                   |
-| `externalId` | `string` |  **No**  | Idempotency key                                           |
+| Field                   | Type      | Required | Description                                               |
+| :---------------------- | :-------- | :------: | :-------------------------------------------------------- |
+| `amount`                | `number`  | **Yes**  | The withdrawal amount (e.g., `100.50`).                   |
+| `customerId`            | `string`  |  **No**  | The unique customer ID (`_id`) associated with the order. |
+| `currency`              | `string`  | **Yes**  | The transaction currency (e.g., `BRL`).                   |
+| `externalId`            | `string`  |  **No**  | Idempotency key                                           |
+| `identifiedDocumentPix` | `boolean` |  **No**  | When `true`, forces Pix document ownership verification.  |
 
-:::warning[Important]
-We recommend including the `externalId` in the request as it prevents duplicate submissions of the same order, which can occur accidentally.
+:::info[About ownership validation]
+Sending the `identifiedDocumentPix` parameter with the value `false` (or omitting it) **does not disable** the ownership check if it is configured as **mandatory** in the XGate administrative panel for your account. 
+
+This parameter strictly serves to **force** the validation (by sending `true`) on accounts where the panel's default rule is disabled. To permanently disable document ownership verification, a commercial alignment via contract is required.
+:::
+
+:::tip[Best Practices: Duplication Prevention]
+We strongly recommend sending the `externalId` field. It acts as an idempotency key, ensuring that the same withdrawal request is not created in duplicate in case of network failure, double clicks, or accidental retries by your system.
 :::
 
 ---
@@ -223,7 +233,8 @@ To create Pix withdrawal orders, you need three pieces of data:
         "key": "+5512************",
         "type": "PHONE",
         "_id": "68fa5d54004*************"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -248,7 +259,8 @@ You can get the list of currencies <a href={useBaseUrl('/docs/fiat/withdraw/curr
         "key": "+5512************",
         "type": "PHONE",
         "_id": "68fa5d54004*************"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -287,7 +299,8 @@ You can get the list of keys <a href={useBaseUrl('/docs/pix/keys')} target="_bla
         "key": "+5512************",
         "type": "PHONE",
         "_id": "68fa5d54004*************"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -333,7 +346,8 @@ You can get the list of keys <a href={useBaseUrl('/docs/pix/keys')} target="_bla
             amount,
             customerId,
             currency: currencies.data[0],
-            pixKey: pixKeys.data[0]
+            pixKey: pixKeys.data[0],
+            identifiedDocumentPix: true
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

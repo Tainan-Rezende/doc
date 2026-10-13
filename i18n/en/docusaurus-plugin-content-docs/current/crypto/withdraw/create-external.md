@@ -72,7 +72,7 @@ paths:
                       type: string
                 blockchainNetwork:
                   type: object
-                  description: Objeto com os dados da rede blockchain de transferência (ex BEP-20, ERC-20).
+                  description: Objeto com os dados da rede blockchain de transferência (ex ERC-20, TRC-20).
                   required:
                     - _id
                     - name
@@ -147,20 +147,20 @@ You must send the **authentication Header** and the **Body** with the order data
 
 #### Required Headers
 
-| Header          | Value                | Description                    |
-| :-------------- | :------------------- | :--------------------------- |
+| Header          | Value                 | Description                        |
+| :-------------- | :-------------------- | :--------------------------------- |
 | `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
 #### Body (Request Body)
 
-| Field               | Type     | Required | Description                                       |
-| :------------------ | :------- | :---------: | :---------------------------------------------- |
-| `amount`            | `number` |   **Yes**   | The withdrawal amount in USDT (e.g., `0.1` min).       |
-| `customerId`        | `string` |   **Yes**   | The unique ID (`_id`) of the customer making the withdrawal. |
-| `cryptocurrency`    | `object` |   **Yes**   | The cryptocurrency of the transaction (e.g., `USDT`).        |
-| `blockchainNetwork` | `object` |   **Yes**   | Information about the blockchain network.            |
-| `wallet`            | `string` |   **Yes**   | The wallet to which the values will be sent. |
-| `externalId`        | `string` |   **No**   | Idempotency.                                   |
+| Field               | Type     | Required | Description                                                  |
+| :------------------ | :------- | :------: | :----------------------------------------------------------- |
+| `amount`            | `number` | **Yes**  | The withdrawal amount in USDT (e.g., `0.1` min).             |
+| `customerId`        | `string` | **Yes**  | The unique ID (`_id`) of the customer making the withdrawal. |
+| `cryptocurrency`    | `object` | **Yes**  | The cryptocurrency of the transaction (e.g., `USDT`).        |
+| `blockchainNetwork` | `object` | **Yes**  | Information about the blockchain network.                    |
+| `wallet`            | `string` | **Yes**  | The wallet to which the values will be sent.                 |
+| `externalId`        | `string` |  **No**  | Idempotency.                                                 |
 
 ---
 
@@ -180,11 +180,11 @@ Returns the created order object, containing information about the `status` and 
 
 ### Common Errors
 
-| Status  | Message                | Likely Reason                                                                                  |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
+| Status  | Message                 | Likely Reason                                                                         |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------ |
 | **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br />• IP not allowed. |
-| **404** | `Not Found`             | Customer informed in the `customerId` field does not exist.                                              |
-| **500** | `Internal Server Error` | Internal server error. Contact support.                                         |
+| **404** | `Not Found`             | Customer informed in the `customerId` field does not exist.                           |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                               |
 
 ---
 
@@ -216,24 +216,16 @@ You can be **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -244,29 +236,21 @@ You can be **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click
 
 You can obtain the list of them <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')} target="_blank">by clicking here</a>.
 
-```json {4-12}
+```json {4-9}
 {
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -281,43 +265,35 @@ The `cryptocurrency` data can also be retrieved from the response coming from th
 
 See the details of each information in the `cryptocurrency` object to build your request.
 
-| Field         | Type     | Required | Description                                                  |
-| :------------ | :------- | :---------: | :--------------------------------------------------------- |
-| `_id`         | `string` |   **Yes**   | Unique identifier of the cryptocurrency.                        |
-| `name`        | `string` |   **Yes**   | Name of the cryptocurrency.                                       |
-| `symbol`      | `string` |   **Yes**   | Symbol of the cryptocurrency.                                    |
-| `coinGecko`   | `string` |   **No**   | Cryptocurrency identifier on CoinGecko.                 |
-| `updatedDate` | `string` |   **No**   | Date of last update of cryptocurrency information. |
-| `createdDate` | `string` |   **No**   | Date when the cryptocurrency was created in the system.           |
-| `__v`         | `number` |   **No**   | Version of the cryptocurrency record in the database.       |
+| Field         | Type     | Required | Description                                             |
+| :------------ | :------- | :------: | :------------------------------------------------------ |
+| `_id`         | `string` | **Yes**  | Unique identifier of the cryptocurrency.                |
+| `name`        | `string` | **Yes**  | Name of the cryptocurrency.                             |
+| `symbol`      | `string` | **Yes**  | Symbol of the cryptocurrency.                           |
+| `coinGecko`   | `string` |  **No**  | Cryptocurrency identifier on CoinGecko.                 |
+| `updatedDate` | `string` |  **No**  | Date of last update of cryptocurrency information.      |
+| `createdDate` | `string` |  **No**  | Date when the cryptocurrency was created in the system. |
+| `__v`         | `number` |  **No**  | Version of the cryptocurrency record in the database.   |
 
 **Step 3:** You must obtain the blockchain network data.
 
 You can obtain the list of them <a href={useBaseUrl('/docs/crypto/withdraw/network')} target="_blank">by clicking here</a>.
 
-```json {13-23}
+```json {10-15}
 {
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -332,43 +308,35 @@ If your integration uses a fixed network for all withdrawal operations, we recom
 
 See the details of each information in the `blockchainNetwork` object to build your request.
 
-| Field              | Type     | Required | Description                                               |
-| :----------------- | :------- | :---------: | :------------------------------------------------------ |
-| `_id`              | `string` |   **Yes**   | Unique identifier of the blockchain network in the system.      |
-| `name`             | `string` |   **Yes**   | Technical name of the network standard (e.g., BEP-20, ERC-20).    |
-| `chainId`          | `string` |   **Yes**   | Numeric ID of the network (e.g., 56 for BSC, 1 for Ethereum). |
-| `cryptocurrencies` | `array`  |   **No**   | List of IDs of cryptocurrencies supported on this network.    |
-| `updatedDate`      | `string` |   **No**   | Date of last update of network parameters.      |
-| `createdDate`      | `string` |   **No**   | Date of creation of the network record in the system.         |
-| `__v`              | `number` |   **No**   | Internal version of the record in the database.           |
-| `chain`            | `string` |   **Yes**   | Simplified name of the blockchain (e.g., BSC, ETH).         |
-| `symbol`           | `string` |   **Yes**   | Symbol of the native currency of the network (e.g., BNB, ETH).         |
+| Field              | Type     | Required | Description                                                    |
+| :----------------- | :------- | :------: | :------------------------------------------------------------- |
+| `_id`              | `string` | **Yes**  | Unique identifier of the blockchain network in the system.     |
+| `name`             | `string` | **Yes**  | Technical name of the network standard (e.g., TRC-20, ERC-20). |
+| `chainId`          | `string` | **Yes**  | Numeric ID of the network (e.g., 56 for BSC, 1 for Ethereum).  |
+| `cryptocurrencies` | `array`  |  **No**  | List of IDs of cryptocurrencies supported on this network.     |
+| `updatedDate`      | `string` |  **No**  | Date of last update of network parameters.                     |
+| `createdDate`      | `string` |  **No**  | Date of creation of the network record in the system.          |
+| `__v`              | `number` |  **No**  | Internal version of the record in the database.                |
+| `chain`            | `string` | **Yes**  | Simplified name of the blockchain (e.g., BSC, ETH).            |
+| `symbol`           | `string` | **Yes**  | Symbol of the native currency of the network (e.g., BNB, ETH). |
 
 **Step 4:** You must obtain the public key of the wallet where the withdrawal values will be sent.
 
-```json {24}
+```json {16}
 {
     "amount": 2,
     "customerId": "672f40**************",
     "cryptocurrency": {
-        "_id": "67c0dd903***************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "tether",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"
@@ -376,34 +344,24 @@ See the details of each information in the `blockchainNetwork` object to build y
 ```
 
 **Step 5 (Optional):** Add the `externalId` at the end of the code. It will prevent the client from sending the withdrawal request more than once, **avoiding duplication**.
-```json {27}
+```json {17}
 {
     "amount": 2,
     "customerId": "672f40**************",
-    "currency": {
-        "_id": "6722ba**************",
-        "name": "BRL",
-        "type": "PIX",
-        "createdDate": "202*********************",
-        "updatedDate": "202*********************",
-        "__v": 0,
-        "symbol": "R$"
-    },
     "cryptocurrency": {
-        "_id": "67ce09d**************",
-        "name": "USDT",
-        "symbol": "USDT",
-        "coinGecko": "usdt",
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0
+      "_id": "6733a2a900**************",
+      "name": "USDT",
+      "symbol": "USDT",
+      "coinGecko": "tether"
     },
-    "pixKey": {
-        "key": "123**************",
-        "type": "CPF",
-        "_id": "152535**************"
+    "blockchainNetwork": {
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
-    "externalId": "67ce09d**************"
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
 }
 ```
 
@@ -444,7 +402,7 @@ const axios = require("axios");
             wallet,
             customerId,
             cryptocurrency: blockchains.data[0].cryptocurrencies[1].cryptocurrency, // USDT
-            blockchainNetwork: blockchains.data[0], // BEP-20
+            blockchainNetwork: blockchains.data[0],
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

@@ -98,8 +98,8 @@ O valor **ID_TRANSACAO** na URL refere-se ao `_id` do depósito gerado pela XGat
 
 ### Headers Obrigatórios
 
-| Header | Valor | Descrição |
-| :--- | :--- | :--- |
+| Header          | Valor                | Descrição                                  |
+| :-------------- | :------------------- | :----------------------------------------- |
 | `Authorization` | `Bearer <seu_token>` | Token JWT de autenticação obtido no login. |
 
 ---
@@ -114,25 +114,23 @@ A transação foi encontrada. A estrutura dos dados retornados varia de acordo c
 
 ```json
 {
-    "_id": "6996202*******************",
+    "_id": "6a3d60ffc37******************",
     "currency": {
         "name": "BRL",
         "type": "PIX",
         "amount": 0.2,
         "status": "PAID"
     },
-    "document": "487********",
-    "externalId": "webhook-test-a30c0229",
-    "identifiedDocumentPix": true,
-    "customerId": "697e15d*******************"
+    "generatedReceiptAt": "2026-06-25T17:10:45.584Z",
+    "customerId": "6a1a379e1fe****************"
 }
 ```
 
-**2. Depósito Pix convertendo para USDT:**
+**2. Depósito Pix convertendo para Crypto:**
 
 ```json
 {
-    "_id": "6971c5d*******************",
+    "_id": "6a3da62669a8*************",
     "currency": {
         "name": "BRL",
         "type": "PIX",
@@ -142,59 +140,56 @@ A transação foi encontrada. A estrutura dos dados retornados varia de acordo c
     "cryptocurrency": {
         "name": "USDT",
         "symbol": "USDT",
-        "amount": 0.037297,
+        "amount": 0.038234,
         "status": "PAID",
-        "coinGecko": "tether",
-        "blockchainNetwork": {
-            "name": "Ethereum",
-            "chainId": "1"
-        }
+        "coinGecko": "tether"
     },
-    "document": "487********",
-    "identifiedDocumentPix": true,
-    "customerId": "68e7b8f*******************"
+    "generatedReceiptAt": "2026-06-25T22:05:50.439Z",
+    "customerId": "6a1a379e1fe*************"
 }
 ```
 
-**3. Depósito USDT:**
+**3. Depósito Crypto:**
 
 ```json
 {
-    "_id": "696fbfd*******************",
+    "_id": "6a3da45e1**************",
+    "idempotencyKey": "cryptocurrency:6a3da45bb503**************************************",
     "cryptocurrency": {
         "name": "USDT",
         "symbol": "USDT",
-        "amount": 15.019866,
-        "status": "PAID",
         "coinGecko": "tether",
+        "status": "PAID",
         "blockchainNetwork": {
-            "name": "BEP-20",
-            "chainId": "56"
-        }
+            "name": "Solana"
+        },
+        "amount": 4.7
     },
-    "customerId": "68e7b8f*******************"
+    "generatedReceiptAt": "2026-06-25T21:57:50.512Z",
+    "customerId": "6a1a379e**************"
 }
 ```
 
 ### Descrição dos Campos
 
-| Campo | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `_id` | `string` | ID único da transação gerado pela XGate. |
-| `currency` | `object` | *(Condicional)* Objeto contendo os dados financeiros Fiat da transação, como moeda (`name`), método (`type`), valor (`amount`) e status (`status`). |
-| `cryptocurrency` | `object` | *(Condicional)* Objeto contendo os dados Crypto da transação, como moeda, valor, status e rede blockchain utilizada (`blockchainNetwork`). |
-| `document` | `string` | *(Condicional)* O CPF/CNPJ vinculado à conta de origem que realizou o Pix. |
-| `externalId` | `string` | *(Opcional)* O ID do pedido no seu sistema, caso tenha sido enviado na criação. |
-| `identifiedDocumentPix` | `boolean` | *(Condicional)* Indica se o documento do pagador foi validado com sucesso pela rede Pix. |
-| `customerId` | `string` | ID do cliente vinculado à transação na XGate. |
+*Nota: A estrutura da resposta é dinâmica. Depósitos puramente Fiat utilizam o objeto `currency`. Depósitos puramente Crypto utilizam `cryptocurrency`. Depósitos de Conversão (Pix ➔ Crypto) retornam ambos.*
+
+| Campo                | Tipo     | Descrição                                                                                                                                                                                                                                     |
+| :------------------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `_id`                | `string` | ID único da transação gerado pela XGate.                                                                                                                                                                                                      |
+| `customerId`         | `string` | ID do cliente vinculado à transação na XGate.                                                                                                                                                                                                 |
+| `generatedReceiptAt` | `string` | Data e hora exata da geração do recibo da transação (padrão ISO 8601).                                                                                                                                                                        |
+| `idempotencyKey`     | `string` | *(Condicional)* Chave de idempotência (presente em depósitos crypto). Esta string sempre carrega o ID interno da **cryptocurrency** e o hash da transação na blockchain (**txHash**).                                                         |
+| `currency`           | `object` | *(Condicional)* Dados financeiros da operação Fiat (Pix ou Conversões). Retorna propriedades como o status da liquidação fiduciária (`status`), o valor final (`amount`), a moeda (`name`) e o método (`type`).                               |
+| `cryptocurrency`     | `object` | *(Condicional)* Dados da operação Crypto (Crypto ou Conversões). Retorna o status na blockchain (`status`), o valor processado (`amount`), dados da moeda (`name`, `symbol`, `coinGecko`) e detalhes da rede utilizada (`blockchainNetwork`). |
 
 ### Erros Comuns
 
-| Status | Mensagem | Motivo Provável |
-| :--- | :--- | :--- |
-| **401** | `Unauthorized` | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
-| **404** | `Not Found` | • ID da transação informado não é válido.<br />• O depósito não existe no sistema. |
-| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte. |
+| Status  | Mensagem                | Motivo Provável                                                                                   |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Token inválido ou expirado.<br /> • Header inválido ou não informado.<br /> • IP não permitido. |
+| **404** | `Not Found`             | • ID da transação informado não é válido.<br />• O depósito não existe no sistema.                |
+| **500** | `Internal Server Error` | Erro interno de servidor. Entrar em contato com o suporte.                                        |
 
 ---
 
@@ -235,42 +230,75 @@ Abaixo, um exemplo simples de como implementar essa consulta utilizando Node.js.
 
     **Exemplo Javascript:**
     ```javascript
-    const axios = require("axios");
+const axios = require("axios");
 
-    (async () => {
-        const email = "email@domain.com";
-        const password = "••••••";
-        const transactionId = "6996202*******************";
+(async () => {
+    const email = "email@domain.com";
+    const password = "••••••";
+    const transactionId = "6a3da45e116************";
 
-        try {
-            const url_api = "https://api.xgateglobal.com";
-            
-            // 1. Obter token de autenticação
-            const login = await axios.post(`${url_api}/auth/token`, { email, password });
-            
-            // 2. Consultar detalhes do depósito
-            const { data } = await axios.get(`${url_api}/deposit/${transactionId}/details`, {
-                headers: {
-                    "Authorization": `Bearer ${login.data.token}`
-                }
-            });
-            
-            console.log("Detalhes do Depósito:", data);
-            
-            // Exemplo dinâmico de uso da resposta (Fiat ou Crypto):
-            const operacao = data.currency || data.cryptocurrency;
-            
-            if (operacao && operacao.status === "PAID") {
-                const origem = data.document || "Blockchain";
-                console.log(`O depósito foi pago com sucesso pela origem: ${origem}`);
-            } else {
-                console.log("Status da transação:", operacao ? operacao.status : "Desconhecido");
+    try {
+        const url_api = "https://api.xgateglobal.com";
+        
+        // 1. Obter token de autenticação
+        const login = await axios.post(`${url_api}/auth/token`, { email, password });
+        
+        // 2. Consultar detalhes do depósito
+        const { data } = await axios.get(`${url_api}/deposit/${transactionId}/details`, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
             }
+        });
+        
+        console.log("Detalhes do Depósito:", data);
+        
+        // Lógica dinâmica para identificar o tipo de depósito com base na resposta
+        let status = "Unknown";
+        let mensagem = "";
+        let origem = ""; // Inicia vazio para não exibir informações incorretas
 
-        } catch (error) {
-            console.error("Erro na consulta:", error.response ? error.response.data : error.message);
+        if (data.currency && data.cryptocurrency) {
+            // Cenário 2: Conversão (Pix -> Crypto)
+            status = data.cryptocurrency.status;
+            mensagem = `Conversão: Entrou ${data.currency.amount} ${data.currency.name} e converteu para ${data.cryptocurrency.amount} ${data.cryptocurrency.name}`;
+            if (data.document) origem = `Pix (Doc: ${data.document})`;
+            
+        } else if (data.cryptocurrency) {
+            // Cenário 3: 100% Crypto
+            status = data.cryptocurrency.status;
+            const rede = data.cryptocurrency.blockchainNetwork?.name || "Desconhecida";
+            mensagem = `Crypto: ${data.cryptocurrency.amount} ${data.cryptocurrency.name} via rede ${rede}`;
+            origem = `Rede Blockchain`;
+            
+        } else if (data.currency) {
+            // Cenário 1: 100% Fiat (Pix)
+            status = data.currency.status;
+            mensagem = `Fiat: ${data.currency.amount} ${data.currency.name} via ${data.currency.type}`;
+            if (data.document) origem = `Pix (Doc: ${data.document})`;
         }
-    })();
+        
+        // Formata a string de origem apenas se houver algum dado mapeado
+        const sufixoOrigem = origem ? ` | Origem: ${origem}` : "";
+
+        // Validação da liquidação da transação
+        if (status === "PAID") {
+            console.log(`[PAGO] ${mensagem}${sufixoOrigem}`);
+        } else {
+            console.log(`[${status}] ${mensagem}${sufixoOrigem}`);
+        }
+
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 404) {
+                console.error("Erro 404: O depósito não foi encontrado no sistema da XGate.");
+            } else {
+                console.error(`Erro na API (${error.response.status}):`, error.response.data);
+            }
+        } else {
+            console.error("Erro de Conexão:", error.message);
+        }
+    }
+})();
     ```
   </TabItem>
 </Tabs>

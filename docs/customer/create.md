@@ -76,10 +76,13 @@ components:
 
 Este endpoint cria um novo registro de cliente na base da XGATE. 
 
+
 A criação do cliente é o primeiro passo da integração, pois retorna o **ID do Cliente** (`_id`), que é obrigatório para:
 1.  Cadastrar Chaves Pix.
 2.  Gerar QR Codes de Cobrança.
 3.  Realizar Saques.
+
+💡 **Nota:** Ao realizar a criação de um cliente, o sistema gera automaticamente e em paralelo todos os endereços de carteiras de criptomoedas individualizados para ele.
 
 ---
 

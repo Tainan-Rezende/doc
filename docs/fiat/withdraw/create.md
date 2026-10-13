@@ -50,6 +50,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para controle interno (opcional, mas recomendado).
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
                 currency:
                   type: object
                   description: Objeto com os dados da moeda fiduciária (obtido via GET /withdraw/company/currencies).
@@ -146,15 +149,23 @@ Utilize o formulário abaixo para simular a criação de um pedido de saque.
 
 #### Body (Corpo da Requisição)
 
-| Campo        | Tipo     | Obrigatório | Descrição                                          |
-| :----------- | :------- | :---------: | :------------------------------------------------- |
-| `amount`     | `number` |   **Sim**   | O valor do depósito (ex: `100.50`).                |
-| `customerId` | `string` |   **Não**   | O ID único (`_id`) do cliente que fará o depósito. |
-| `currency`   | `string` |   **Sim**   | A moeda da transação (ex: `BRL`).                  |
-| `externalId` | `string` |   **Não**   | Idempotência                                       |
+| Campo                   | Tipo      | Obrigatório | Descrição                                                               |
+| :---------------------- | :-------- | :---------: | :---------------------------------------------------------------------- |
+| `amount`                | `number`  |   **Sim**   | O valor do saque (ex: `100.50`).                                        |
+| `customerId`            | `string`  |   **Sim**   | O ID único (`_id`) do cliente que receberá os fundos.                   |
+| `currency`              | `object`  |   **Sim**   | Objeto com os dados da moeda fiduciária da transação.                   |
+| `pixKey`                | `object`  |   **Sim**   | O objeto completo da chave Pix de destino do cliente.                   |
+| `externalId`            | `string`  |   **Não**   | Identificador de idempotência.                                          |
+| `identifiedDocumentPix` | `boolean` |   **Não**   | Quando `true`, força a verificação de titularidade do documento no Pix. |
 
-:::warning[Importante]
-Recomendamos a inclusão dado de `externalId` na requisição pois o mesmo evita o envio do pedido mais de uma vez, que pode acontecer acidentalmente.
+:::info[Sobre a validação de titularidade]
+O envio do parâmetro `identifiedDocumentPix` com o valor `false` (ou a ausência dele) **não desativa** a checagem de titularidade caso ela esteja configurada como **obrigatória** no painel administrativo da XGate para a sua conta. 
+
+Este parâmetro serve estritamente para **forçar** a validação (enviando `true`) em contas onde a regra padrão do painel está desativada. Para desativar a verificação de titularidade de forma definitiva, é necessário alinhar comercialmente via contrato.
+:::
+
+:::tip[Boas Práticas: Prevenção de Duplicidade]
+Recomendamos fortemente o envio do campo `externalId`. Ele atua como uma chave de idempotência, garantindo que a mesma ordem de saque não seja criada em duplicidade em caso de falha de rede, cliques duplos ou retentativas acidentais pelo seu sistema.
 :::
 
 ---
@@ -223,7 +234,8 @@ Para criar pedidos de saque pix, você deve ter 3 dados:
         "key": "+5512************",
         "type": "PHONE",
         "_id": "68fa5d54004*************"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -248,7 +260,8 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/fiat/withdraw/currency
         "key": "+5512************",
         "type": "PHONE",
         "_id": "68fa5d54004*************"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -287,7 +300,8 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/pix/keys')} target="_b
         "key": "+5512************",
         "type": "PHONE",
         "_id": "68fa5d54004*************"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -333,7 +347,8 @@ Você pode obter a lista delas <a href={useBaseUrl('/docs/pix/keys')} target="_b
             amount,
             customerId,
             currency: currencies.data[0],
-            pixKey: pixKeys.data[0]
+            pixKey: pixKeys.data[0],
+            identifiedDocumentPix: true
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

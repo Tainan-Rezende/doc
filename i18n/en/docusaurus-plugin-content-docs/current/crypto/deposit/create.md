@@ -98,6 +98,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para controle interno.
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
       responses:
         '201':
           description: Sucesso. Retorna a ordem gerada, incluindo o código Pix Copia e Cola no campo data.code.
@@ -167,29 +170,36 @@ You must send the **authentication Header** and the **Body** with the order data
 
 #### Required Headers
 
-| Header          | Value                | Description                    |
-| :-------------- | :------------------- | :--------------------------- |
+| Header          | Value                 | Description                        |
+| :-------------- | :-------------------- | :--------------------------------- |
 | `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
 #### Body (Request Body)
 
-| Field        | Type     | Required | Description                                                               |
-| :----------- | :------- | :---------: | :---------------------------------------------------------------------- |
-| `amount`     | `number` |   **Yes**   | The deposit amount (e.g., `100.50`).                                     |
-| `customerId` | `string` |   **No**   | The unique ID (`_id`) of the customer who will make the deposit.                      |
-| `customer`   | `object` |   **No**   | Data for customer creation along with the deposit order creation. |
-| `currency`   | `object` |   **Yes**   | The currency of the transaction (e.g., `BRL`).                                       |
-| `externalId` | `string` |   **No**   | Idempotency                                                            |
+| Field            | Type     | Required | Description                                                       |
+| :--------------- | :------- | :------: | :---------------------------------------------------------------- |
+| `amount`         | `number` | **Yes**  | The deposit amount (e.g., `100.50`).                              |
+| `customerId`     | `string` |  **No**  | The unique ID (`_id`) of the customer who will make the deposit.  |
+| `customer`       | `object` |  **No**  | Data for customer creation along with the deposit order creation. |
+| `currency`       | `object` | **Yes**  | The currency of the transaction (e.g., `BRL`).                    |
+| `cryptocurrency` | `object` | **Yes**  | Target cryptocurrency for the conversion (e.g., USDT or USDC).    |
+| `externalId`     | `string` |  **No**  | Idempotency                                                       |
+| `identifiedDocumentPix` | `boolean` |  **No**  | When `true`, forces Pix document ownership verification.              |
 
+:::info[About ownership validation]
+Sending the `identifiedDocumentPix` parameter with the value `false` (or omitting it) **does not disable** the ownership check if it is configured as **mandatory** in the XGate administrative panel for your account. 
 
-:::warning[Important]
-Although the `customerId` string data and the `customer` object are not required, it is **MANDATORY** to use one of them.
-
-**Do not use `customerId` and `customer` in the same request**
+This parameter strictly serves to **force** the validation (by sending `true`) on accounts where the panel's default rule is disabled. To permanently disable document ownership verification, a commercial alignment via contract is required.
 :::
 
-:::warning[Important]
-We recommend including `externalId` data in the request as it prevents the order from being sent more than once, which can happen accidentally.
+:::warning[Important: Customer Identification]
+To create a deposit, it is **mandatory** to identify the user. You must send the `customerId` (if the client already exists) **OR** the `customer` object (to create a new client at the time of the request). 
+
+Never send both fields in the same request, as this will result in a transaction failure.
+:::
+
+:::tip[Best Practices: Duplication Prevention]
+We strongly recommend sending the `externalId` field. It acts as an idempotency key, ensuring that the same deposit request is not created in duplicate in case of network failure, double clicks, or accidental retries by your system.
 :::
 
 ---
@@ -214,12 +224,12 @@ Returns the created order object, containing the `code` (Pix Copy and Paste) for
 
 ### Common Errors
 
-| Status  | Message                | Likely Reason                                                                                  |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br />• IP not allowed. |
-| **404** | `Not Found`             | Customer informed in the `customerId` field does not exist.                                              |
-| **409** | `Conflict`              | • Customer name provided is already registered.<br />• Document provided is already registered.   |
-| **500** | `Internal Server Error` | Internal server error. Contact support.                                         |
+| Status  | Message                 | Likely Reason                                                                                   |
+| :------ | :---------------------- | :---------------------------------------------------------------------------------------------- |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br />• IP not allowed.           |
+| **404** | `Not Found`             | Customer informed in the `customerId` field does not exist.                                     |
+| **409** | `Conflict`              | • Customer name provided is already registered.<br />• Document provided is already registered. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                         |
 
 ---
 
@@ -273,7 +283,8 @@ You can be **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click
         "createdDate": "202*********************",
         "__v": 0
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
     </TabItem>
@@ -306,7 +317,8 @@ You can be **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click
         "createdDate": "202*********************",
         "__v": 0
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
     ```
     :::warning[Important]
@@ -341,7 +353,8 @@ You can obtain the list of them <a href={useBaseUrl('/docs/fiat/deposit/currency
         "createdDate": "202*********************",
         "__v": 0
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -371,7 +384,8 @@ You can obtain the list of them <a href={useBaseUrl('/docs/crypto/deposit/crypto
         "createdDate": "202*********************",
         "__v": 0
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -379,28 +393,28 @@ You can obtain the list of them <a href={useBaseUrl('/docs/crypto/deposit/crypto
 
 See the details of each information in the `currency` object to build your request.
 
-| Field         | Type     | Required | Description                                                   |
-| :------------ | :------- | :---------: | :---------------------------------------------------------- |
-| `_id`         | `string` |   **Yes**   | Unique identifier of the currency.                               |
-| `name`        | `string` |   **Yes**   | Name of the currency.                                              |
-| `type`        | `string` |   **Yes**   | Type of payment method or transaction associated with the currency. |
-| `createdDate` | `string` |   **No**   | Date when the currency was created in the system.                  |
-| `updatedDate` | `string` |   **No**   | Date of last update of the currency information.        |
-| `__v`         | `number` |   **No**   | Version of the currency record in the database.              |
-| `symbol`      | `string` |   **Yes**   | Currency symbol.                                           |
+| Field         | Type     | Required | Description                                                         |
+| :------------ | :------- | :------: | :------------------------------------------------------------------ |
+| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                                  |
+| `name`        | `string` | **Yes**  | Name of the currency.                                               |
+| `type`        | `string` | **Yes**  | Type of payment method or transaction associated with the currency. |
+| `createdDate` | `string` |  **No**  | Date when the currency was created in the system.                   |
+| `updatedDate` | `string` |  **No**  | Date of last update of the currency information.                    |
+| `__v`         | `number` |  **No**  | Version of the currency record in the database.                     |
+| `symbol`      | `string` | **Yes**  | Currency symbol.                                                    |
 
 
 See the details of each information in the `cryptocurrency` object to build your request.
 
-| Field         | Type     | Required | Description                                                  |
-| :------------ | :------- | :---------: | :--------------------------------------------------------- |
-| `_id`         | `string` |   **Yes**   | Unique identifier of the cryptocurrency.                        |
-| `name`        | `string` |   **Yes**   | Name of the cryptocurrency.                                       |
-| `symbol`      | `string` |   **Yes**   | Symbol of the cryptocurrency.                                    |
-| `coinGecko`   | `string` |   **No**   | Cryptocurrency identifier on CoinGecko.                 |
-| `updatedDate` | `string` |   **No**   | Date of last update of cryptocurrency information. |
-| `createdDate` | `string` |   **No**   | Date when the cryptocurrency was created in the system.           |
-| `__v`         | `number` |   **No**   | Version of the cryptocurrency record in the database.       |
+| Field         | Type     | Required | Description                                             |
+| :------------ | :------- | :------: | :------------------------------------------------------ |
+| `_id`         | `string` | **Yes**  | Unique identifier of the cryptocurrency.                |
+| `name`        | `string` | **Yes**  | Name of the cryptocurrency.                             |
+| `symbol`      | `string` | **Yes**  | Symbol of the cryptocurrency.                           |
+| `coinGecko`   | `string` |  **No**  | Cryptocurrency identifier on CoinGecko.                 |
+| `updatedDate` | `string` |  **No**  | Date of last update of cryptocurrency information.      |
+| `createdDate` | `string` |  **No**  | Date when the cryptocurrency was created in the system. |
+| `__v`         | `number` |  **No**  | Version of the cryptocurrency record in the database.   |
 
 ---
 

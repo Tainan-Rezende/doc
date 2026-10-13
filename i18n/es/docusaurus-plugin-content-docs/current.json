@@ -1,0 +1,98 @@
+{
+  "version.label": {
+    "message": "Siguiente",
+    "description": "La etiqueta para la versión actual"
+  },
+  "sidebar.tutorialSidebar.category.Autenticação": {
+    "message": "Autenticación",
+    "description": "La etiqueta para la categoría 'Autenticación' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.FIAT": {
+    "message": "FIAT",
+    "description": "La etiqueta para la categoría 'FIAT' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Pix - Cliente": {
+    "message": "Pix - Cliente",
+    "description": "La etiqueta para la categoría 'Pix - Cliente' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos FIAT": {
+    "message": "Depósitos",
+    "description": "La etiqueta para la categoría 'Depósitos FIAT' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques FIAT": {
+    "message": "Retiros",
+    "description": "La etiqueta para la categoría 'Saques FIAT' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Crypto": {
+    "message": "Cripto",
+    "description": "La etiqueta para la categoría 'Crypto' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Cliente": {
+    "message": "Cliente",
+    "description": "La etiqueta para la categoría 'Cliente' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos Crypto": {
+    "message": "Depósitos",
+    "description": "La etiqueta para la categoría 'Depósitos Crypto' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques Crypto": {
+    "message": "Retiros",
+    "description": "La etiqueta para la categoría 'Saques Crypto' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Clientes": {
+    "message": "Clientes",
+    "description": "La etiqueta para la categoría 'Clientes' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Webhooks": {
+    "message": "Webhooks",
+    "description": "La etiqueta para la categoría 'Webhooks' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques Webhook": {
+    "message": "Retiros",
+    "description": "La etiqueta para la categoría 'Saques Webhook' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos Webhook": {
+    "message": "Depósitos",
+    "description": "La etiqueta para la categoría 'Depósitos Webhook' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Empresa": {
+    "message": "Empresa",
+    "description": "La etiqueta para la categoría 'Empresa' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Chaves Pix": {
+    "message": "Claves Pix",
+    "description": "La etiqueta para la categoría 'Chaves Pix' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Carteiras Crypto": {
+    "message": "Billeteras cripto",
+    "description": "La etiqueta para la categoría 'Carteiras Crypto' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos": {
+    "message": "Depósitos",
+    "description": "La etiqueta para la categoría 'Depósitos' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.depositos-fiat": {
+    "message": "FIAT",
+    "description": "La etiqueta para la categoría 'FIAT' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.depositos-crypto": {
+    "message": "Cripto (con conversión)",
+    "description": "La etiqueta para la categoría 'Crypto (com Conversión)' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques": {
+    "message": "Retiros",
+    "description": "La etiqueta para la categoría 'Saques' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.saques-fiat": {
+    "message": "FIAT",
+    "description": "La etiqueta para la categoría 'FIAT' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.saques-crypto-conversao": {
+    "message": "Cripto (con conversión)",
+    "description": "La etiqueta para la categoría 'Crypto (com Conversión)' en la barra lateral 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.saques-crypto-wallet": {
+    "message": "Cripto (wallet)",
+    "description": "La etiqueta para la categoría 'Crypto (Wallet)' en la barra lateral 'tutorialSidebar'"
+  }
+}

@@ -108,89 +108,85 @@ O valor **ID_TRANSACAO** na URL refere-se ao `_id` do saque gerado pela XGate no
 
 A transação foi encontrada. A estrutura dos dados retornados varia de acordo com o tipo de operação (Fiat ou Crypto).
 
-**1. Saque Fiat para Fiat (BRL para Pix):**
+**1. Saque FIAT (BRL):**
 
 ```json
 {
-    "_id": "6996170*******************",
+    "_id": "6a3da740e5****************",
+    "externalId": "external-id-webhook-0101",
     "currency": {
-        "name": "BRL",
         "type": "PIX",
+        "name": "BRL",
+        "status": "PAID",
+        "amount": 0.2
+    },
+    "status": "APPROVED",
+    "generatedReceiptAt": "2026-06-25T22:10:18.579Z",
+    "customerId": "6a1a379e1fe**************"
+}
+```
+
+**2. Saque Crypto para Fiat:**
+
+```json
+{
+    "_id": "6a3da803e51**************",
+    "externalId": "external-id-webhook-0102",
+    "cryptocurrency": {
+        "name": "USDT",
+        "symbol": "USDT",
+        "coinGecko": "tether",
         "amount": 0.2,
         "status": "PAID"
     },
-    "document": "487********",
-    "externalId": "webhook-test-a30c0229",
-    "identifiedDocumentPix": true,
-    "customerId": "697e15d*******************"
+    "currency": {
+        "type": "PIX",
+        "name": "BRL",
+        "status": "PAID",
+        "amount": 1.05
+    },
+    "status": "APPROVED",
+    "generatedReceiptAt": "2026-06-25T22:13:33.487Z",
+    "customerId": "6a1a379e1fe**************"
 }
 ```
 
-**2. Saque Crypto para Fiat (USDT convertido para BRL via Pix):**
+**3. Saque Crypto para Crypto:**
 
 ```json
 {
-    "_id": "697ce3d*******************",
-    "currency": {
-        "name": "BRL",
-        "type": "PIX",
-        "amount": 72.86,
-        "status": "PAID"
-    },
+    "_id": "6a3d9ed4********************",
     "cryptocurrency": {
         "name": "USDT",
         "symbol": "USDT",
-        "amount": 14,
+        "amount": 1,
         "status": "PAID",
         "coinGecko": "tether",
         "blockchainNetwork": {
-            "name": "Ethereum",
-            "chain": "Ethereum",
-            "symbol": "ETH",
-            "chainId": "1"
+            "name": "Solana",
+            "chain": "Solana",
+            "symbol": "SOL"
         }
     },
-    "document": "487********",
-    "identifiedDocumentPix": true,
-    "customerId": "68e7b8f*******************"
-}
-```
-
-**3. Saque Crypto para Crypto (USDT enviado para carteira externa):**
-
-```json
-{
-    "_id": "691366b*******************",
-    "cryptocurrency": {
-        "name": "USDT",
-        "symbol": "USDT",
-        "amount": 73,
-        "status": "PAID",
-        "coinGecko": "tether",
-        "gasFeeAmount": 0.8100194404665713,
-        "blockchainNetwork": {
-            "name": "BEP-20",
-            "chain": "BSC",
-            "symbol": "BNB",
-            "chainId": "56"
-        },
-        "wallet": "0xcf677a******************************"
-    },
-    "customerId": "691362b*******************"
+    "status": "APPROVED",
+    "generatedReceiptAt": "2026-06-25T21:36:03.045Z",
+    "customerId": "6a1a379e1fe9********************"
 }
 ```
 
 ### Descrição dos Campos
 
-| Campo                   | Tipo      | Descrição                                                                                                                                                          |
-| :---------------------- | :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `_id`                   | `string`  | ID único da transação gerado pela XGate.                                                                                                                           |
-| `currency`              | `object`  | *(Condicional)* Objeto contendo os dados financeiros Fiat da transação, como moeda (`name`), método (`type`), valor (`amount`) e status (`status`).                |
-| `cryptocurrency`        | `object`  | *(Condicional)* Objeto contendo os dados Crypto da transação, como moeda, valor, status, rede blockchain utilizada, taxa de gás e endereço da carteira (`wallet`). |
-| `document`              | `string`  | *(Condicional)* O CPF/CNPJ vinculado à conta de destino do Pix.                                                                                                    |
-| `externalId`            | `string`  | *(Opcional)* O ID do pedido no seu sistema, caso tenha sido enviado na criação.                                                                                    |
-| `identifiedDocumentPix` | `boolean` | *(Condicional)* Indica se o documento do recebedor foi validado com sucesso pela rede Pix.                                                                         |
-| `customerId`            | `string`  | ID do cliente vinculado à transação na XGate.                                                                                                                      |
+*Nota: A estrutura da resposta é dinâmica. Saques puramente Fiat utilizam o objeto `currency`. Saques puramente Crypto utilizam `cryptocurrency`. Saques de Conversão (Crypto ➔ Pix) retornam ambos.*
+
+| Campo                | Tipo     | Descrição                                                                                                                                                                                                                                    |
+| :------------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `_id`                | `string` | ID único da transação gerado pela XGate.                                                                                                                                                                                                     |
+| `customerId`         | `string` | ID do cliente vinculado à transação na XGate.                                                                                                                                                                                                |
+| `externalId`         | `string` | *(Opcional)* O ID do pedido no seu sistema, caso tenha sido enviado na criação do saque.                                                                                                                                                     |
+| `status`             | `string` | Status geral de aprovação/processamento do saque na plataforma XGate (ex: `APPROVED`).                                                                                                                                                       |
+| `generatedReceiptAt` | `string` | Data e hora exata da geração do recibo da transação (padrão ISO 8601).                                                                                                                                                                       |
+| `currency`           | `object` | *(Condicional)* Dados financeiros da operação Fiat (Pix ou Conversões). Retorna propriedades como o status do pagamento (`status`), valor pago/convertido (`amount`), a moeda (`name`) e o método de destino (`type`).                       |
+| `cryptocurrency`     | `object` | *(Condicional)* Dados da operação Crypto (Crypto ou Conversões). Retorna o status de transferência na rede (`status`), o valor deduzido (`amount`), dados do token (`name`, `symbol`, `coinGecko`) e detalhes da rede (`blockchainNetwork`). |
 
 ### Erros Comuns
 
@@ -239,42 +235,76 @@ Abaixo, um exemplo simples de como implementar essa consulta utilizando Node.js.
 
     **Exemplo Javascript:**
     ```javascript
-    const axios = require("axios");
+const axios = require("axios");
 
-    (async () => {
-        const email = "email@domain.com";
-        const password = "••••••";
-        const transactionId = "6996170*******************";
+(async () => {
+    const email = "email@domain.com";
+    const password = "••••••";
+    const transactionId = "6a3da740e5***************";
 
-        try {
-            const url_api = "https://api.xgateglobal.com";
-            
-            // 1. Obter token de autenticação
-            const login = await axios.post(`${url_api}/auth/token`, { email, password });
-            
-            // 2. Consultar detalhes do saque
-            const { data } = await axios.get(`${url_api}/withdraw/${transactionId}/details`, {
-                headers: {
-                    "Authorization": `Bearer ${login.data.token}`
-                }
-            });
-            
-            console.log("Detalhes do Saque:", data);
-            
-            // Exemplo dinâmico de uso da resposta (Fiat ou Crypto):
-            const operacao = data.currency || data.cryptocurrency;
-            
-            if (operacao && operacao.status === "PAID") {
-                const destino = data.document || data.cryptocurrency.wallet;
-                console.log(`O saque foi pago com sucesso para o destino: ${destino}`);
-            } else {
-                console.log("Status da transação:", operacao ? operacao.status : "Desconhecido");
+    try {
+        const url_api = "https://api.xgateglobal.com";
+        
+        // 1. Obter token de autenticação
+        const login = await axios.post(`${url_api}/auth/token`, { email, password });
+        
+        // 2. Consultar detalhes do saque
+        const { data } = await axios.get(`${url_api}/withdraw/${transactionId}/details`, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
             }
+        });
+        
+        console.log("Detalhes do Saque:", data);
+        
+        // Lógica dinâmica para identificar o tipo de saque com base na resposta
+        let status = "Unknown";
+        let mensagem = "";
+        let destino = ""; // Inicia vazio para evitar informações falsas ou undefined
 
-        } catch (error) {
-            console.error("Erro na consulta:", error.response ? error.response.data : error.message);
+        if (data.currency && data.cryptocurrency) {
+            // Cenário 2: Conversão (Crypto -> Pix)
+            // Lemos o status da 'currency' pois é a ponta final (Fiat) que vai para o cliente
+            status = data.currency.status; 
+            mensagem = `Conversão: Saiu ${data.cryptocurrency.amount} ${data.cryptocurrency.name} e pagou ${data.currency.amount} ${data.currency.name}`;
+            if (data.document) destino = `Pix (Doc: ${data.document})`;
+            
+        } else if (data.cryptocurrency) {
+            // Cenário 3: 100% Crypto
+            status = data.cryptocurrency.status;
+            const rede = data.cryptocurrency.blockchainNetwork?.name || "Desconhecida";
+            mensagem = `Crypto: ${data.cryptocurrency.amount} ${data.cryptocurrency.name} via rede ${rede}`;
+            if (data.cryptocurrency.wallet) destino = `Carteira: ${data.cryptocurrency.wallet}`;
+            
+        } else if (data.currency) {
+            // Cenário 1: 100% Fiat (Pix)
+            status = data.currency.status;
+            mensagem = `Fiat: ${data.currency.amount} ${data.currency.name} via ${data.currency.type}`;
+            if (data.document) destino = `Pix (Doc: ${data.document})`;
         }
-    })();
+        
+        // Formata a string de destino apenas se houver algum dado mapeado
+        const sufixoDestino = destino ? ` | Destino: ${destino}` : "";
+
+        // Validação da liquidação da transação
+        if (status === "PAID") {
+            console.log(`[PAGO] ${mensagem}${sufixoDestino}`);
+        } else {
+            console.log(`[${status}] ${mensagem}${sufixoDestino}`);
+        }
+
+    } catch (error) {
+        if (error.response) {
+            if (error.response.status === 404) {
+                console.error("Erro 404: O saque não foi encontrado no sistema da XGate.");
+            } else {
+                console.error(`Erro na API (${error.response.status}):`, error.response.data);
+            }
+        } else {
+            console.error("Erro de Conexão:", error.message);
+        }
+    }
+})();
     ```
   </TabItem>
 </Tabs>

@@ -81,6 +81,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para controle interno do integrador.
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
       responses:
         '201':
           description: Sucesso. Retorna a ordem gerada, incluindo o código Pix Copia e Cola no campo data.code.
@@ -150,29 +153,35 @@ You must provide the authentication **Header** and the request **Body** with the
 
 #### Required Headers
 
-| Header          | Value                | Description                    |
-| :-------------- | :------------------- | :--------------------------- |
+| Header          | Value                 | Description                      |
+| :-------------- | :-------------------- | :------------------------------- |
 | `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
 #### Body (Request Body)
 
-| Field        | Type     | Required | Description                                                               |
-| :----------- | :------- | :------: | :---------------------------------------------------------------------- |
-| `amount`     | `number` | **Yes**  | The deposit amount (ex: `100.50`).                                     |
-| `customerId` | `string` | **No**   | The customer's unique `_id` who will make the deposit.                  |
-| `customer`   | `object` | **No**   | Customer data to create the customer together with the deposit order.   |
-| `currency`   | `string` | **Yes**  | The transaction currency (ex: `BRL`).                                   |
-| `externalId` | `string` | **No**   | Idempotency identifier.                                                  |
+| Field                   | Type      | Required | Description                                                           |
+| :---------------------- | :-------- | :------: | :-------------------------------------------------------------------- |
+| `amount`                | `number`  | **Yes**  | The deposit amount (ex: `100.50`).                                    |
+| `customerId`            | `string`  |  **No**  | The customer's unique `_id` who will make the deposit.                |
+| `customer`              | `object`  |  **No**  | Customer data to create the customer together with the deposit order. |
+| `currency`              | `string`  | **Yes**  | The transaction currency (ex: `BRL`).                                 |
+| `externalId`            | `string`  |  **No**  | Idempotency identifier.                                               |
+| `identifiedDocumentPix` | `boolean` |  **No**  | When `true`, forces Pix document ownership verification.              |
 
+:::info[About ownership validation]
+Sending the `identifiedDocumentPix` parameter with the value `false` (or omitting it) **does not disable** the ownership check if it is configured as **mandatory** in the XGate administrative panel for your account. 
 
-:::warning[Importante]
-Although the `customerId` string and the `customer` object are not individually required, you **must** provide one of them.
-
-**Do not use both `customerId` and `customer` in the same request.**
+This parameter strictly serves to **force** the validation (by sending `true`) on accounts where the panel's default rule is disabled. To permanently disable document ownership verification, a commercial alignment via contract is required.
 :::
 
-:::warning[Importante]
-We recommend including an `externalId` in the request to prevent accidental duplicate orders.
+:::warning[Important: Customer Identification]
+To create a deposit, it is **mandatory** to identify the user. You must send the `customerId` (if the client already exists) **OR** the `customer` object (to create a new client at the time of the request). 
+
+Never send both fields in the same request, as this will result in a transaction failure.
+:::
+
+:::tip[Best Practices: Duplication Prevention]
+We strongly recommend sending the `externalId` field. It acts as an idempotency key, ensuring that the same deposit request is not created in duplicate in case of network failure, double clicks, or accidental retries by your system.
 :::
 
 ---
@@ -197,12 +206,12 @@ Returns the created order object, including the `code` (Pix Copia e Cola) for th
 
 ### Common Errors
 
-| Status  | Message                | Likely Cause                                                                                  |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed. |
-| **404** | `Not Found`             | The `customerId` provided does not exist.                                              |
-| **409** | `Conflict`              | • The provided customer name is already registered.<br />• The provided document is already registered.   |
-| **500** | `Internal Server Error` | Internal server error. Contact support.                                         |
+| Status  | Message                 | Likely Cause                                                                                            |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.                   |
+| **404** | `Not Found`             | The `customerId` provided does not exist.                                                               |
+| **409** | `Conflict`              | • The provided customer name is already registered.<br />• The provided document is already registered. |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                                 |
 
 ---
 
@@ -246,14 +255,15 @@ You can **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click he
         "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
     </TabItem>
     <TabItem value="no-client" label="Without Customer">
     **1.1. You must pass the `customer` object to create the customer together with the deposit order:**
-    ```json {3-8}
-    {
+```json {3-8}
+{
     "amount": 0.2,
     "customer": {
         "name": "Client Name",
@@ -269,7 +279,8 @@ You can **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click he
         "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "identifiedDocumentPix": true
 }
     ```
     :::warning[Importante]
@@ -294,7 +305,8 @@ You can get the list by <a href={useBaseUrl('/docs/fiat/deposit/currency')} targ
         "updatedDate": "202*********************",
         "__v": 0,
         "symbol": "R$"
-    }
+    },
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -302,15 +314,15 @@ You can get the list by <a href={useBaseUrl('/docs/fiat/deposit/currency')} targ
 
 See details for each field in the `currency` object to build your request.
 
-| Field         | Type     | Required | Description                                                   |
-| :------------ | :------- | :------: | :---------------------------------------------------------- |
-| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                           |
-| `name`        | `string` | **Yes**  | Currency name.                                               |
+| Field         | Type     | Required | Description                                                      |
+| :------------ | :------- | :------: | :--------------------------------------------------------------- |
+| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                               |
+| `name`        | `string` | **Yes**  | Currency name.                                                   |
 | `type`        | `string` | **Yes**  | Payment method or transaction type associated with the currency. |
-| `createdDate` | `string` | **No**   | Date when the currency was created in the system.            |
-| `updatedDate` | `string` | **No**   | Date of the last update to the currency information.         |
-| `__v`         | `number` | **No**   | Database record version for the currency.                    |
-| `symbol`      | `string` | **Yes**  | Currency symbol.                                              |
+| `createdDate` | `string` |  **No**  | Date when the currency was created in the system.                |
+| `updatedDate` | `string` |  **No**  | Date of the last update to the currency information.             |
+| `__v`         | `number` |  **No**  | Database record version for the currency.                        |
+| `symbol`      | `string` | **Yes**  | Currency symbol.                                                 |
 
 ---
 
@@ -346,7 +358,8 @@ See details for each field in the `currency` object to build your request.
         const { data } = await axios.post(`${url_api}/deposit`, {
             amount,
             customerId,
-            currency: currencies.data[0]
+            currency: currencies.data[0],
+            identifiedDocumentPix: true
         }, {
             headers: {
                 "Authorization": `Bearer ${login.data.token}`

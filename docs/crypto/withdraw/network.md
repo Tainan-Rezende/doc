@@ -8,7 +8,7 @@ sidebar_class_name: 'sidebar-method-get'
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import ListBlockchainNetworksTester from '@site/src/components/ListBlockchainNetworksTester';
+import ListWithdrawBlockchainNetworksTester from '@site/src/components/ListWithdrawBlockchainNetworksTester';
 import AICopyButton from '@site/src/components/AICopyButton';
 
 # Listar Redes Blockchain
@@ -26,7 +26,7 @@ paths:
   /withdraw/company/blockchain-networks:
     get:
       summary: Listar Redes Blockchain para Saque
-      description: Retorna uma lista de todas as redes blockchain suportadas pela plataforma (ex ERC-20, BEP-20, Polygon). O objeto retornado é obrigatório para montar payloads de saque (cash-out) enviando criptomoedas para carteiras externas.
+      description: Retorna uma lista de todas as redes blockchain suportadas pela plataforma (ex ERC-20, TRC-20, Solana Polygon). O objeto retornado é obrigatório para montar payloads de saque (cash-out) enviando criptomoedas para carteiras externas.
       security:
         - bearerAuth: []
       responses:
@@ -44,16 +44,16 @@ paths:
                       description: ID único da rede.
                     name:
                       type: string
-                      description: Nome da rede de transferência (ex BEP-20, ERC-20).
+                      description: Nome da rede de transferência (ex TRC-20, ERC-20).
                     chainId:
                       type: string
                       description: Identificador da rede na blockchain (ex 56, 1).
                     chain:
                       type: string
-                      description: Nome da blockchain principal (ex BSC, Ethereum).
+                      description: Nome da blockchain principal (ex Ethereum).
                     symbol:
                       type: string
-                      description: Símbolo do token nativo da rede (ex BNB, ETH).
+                      description: Símbolo do token nativo da rede (ex ETH).
                     cryptocurrencies:
                       type: array
                       items:
@@ -79,9 +79,9 @@ components:
     />
 </div>
 
-Este endpoint retorna todas as redes blockchain suportadas pela plataforma (ex: Ethereum, BSC, Polygon). 
+Este endpoint retorna todas as redes blockchain suportadas pela plataforma (ex: Ethereum, Polygon, Tron e Solana).
 
-Esta listagem é **fundamental para realizar saques de criptomoedas** para carteiras externas. Como o USDT existe em várias blockchains diferentes, você precisa especificar em qual rede a transferência deve ocorrer para montar o payload de saque corretamente.
+Esta listagem é **fundamental para realizar saques de criptomoedas** para carteiras externas. Como as stablecoins **USDT** e **USDC** são ativos multichain presentes em várias blockchains diferentes, você deve especificar obrigatoriamente em qual rede a transferência deve ocorrer ao montar o payload de saque para evitar a perda de fundos.
 
 ---
 ## Endpoint
@@ -97,7 +97,7 @@ https://api.xgateglobal.com/withdraw/company/blockchain-networks
 
 Utilize o formulário abaixo para visualizar as redes disponíveis.
 
-<ListBlockchainNetworksTester />
+<ListWithdrawBlockchainNetworksTester />
 
 ---
 
@@ -122,20 +122,50 @@ Retorna a lista de redes. Você precisará do **objeto completo** da rede escolh
 ```json
 [
   {
-    "_id": "672c15919c9877bbeebb2fb7",
+    "_id": "672c15919**************",
     "name": "ERC-20",
     "chainId": "1",
     "cryptocurrencies": [...],
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
     "chain": "Ethereum",
-    "__v": 0
+    "uid": "01KH7NPXAX**************"
   },
   {
-    "_id": "672c18725a3690d041ea4c8c",
-    "name": "BEP-20",
-    "chainId": "56",
+    "_id": "672c19adc**************",
+    "name": "Polygon",
+    "chainId": "137",
     "cryptocurrencies": [...],
-    "chain": "BSC",
-    "__v": 0
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "chain": "Polygon",
+    "symbol": "MATIC",
+    "uid": "01KH7N1B2D**************"
+  },
+  {
+    "_id": "69ea823198**************",
+    "__v": 0,
+    "chain": "Tron",
+    "chainId": "728126428",
+    "createdDate": "2026-0**************",
+    "cryptocurrencies": [...],
+    "name": "TRC-20",
+    "symbol": "TRX",
+    "uid": "01KHM0PNDZBSGFDE7DP6AQA72N",
+    "updatedDate": "2026-0**************"
+  },
+  {
+    "_id": "69ea849098**************",
+    "__v": 0,
+    "chain": "Solana",
+    "createdDate": "2026-0**************",
+    "cryptocurrencies": [...],
+    "name": "Solana",
+    "symbol": "SOL",
+    "uid": "01KKZWMEH6**************",
+    "updatedDate": "2026-0**************"
   }
 ]
 ```
@@ -151,45 +181,48 @@ Retorna a lista de redes. Você precisará do **objeto completo** da rede escolh
 
 ## Como usar
 
-Para realizar um **Saque Crypto** (enviar USDT da XGate para uma carteira externa), não basta informar a moeda e o valor. É obrigatório informar a **Rede (Blockchain Network)**.
+Para realizar um **Saque Crypto** (enviar USDT ou USDC da XGate para uma carteira externa), não basta informar a moeda e o valor. É obrigatório informar a **Rede (Blockchain Network)**.
 
 ### O que são essas Redes?
-Imagine que o **USDT** é a carga (o dinheiro) e a **Rede Blockchain** é a rodovia por onde essa carga vai passar. Nós trabalhamos principalmente com:
+Imagine que a criptomoeda é a carga (o dinheiro) e a **Rede Blockchain** é a rodovia por onde essa carga vai passar. Nós trabalhamos principalmente com:
 
 * **Ethereum / ERC-20:** A rede principal do Ethereum. Geralmente possui taxas de gás mais elevadas.
-* **BEP-20 (BSC):** A rede da Binance Smart Chain. Conhecida por taxas mais baixas e alta velocidade.
-* **Polygon:** Uma rede de segunda camada (Layer 2) focada em escalabilidade e baixo custo.
+* **Polygon:** Uma rede criada para resolver o problema de escala do Ethereum, oferecendo transações rápidas e com baixo custo.
+* **Tron (TRC-20):** Extremamente popular para transações de stablecoins (**utilizada apenas para transações USDT na XGate**), conhecida por sua alta velocidade e taxas muito reduzidas.
+* **Solana:** Uma das redes mais rápidas e eficientes do mercado atual, destacando-se por custos de transação quase nulos.
 
+:::warning[Atenção]
 Se o seu cliente fornecer um endereço de carteira da rede **Polygon**, você **deve** selecionar a rede `Polygon` nesta listagem. Enviar pela rede errada (ex: enviar para um endereço Polygon usando a rede Ethereum) pode resultar em falha na transação ou custos elevados desnecessários.
+:::
 
 ### O Fluxo de Integração
 
 1.  **Consulte as Redes:** Chame este endpoint para obter as opções disponíveis e seus IDs.
-2.  **Selecione a Rede:** Deixe seu usuário escolher (ex: "Selecione a rede de destino: ERC-20, BEP-20 ou Polygon") ou selecione via sistema com base no endereço da carteira.
+2.  **Selecione a Rede:** Deixe seu usuário escolher (ex: "Selecione a rede de destino: ERC-20, TRC-20, Solana ou Polygon") ou selecione via sistema com base no endereço da carteira.
 3.  **Monte o Payload:** Pegue o **objeto completo** da rede escolhida e insira no campo `blockchainNetwork` do payload de saque.
 
 ### Exemplo Prático
 
-**1. Objeto de Rede que você recebeu nesta listagem (ex: BEP-20):**
+**1. Objeto de Rede que você recebeu nesta listagem (ex: SOLANA):**
 ```json
 {
-    "_id": "6733a3a200**************",
-    "name": "BEP-20",
-    "chainId": "56",
-    "cryptocurrencies": [],
-    "updatedDate": "202******************",
-    "createdDate": "202******************",
-    "__v": 0,
-    "chain": "BSC",
-    "symbol": "BNB"
-},
+  "_id": "69ea849098**************",
+  "__v": 0,
+  "chain": "Solana",
+  "createdDate": "2026-0**************",
+  "cryptocurrencies": [...],
+  "name": "Solana",
+  "symbol": "SOL",
+  "uid": "01KKZWMEH6**************",
+  "updatedDate": "2026-0**************"
+}
 ```
 
 **2. Como enviar no Saque Crypto (POST /withdraw):**
 
 Observe como o objeto acima é injetado no campo `blockchainNetwork`:
 
-```json {9-19}
+```json {9-14}
 {
     "amount": 2,
     "customerId": "6759a16f20***************",
@@ -199,15 +232,10 @@ Observe como o objeto acima é injetado no campo `blockchainNetwork`:
         "symbol": "USDT"
     },
     "blockchainNetwork": {
-        "_id": "6dd37763a2***************",
-        "name": "BEP-20",
-        "chainId": "56",
-        "cryptocurrencies": [],
-        "updatedDate": "202*********************",
-        "createdDate": "202*********************",
-        "__v": 0,
-        "chain": "BSC",
-        "symbol": "BNB"
+      "_id": "69ea849098**************",
+      "chain": "Solana",
+      "name": "Solana",
+      "symbol": "SOL"
     },
     "wallet": "0x7A00e4a***************",
     "externalId": "6dd37763a2***************"

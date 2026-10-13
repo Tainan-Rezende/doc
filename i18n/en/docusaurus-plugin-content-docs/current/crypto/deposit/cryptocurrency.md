@@ -97,8 +97,8 @@ The request does not require a body, only the **authentication Headers**.
 
 #### Required Headers
 
-| Header          | Value                | Description                    |
-| :-------------- | :------------------- | :--------------------------- |
+| Header          | Value                 | Description                        |
+| :-------------- | :-------------------- | :--------------------------------- |
 | `Authorization` | `Bearer <your_token>` | The JWT token obtained from login. |
 
 ---
@@ -112,23 +112,34 @@ Returns a list (array) of objects, where each object is a cryptocurrency.
 ```json
 [
   {
-    "_id": "67339b18ca5******************",
+    "_id": "67339b18ca5**************",
     "name": "USDT",
     "symbol": "USDT",
     "coinGecko": "tether",
-    "updatedDate": "2024-1****************",
-    "createdDate": "2024-1*****************",
-    "__v": 0
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K88H**************"
+  },
+  {
+    "_id": "67339b2bca5**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
   }
 ]
 ```
 
 ### Common Errors
 
-| Status  | Message                | Likely Reason                                                                                   |
-| :------ | :---------------------- | :------------------------------------------------------------------------------------------------ |
+| Status  | Message                 | Likely Reason                                                                          |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------- |
 | **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing Header.<br /> • IP not allowed. |
-| **500** | `Internal Server Error` | Internal server error. Contact support.                                          |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                |
 
 ---
 
@@ -150,13 +161,24 @@ The response from this endpoint provides the **Complete Object** of the cryptocu
 ```json
 [
   {
-    "_id": "67339b18ca5******************",
+    "_id": "67339b18ca5**************",
     "name": "USDT",
     "symbol": "USDT",
     "coinGecko": "tether",
-    "updatedDate": "2024-1****************",
-    "createdDate": "2024-1*****************",
-    "__v": 0
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K88H**************"
+  },
+  {
+    "_id": "67339b2bca5**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
   }
 ]
 ```
@@ -164,27 +186,28 @@ The response from this endpoint provides the **Complete Object** of the cryptocu
 **2. How you should send it in the deposit (POST /deposit):**
 
 You will take the above object and inject it within `cryptocurrency`:
-```json {13-21}
+```json {13-22}
 {
   "amount": 2,
   "customerId": "672f40**************",
   "currency": {
-    "_id": "6722ba**************",
+    "_id": "6728f0a2cb************",
     "name": "BRL",
     "type": "PIX",
-    "createdDate": "202*********************",
-    "updatedDate": "202*********************",
+    "createdDate": "2024-1************",
+    "updatedDate": "2026-0************",
     "__v": 0,
     "symbol": "R$"
   },
   "cryptocurrency": {
-    "_id": "67ce09d**************",
-    "name": "USDT",
-    "symbol": "USDT",
-    "coinGecko": "usdt",
-    "updatedDate": "202*********************",
-    "createdDate": "202*********************",
-    "__v": 0
+    "_id": "67339b2bca5**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
   },
   "externalId": "67ce09d**************"
 }

@@ -98,6 +98,9 @@ paths:
                 externalId:
                   type: string
                   description: Identificador de idempotência para evitar duplicidade na solicitação de saque.
+                identifiedDocumentPix:
+                  type: boolean
+                  description: Quando definido como true, força a validação da titularidade/documento no Pix, independentemente da configuração padrão da conta.
       responses:
         '201':
           description: Sucesso. Retorna o status PENDING e o ID da transação.
@@ -129,7 +132,7 @@ components:
     />
 </div>
 
-This endpoint allows the client to redeem their digital assets with **automatic conversion to fiat currency**. In practice, the system processes the sale of cryptocurrency (e.g., USDT) and makes the equivalent payment in BRL directly via **Pix** to the registered key.
+This endpoint allows the client to redeem their digital assets with **automatic conversion to fiat currency**. In practice, the system processes the sale of cryptocurrency (e.g., USDT, USDC) and makes the equivalent payment in BRL directly via **Pix** to the registered key.
 
 ---
 ## Endpoint
@@ -155,20 +158,37 @@ You need to send the authentication **Header** and the **Body** with the order d
 
 #### Required Headers
 
-| Header          | Value                | Description                   |
-| :-------------- | :------------------- | :---------------------------- |
+| Header          | Value                 | Description                      |
+| :-------------- | :-------------------- | :------------------------------- |
 | `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
 
 #### Body (Request Body)
 
-| Field            | Type     | Required | Description                                            |
-| :--------------- | :------- | :------: | :------------------------------------------------------ |
-| `amount`         | `number` | **Yes**  | The withdrawal amount in USDT (e.g., `0.1` min).       |
-| `customerId`     | `string` | **Yes**  | The unique ID (`_id`) of the client making withdrawal. |
-| `currency`       | `object` | **Yes**  | The transaction currency (e.g., `BRL`).                |
-| `cryptocurrency` | `object` | **Yes**  | The transaction cryptocurrency (e.g., `USDT`).         |
-| `pixKey`         | `object` | **Yes**  | The client's Pix key for withdrawal.                    |
-| `externalId`     | `string` | **No**   | Idempotency.                                           |
+| Field                   | Type      | Required | Description                                              |
+| :---------------------- | :-------- | :------: | :------------------------------------------------------- |
+| `amount`                | `number`  | **Yes**  | The withdrawal amount in USDT (e.g., `0.1` min).         |
+| `customerId`            | `string`  | **Yes**  | The unique ID (`_id`) of the client making withdrawal.   |
+| `currency`              | `object`  | **Yes**  | The transaction currency (e.g., `BRL`).                  |
+| `cryptocurrency`        | `object`  | **Yes**  | The transaction cryptocurrency (e.g., `USDT`, `USDC`).   |
+| `pixKey`                | `object`  | **Yes**  | The client's Pix key for withdrawal.                     |
+| `externalId`            | `string`  |  **No**  | Idempotency.                                             |
+| `identifiedDocumentPix` | `boolean` |  **No**  | When `true`, forces Pix document ownership verification. |
+
+:::info[About ownership validation]
+Sending the `identifiedDocumentPix` parameter with the value `false` (or omitting it) **does not disable** the ownership check if it is configured as **mandatory** in the XGate administrative panel for your account. 
+
+This parameter strictly serves to **force** the validation (by sending `true`) on accounts where the panel's default rule is disabled. To permanently disable document ownership verification, a commercial alignment via contract is required.
+:::
+
+:::warning[Important: Customer Identification]
+To create a deposit, it is **mandatory** to identify the user. You must send the `customerId` (if the client already exists) **OR** the `customer` object (to create a new client at the time of the request). 
+
+Never send both fields in the same request, as this will result in a transaction failure.
+:::
+
+:::tip[Best Practices: Duplication Prevention]
+We strongly recommend sending the `externalId` field. It acts as an idempotency key, ensuring that the same deposit request is not created in duplicate in case of network failure, double clicks, or accidental retries by your system.
+:::
 
 ---
 
@@ -188,11 +208,11 @@ Returns the created order object, containing `status` information and the transa
 
 ### Common Errors
 
-| Status  | Message                 | Likely Reason                                                                                    |
-| :------ | :---------------------- | :----------------------------------------------------------------------------------------------- |
-| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed.            |
-| **404** | `Not Found`             | The client informed in the `customerId` field does not exist.                                   |
-| **500** | `Internal Server Error` | Internal server error. Contact support.                                                        |
+| Status  | Message                 | Likely Reason                                                                         |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------ |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br />• IP not allowed. |
+| **404** | `Not Found`             | The client informed in the `customerId` field does not exist.                         |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                               |
 
 ---
 
@@ -246,7 +266,8 @@ You can **<a href={useBaseUrl('/docs/customer/create')} target="_blank">click he
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -281,7 +302,8 @@ You can get the list <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -289,15 +311,15 @@ You can get the list <a href={useBaseUrl('/docs/fiat/withdraw/currency')} target
 
 See the details of each information in the `currency` object to build your request.
 
-| Field         | Type     | Required | Description                                              |
-| :------------ | :------- | :------: | :------------------------------------------------------- |
-| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                       |
-| `name`        | `string` | **Yes**  | Name of the currency.                                    |
+| Field         | Type     | Required | Description                                                         |
+| :------------ | :------- | :------: | :------------------------------------------------------------------ |
+| `_id`         | `string` | **Yes**  | Unique identifier of the currency.                                  |
+| `name`        | `string` | **Yes**  | Name of the currency.                                               |
 | `type`        | `string` | **Yes**  | Type of payment method or transaction associated with the currency. |
-| `createdDate` | `string` | **No**   | Date the currency was created in the system.             |
-| `updatedDate` | `string` | **No**   | Date of last update of currency information.             |
-| `__v`         | `number` | **No**   | Version of the currency record in the database.           |
-| `symbol`      | `string` | **Yes**  | Symbol of the currency.                                  |
+| `createdDate` | `string` |  **No**  | Date the currency was created in the system.                        |
+| `updatedDate` | `string` |  **No**  | Date of last update of currency information.                        |
+| `__v`         | `number` |  **No**  | Version of the currency record in the database.                     |
+| `symbol`      | `string` | **Yes**  | Symbol of the currency.                                             |
 
 **Step 3:** You must obtain the cryptocurrency to perform the withdrawal conversion. 
 
@@ -330,7 +352,8 @@ You can get the list <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -339,14 +362,14 @@ You can get the list <a href={useBaseUrl('/docs/crypto/withdraw/cryptocurrency')
 See the details of each information in the `cryptocurrency` object to build your request.
 
 | Field         | Type     | Required | Description                                           |
-| :------------ | :------- | :------: | :----------------------------------------------------- |
+| :------------ | :------- | :------: | :---------------------------------------------------- |
 | `_id`         | `string` | **Yes**  | Unique identifier of the cryptocurrency.              |
 | `name`        | `string` | **Yes**  | Name of the cryptocurrency.                           |
 | `symbol`      | `string` | **Yes**  | Symbol of the cryptocurrency.                         |
-| `coinGecko`   | `string` | **No**   | Cryptocurrency identifier on CoinGecko.               |
-| `updatedDate` | `string` | **No**   | Date of last update of cryptocurrency information.    |
-| `createdDate` | `string` | **No**   | Date the cryptocurrency was created in the system.    |
-| `__v`         | `number` | **No**   | Version of the cryptocurrency record in the database. |
+| `coinGecko`   | `string` |  **No**  | Cryptocurrency identifier on CoinGecko.               |
+| `updatedDate` | `string` |  **No**  | Date of last update of cryptocurrency information.    |
+| `createdDate` | `string` |  **No**  | Date the cryptocurrency was created in the system.    |
+| `__v`         | `number` |  **No**  | Version of the cryptocurrency record in the database. |
 
 **Step 4:** You must get the Pix key data and inform it in the payload for the withdrawal to be processed. 
 
@@ -379,7 +402,8 @@ You can get the list of registered Pix keys <a href={useBaseUrl('/docs/fiat/pix/
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
 
@@ -411,11 +435,10 @@ You can get the list of registered Pix keys <a href={useBaseUrl('/docs/fiat/pix/
         "type": "CPF",
         "_id": "152535**************"
     },
-    "externalId": "67ce09d**************"
+    "externalId": "67ce09d**************",
+    "identifiedDocumentPix": true
 }
 ```
-
-
 
 ---
 

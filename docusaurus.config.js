@@ -36,7 +36,7 @@ const config = {
 
   i18n: {
     defaultLocale: 'pt-br',
-    locales: ['pt-br', 'en'],
+    locales: ['pt-br', 'en','es'],
     localeConfigs: {
       'pt-br': {
         label: 'Português (BR)',
@@ -45,6 +45,10 @@ const config = {
       en: {
         label: 'English',
         htmlLang: 'en-US',
+      },
+      es: {
+        label: 'Español',
+        htmlLang: 'es-ES',
       },
     },
   },
@@ -108,7 +112,7 @@ const config = {
           {
             type: 'html',
             position: 'right',
-            value: `<a class="navbar__item navbar__link" style="cursor: pointer; transition: color 0.3s;" onclick="event.preventDefault(); const t = this; t.innerText = 'Copiando...'; fetch('/doc/llms.txt').then(r => r.text()).then(text => { navigator.clipboard.writeText(text); t.innerText = 'Copiado com sucesso!'; t.style.color = 'var(--ifm-color-primary)'; setTimeout(() => { t.innerText = 'LLMs'; t.style.color = ''; }, 2000); });">LLMs</a>`,
+            value: `<a class="navbar__item navbar__link" style="cursor: pointer; transition: color 0.3s;" onclick="event.preventDefault(); const t = this; t.innerText = 'Copiando...'; fetch('/llms.txt').then(r => r.text()).then(text => { navigator.clipboard.writeText(text); t.innerText = 'Copiado com sucesso!'; t.style.color = 'var(--ifm-color-primary)'; setTimeout(() => { t.innerText = 'LLMs'; t.style.color = ''; }, 2000); });">LLMs</a>`,
           },
           {
             to: '/faq',

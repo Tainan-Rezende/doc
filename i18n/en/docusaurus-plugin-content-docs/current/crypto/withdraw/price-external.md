@@ -151,7 +151,8 @@ Returns the value that approximately will be received at the external wallet.
 
 ```json
 {
-    "amount": 9.369984879637112
+  "amount": 99.521405,
+  "cryptocurrency": "USDT"
 }
 ```
 
@@ -164,34 +165,36 @@ Returns the value that approximately will be received at the external wallet.
 
 ---
 
-## How to Use
+## How to use
 
-This route **does not generate** a payment order, it is only for **consultation**.
+:::info[Consultation Only]
+This endpoint **does not** create a withdrawal request or move any funds. It is **strictly for consultation** to quote rates and estimate network fees.
+:::
 
-### The Recommended Flow (UX)
+### Recommended Flow (UX)
 
-1.  **Input:** The user types "10" (Crypto) in your app/site.
-2.  **Consultation:** Your system calls `POST /withdraw/transaction/crypto/amount` sending the value 10, the network object, and the cryptocurrency object.
-3.  **Display:** The API returns that this equals `9.369984879637112 USDT`. You display: *"You will receive approximately 9.369984879637112 USDT"*.
-4.  **Action:** If the user agrees, you call the **Create Withdrawal Request to External Wallet** route (`POST /withdraw`).
+To provide the best experience for your clients, we recommend the following integration flow:
+
+1. **User Input:** The client enters the desired withdrawal amount (e.g., `10`) in your application or website.
+2. **Quote Consultation:** In the background, your system calls the `POST /withdraw/transaction/crypto/amount` endpoint, sending the value `10` along with the selected **network** and **cryptocurrency** objects.
+3. **Display Net Amount:** The API calculates the blockchain costs and returns the exact amount that will arrive in the destination wallet (e.g., `9.369984879637112 USDT`). You display on the screen something like: *"You will receive approximately 9.36 USDT"*.
+4. **Action / Confirmation:** If the user agrees with the fees and the net amount, your system then calls the definitive **Create Withdrawal Request** route (`POST /withdraw`) to execute the transaction.
 
 ### Practical Example
 
 Follow the steps below to perform a quote for external wallet.
 
-**Step 1:** Enter the USDT amount for the quote:
+**Step 1:** Enter the crypto amount for the quote:
 ```json {2}
 {
-    "amount": 10,
+    "amount": 100,
     "blockchainNetwork": {
-        "_id": "6733a3a20076c0dd9822b87a",
-        "name": "BEP-20",
-        "chainId": "56",
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
     },
     "cryptocurrency": {
-        "_id": "6733a2a90076c0dd9822b86a",
+        "_id": "6733a2a9007**************",
         "name": "USDT",
         "symbol": "USDT",
         "coinGecko": "tether"
@@ -201,18 +204,16 @@ Follow the steps below to perform a quote for external wallet.
 
 **Step 2:** You must fetch and inject the blockchain network object inside `blockchainNetwork`:
 
-```json {3-9}
+```json {3-7}
 {
-    "amount": 10,
+    "amount": 100,
     "blockchainNetwork": {
-        "_id": "6733a3a20076c0dd9822b87a",
-        "name": "BEP-20",
-        "chainId": "56",
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
     },
     "cryptocurrency": {
-        "_id": "6733a2a90076c0dd9822b86a",
+        "_id": "6733a2a9007**************",
         "name": "USDT",
         "symbol": "USDT",
         "coinGecko": "tether"
@@ -223,18 +224,16 @@ You can get the list of blockchain networks <a href={useBaseUrl('/docs/crypto/wi
 
 **Step 3:** You must fetch and inject the cryptocurrency object inside `cryptocurrency`:
 
-```json {10-15}
+```json {8-13}
 {
-    "amount": 10,
+    "amount": 100,
     "blockchainNetwork": {
-        "_id": "6733a3a20076c0dd9822b87a",
-        "name": "BEP-20",
-        "chainId": "56",
-        "chain": "BSC",
-        "symbol": "BNB"
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
     },
     "cryptocurrency": {
-        "_id": "6733a2a90076c0dd9822b86a",
+        "_id": "6733a2a9007**************",
         "name": "USDT",
         "symbol": "USDT",
         "coinGecko": "tether"
@@ -277,7 +276,7 @@ const axios = require("axios");
     // 2. Fetch Networks and Cryptocurrencies
     const blockchains = await axios.get(`${url_api}/withdraw/company/blockchain-networks`, config);
             
-    // Selects the first available network (Ex: BEP-20)
+    // Selects the first available network
     const selectedNetwork = blockchains.data[0];
 
     // Searches specifically for the USDT object within the network's crypto list

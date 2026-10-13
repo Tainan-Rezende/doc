@@ -1,0 +1,269 @@
+---
+sidebar_label: 'Cryptocurrencies'
+sidebar_position: 1
+description: 'This endpoint returns all available cryptocurrencies for your account.'
+sidebar_class_name: 'sidebar-method-get'
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import useBaseUrl from '@docusaurus/useBaseUrl';
+import ListWithdrawCryptoCurrenciesTester from '@site/src/components/ListWithdrawCryptoCurrenciesTester';
+import AICopyButton from '@site/src/components/AICopyButton';
+
+# List Cryptocurrencies
+
+<div className="ai-btn-wrapper">
+  <AICopyButton 
+      promptText={`openapi: 3.0.3
+info:
+  title: API XGate - Listar Criptomoedas para Saque
+  version: 1.0.0
+servers:
+  - url: https://api.xgateglobal.com
+    description: Servidor de Produção XGate
+paths:
+  /withdraw/company/cryptocurrencies:
+    get:
+      summary: Listar Criptomoedas para Saque
+      description: Retorna uma lista de todas as criptomoedas (ex USDT) disponíveis para a conta da empresa para operações de cash-out. O objeto retornado é necessário para compor o payload de saques com ou sem conversão.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Sucesso. Lista de criptomoedas recuperada corretamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      description: ID único da criptomoeda.
+                    name:
+                      type: string
+                      description: Nome da criptomoeda (ex USDT).
+                    symbol:
+                      type: string
+                      description: Símbolo representativo da moeda (ex USDT).
+                    coinGecko:
+                      type: string
+                      description: Identificador da moeda na API do CoinGecko.
+                    createdDate:
+                      type: string
+                      format: date-time
+                    updatedDate:
+                      type: string
+                      format: date-time
+                    __v:
+                      type: integer
+        '401':
+          description: Unauthorized. Token inválido, expirado ou ausente.
+        '500':
+          description: Internal Server Error.
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT`}
+    />
+</div>
+
+This endpoint returns all available cryptocurrencies for your account. Use this route to query the necessary data to create withdrawal order requests.
+
+---
+## Endpoint
+- **Method:** <span className="badge badge--success">GET</span>
+```bash title="Endpoint URL"
+https://api.xgateglobal.com/withdraw/company/cryptocurrencies
+```
+
+---
+
+## Test Integration
+
+Use the form below to simulate listing cryptocurrencies.
+
+<ListWithdrawCryptoCurrenciesTester />
+
+---
+
+## Request
+
+The request does not require a body, only authentication **Headers**.
+
+#### Required Headers
+
+| Header          | Value                | Description                   |
+| :-------------- | :------------------- | :---------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
+
+---
+
+## Responses
+
+### Success (200 OK)
+
+Returns a list (array) of objects, where each object is a cryptocurrency.
+
+```json
+[
+  {
+    "_id": "6733a2a900**************",
+    "name": "USDT",
+    "symbol": "USDT",
+    "coinGecko": "tether",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K88HZ**************"
+  },
+  {
+    "_id": "6733a2a000**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
+  }
+]
+```
+
+### Common Errors
+
+| Status  | Message                 | Likely Reason                                                                                      |
+| :------ | :---------------------- | :------------------------------------------------------------------------------------------------- |
+| **401** | `Unauthorized`          | • Invalid or expired token.<br /> • Invalid or missing header.<br /> • IP not allowed.           |
+| **500** | `Internal Server Error` | Internal server error. Contact support.                                                          |
+
+---
+
+## How to Use
+
+The main purpose of listing cryptocurrencies is to allow selection of the correct cryptocurrency to create a withdrawal order (**Withdraw Order**).
+
+The response from this endpoint provides the **Complete Object** of the cryptocurrency, enabling the construction of the order creation payload.
+
+### The Integration Flow
+
+1.  **List cryptocurrencies:** Call this endpoint (`GET /withdraw/company/cryptocurrencies`).
+2.  **Selection:** Identify the desired cryptocurrency in the list (usually by filtering by `name` or `symbol`, e.g., "USDT").
+3.  **Sending:** You must pass the **object** within the `cryptocurrency` property in the order creation payload. In the documentation for <a href={useBaseUrl('/docs/crypto/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>creating crypto withdrawal</a> the **required** values are shown.
+
+### Practical Example
+
+**1. What you receive when listing cryptocurrencies:**
+```json
+[
+  {
+    "_id": "6733a2a900**************",
+    "name": "USDT",
+    "symbol": "USDT",
+    "coinGecko": "tether",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K88HZ**************"
+  },
+  {
+    "_id": "6733a2a000**************",
+    "name": "USDC",
+    "symbol": "USDC",
+    "coinGecko": "usdc",
+    "updatedDate": "2024-1**************",
+    "createdDate": "2024-1**************",
+    "__v": 0,
+    "uid": "01KH7K4C0BZ**************"
+  }
+]
+```
+
+**2. How you should send in the withdrawal (POST /withdraw):**
+
+You will take the object above and inject it into `cryptocurrency`:
+```json {4-8}
+{
+    "amount": 2,
+    "customerId": "6759a16f20***************",
+    "cryptocurrency": {
+        "_id": "67c0dd903***************",
+        "name": "USDT",
+        "symbol": "USDT"
+    },
+    "blockchainNetwork": {
+        "_id": "69ea849098**************",
+        "chain": "Solana",
+        "name": "Solana",
+        "symbol": "SOL"
+    },
+    "wallet": "0x7A00e4a***************",
+    "externalId": "6dd37763a2***************"
+}
+```
+Each piece of information in this JSON will be explained at the <a href={useBaseUrl('/docs/crypto/withdraw/create')} target="_blank" rel="noopener noreferrer" style={{ fontWeight: 'bold', textDecoration: 'underline' }}>page for creating crypto withdrawal to FIAT</a>.
+
+---
+
+## Integration
+
+<Tabs groupId="sdk-examples">
+  <TabItem value="js" label="Node.js">
+    The integration example uses the <code>Axios</code> library in Node.js.
+
+    **Installing `Axios`:**
+    ```bash
+    npm install axios
+    ```
+
+    **JavaScript Example:**
+```js   
+const axios = require("axios");
+
+(async () => {
+    const email = "your_email@domain.com";
+    const password = "**********";
+    const customerId = "************";
+    const amount = 10.90;
+
+    try {
+        const url_api = "https://api.xgateglobal.com"
+        const login = await axios.post(`${url_api}/auth/token`, { email, password });
+        const cryptocurrencies = await axios.get(`${url_api}/withdraw/company/cryptocurrencies`, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
+            }
+        });
+        const currencies = await axios.get(`${url_api}/withdraw/company/currencies`, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
+            }
+        });
+        const pixKey = await axios.get(`${url_api}/pix/customer/${customerId}/key`, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
+            }
+        });
+        const { data } = await axios.post(`${url_api}/withdraw/conversion/brl/pix`, {
+            amount,
+            customerId,
+            currency: currencies.data[0],
+            cryptocurrency: cryptocurrencies.data[0],
+            pixKey: pixKey.data[0]
+        }, {
+            headers: {
+                "Authorization": `Bearer ${login.data.token}`
+            }
+        });
+        console.log(data); // Response
+    } catch (error) {
+        console.log(error.response.data.message) // Error
+    }
+})()
+```
+  </TabItem>
+</Tabs>

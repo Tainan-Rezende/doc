@@ -58,5 +58,41 @@
   "sidebar.tutorialSidebar.category.Empresa": {
     "message": "Company",
     "description": "The label for category 'Empresa' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Chaves Pix": {
+    "message": "Pix Keys",
+    "description": "The label for category 'Chaves Pix' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Carteiras Crypto": {
+    "message": "Crypto Wallets",
+    "description": "The label for category 'Carteiras Crypto' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Depósitos": {
+    "message": "Deposits",
+    "description": "The label for category 'Depósitos' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.depositos-fiat": {
+    "message": "FIAT",
+    "description": "The label for category 'FIAT' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.depositos-crypto": {
+    "message": "Crypto (with Conversion)",
+    "description": "The label for category 'Crypto (com Conversão)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Saques": {
+    "message": "Withdrawals",
+    "description": "The label for category 'Saques' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.saques-fiat": {
+    "message": "FIAT",
+    "description": "The label for category 'FIAT' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.saques-crypto-conversao": {
+    "message": "Crypto (with Conversion)",
+    "description": "The label for category 'Crypto (com Conversão)' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.saques-crypto-wallet": {
+    "message": "Crypto (Wallet)",
+    "description": "The label for category 'Crypto (Wallet)' in sidebar 'tutorialSidebar'"
   }
 }
