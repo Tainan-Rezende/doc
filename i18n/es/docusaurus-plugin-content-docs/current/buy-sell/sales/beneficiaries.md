@@ -10,9 +10,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Listar beneficiarios
 
-Lista los beneficiarios de la empresa. Úselo para entender el `settlement.beneficiaryId` de las <a href={useBaseUrl('/docs/buy-sell/sales/list')}>ventas</a> liquidadas por Pix.
-
-- **Permiso:** `WITHDRAW_BENEFICIARY.VIEW`
+Lista los beneficiarios de la empresa. Úselo para entender el `settlement.beneficiaryId` de las <a href={useBaseUrl('/docs/webhooks/sale/status')}>ventas</a> liquidadas por Pix.
 
 :::info[Solo lectura]
 El registro, la desactivación y la reactivación de beneficiarios se realizan en el panel de XGate y pasan por análisis. La API solo consulta.

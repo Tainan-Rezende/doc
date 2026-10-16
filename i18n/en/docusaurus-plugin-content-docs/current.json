@@ -99,12 +99,12 @@
     "message": "Crypto Buy & Sell",
     "description": "The label for category 'Compra e Venda de Cripto' in sidebar 'tutorialSidebar'"
   },
-  "sidebar.tutorialSidebar.category.compra-venda-compras": {
+  "sidebar.tutorialSidebar.category.Compras Webhook": {
     "message": "Purchases",
-    "description": "The label for category 'Compras' in sidebar 'tutorialSidebar'"
+    "description": "The label for category 'Compras Webhook' in sidebar 'tutorialSidebar'"
   },
-  "sidebar.tutorialSidebar.category.compra-venda-vendas": {
+  "sidebar.tutorialSidebar.category.Vendas Webhook": {
     "message": "Sales",
-    "description": "The label for category 'Vendas' in sidebar 'tutorialSidebar'"
+    "description": "The label for category 'Vendas Webhook' in sidebar 'tutorialSidebar'"
   }
 }

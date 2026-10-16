@@ -13,8 +13,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Compra USDT o USDC usando el saldo en BRL de la empresa. XGate envía la cripto a la billetera de destino indicada, que debe ser **de la propia empresa**.
 
-- **Permiso:** `CRYPTO.EXECUTE`
-
 ---
 
 ## Endpoint
@@ -129,7 +127,7 @@ EXECUTING ──► PENDING_APPROVAL ──► DELIVERED
 - En `DELIVERED`, `delivery.txHash` trae el hash de la transacción en la red.
 - En `REJECTED`, `rejection.refunded = true` indica que el BRL volvió íntegramente al saldo, comisión incluida.
 
-Haga el seguimiento mediante <a href={useBaseUrl('/docs/buy-sell/purchases/list')}>GET /crypto/purchases/&#123;id&#125;</a> o mediante los <a href={useBaseUrl('/docs/buy-sell/webhooks')}>webhooks de compra</a>.
+Haga el seguimiento mediante <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar Compra</a> o mediante los <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>webhooks de compra</a>.
 
 :::info[Seguridad en la API]
 En la API no hay código del autenticador (TOTP). La protección es el token, la lista de IPs permitidas y la cola de aprobación de XGate.

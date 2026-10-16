@@ -91,21 +91,9 @@ const sidebars = {
         'buy-sell/conventions',
         'buy-sell/options',
         'buy-sell/quotes',
-        {
-          type: 'category',
-          label: 'Compras',
-          key: 'compra-venda-compras',
-          items: [
-            'buy-sell/purchases/create',
-            'buy-sell/purchases/list',
-            'buy-sell/purchases/receipt'
-            // 'buy-sell/purchases/from-deposit' (draft: publicar quando o canal for ligado)
-          ]
-        },
-        // Onda 2 (novembro), páginas em draft:
-        // { type: 'category', label: 'Vendas', key: 'compra-venda-vendas',
-        //   items: ['buy-sell/sales/sell', 'buy-sell/sales/list', 'buy-sell/sales/beneficiaries'] },
-        'buy-sell/webhooks',
+        'buy-sell/purchases/create',
+        // 'buy-sell/purchases/from-deposit' (draft: publicar quando o canal for ligado)
+        'buy-sell/sales/sell',
         'buy-sell/errors'
       ]
     },
@@ -123,6 +111,16 @@ const sidebars = {
           type: 'category',
           label: 'Saques Webhook',
           items: ['webhooks/withdraw/status', 'webhooks/withdraw/resend']
+        },
+        {
+          type: 'category',
+          label: 'Compras Webhook',
+          items: ['webhooks/purchase/status', 'webhooks/purchase/receive']
+        },
+        {
+          type: 'category',
+          label: 'Vendas Webhook',
+          items: ['webhooks/sale/status', 'webhooks/sale/receive']
         }
       ]
     },

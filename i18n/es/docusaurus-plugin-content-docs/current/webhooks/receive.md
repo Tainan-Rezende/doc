@@ -31,11 +31,12 @@ Siga los pasos a continuación para configurar la entrega de notificaciones:
 
 4. **Events:** Seleccione qué notificaciones desea que XGate envíe a esta URL. Los eventos se dividen en:
    * **CURRENCY:** Transacciones en moneda fiduciaria (Pix, incluyendo aprobación, rechazo, errores y todo el flujo de reembolso y disputa).
-   * **CRYPTO_PURCHASE (Compras de Cripto):** Cambios de estado de las compras de cripto. Vea <a href={useBaseUrl('/docs/buy-sell/webhooks')}>Webhooks de Compra</a>.
+   * **CRYPTO_PURCHASE (Compras de Cripto):** Cambios de estado de las compras de cripto. Vea <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Webhooks de Compra</a>.
+   * **CRYPTO_SALE (Ventas de Cripto):** Cambios de estado de las ventas de cripto. Disponible a partir de noviembre de 2026, solo para empresas con venta habilitada. Vea <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Webhooks de Venta</a>.
    * **CRYPTOCURRENCY:** Transacciones en criptomonedas de los flujos heredados. **Descontinuado el 29/10/2026**: el tipo sale del catálogo y deja de enviarse.
 
 :::info[Los eventos de cripto usan otro formato]
-Los eventos `CRYPTO_PURCHASE` usan un envoltorio propio (`id`, `type`, `createdAt`, `data`), diferente del formato plano descrito en esta página. Los tipos `CRYPTO_PURCHASE` solo aparecen para empresas con cripto habilitada.
+Los eventos `CRYPTO_PURCHASE` y `CRYPTO_SALE` usan un envoltorio propio (`id`, `type`, `createdAt`, `data`), diferente del formato plano descrito en esta página. Los tipos `CRYPTO_PURCHASE` y `CRYPTO_SALE` solo aparecen para empresas con cripto (y, en el caso de la venta, venta) habilitada.
 :::
 
 :::tip[Consejo de integración]

@@ -1,13 +1,13 @@
 ---
-sidebar_label: 'Webhooks de Compra'
-sidebar_position: 6
+sidebar_label: 'Receber webhooks de compra'
+sidebar_position: 2
 description: 'Eventos enviados pela XGate a cada mudança de status de uma compra de cripto (tipo CRYPTO_PURCHASE).'
 sidebar_class_name: 'sidebar-method-post'
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Webhooks de Compra
+# Receber Webhooks de Compra
 
 A XGate envia um evento para a sua URL a cada mudança de status de uma compra de cripto.
 
@@ -66,7 +66,7 @@ Os eventos de cripto **não** usam o formato plano dos webhooks de depósito e s
 | `id`        | `string` | ID único do evento. Use para descartar entregas repetidas.                                                                    |
 | `type`      | `string` | Tipo do evento (tabela abaixo).                                                                                               |
 | `createdAt` | `string` | Data de criação do evento (ISO 8601, UTC).                                                                                    |
-| `data`      | `object` | Objeto da compra, igual ao de <a href={useBaseUrl('/docs/buy-sell/purchases/list')}>GET /crypto/purchases/&#123;id&#125;</a>. |
+| `data`      | `object` | Objeto da compra, igual ao de <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar Compra</a>.               |
 
 ---
 
@@ -74,10 +74,12 @@ Os eventos de cripto **não** usam o formato plano dos webhooks de depósito e s
 
 | Evento (`type`)            | Status no painel   | Quando                                                                                     |
 | :------------------------- | :----------------- | :----------------------------------------------------------------------------------------- |
+| `purchase.pending_payment` | `PENDING_PAYMENT`  | Só em compra aberta a partir de um depósito: aguardando o pagamento do Pix.                |
 | `purchase.executing`       | `EXECUTING`        | BRL debitado do saldo (em geral antes da resposta `201` do `POST`).                        |
 | `purchase.pending_approval`| `PENDING_APPROVAL` | A compra entrou na fila de aprovação da XGate.                                             |
 | `purchase.delivered`       | `DELIVERED`        | Cripto confirmada na rede; `data.delivery.txHash` preenchido. **Final.**                   |
 | `purchase.rejected`        | `REJECTED`         | Compra não entregue; `data.rejection` traz `reason`, `message` e `refunded`. **Final.**    |
+| `purchase.expired`         | `EXPIRED`          | O depósito de origem não foi pago no prazo. **Final.**                                     |
 
 ---
 

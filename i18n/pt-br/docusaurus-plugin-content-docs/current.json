@@ -58,5 +58,13 @@
   "sidebar.tutorialSidebar.category.Empresa": {
     "message": "Empresa",
     "description": "The label for category 'Empresa' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Compras Webhook": {
+    "message": "Compras Webhook",
+    "description": "The label for category 'Compras Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Vendas Webhook": {
+    "message": "Vendas Webhook",
+    "description": "The label for category 'Vendas Webhook' in sidebar 'tutorialSidebar'"
   }
 }
