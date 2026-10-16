@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Conventions'
 sidebar_position: 2
-description: 'Rules that apply to all /crypto routes: authentication, allowed IPs, permissions, value format, errors, pagination and limits.'
+description: 'Rules that apply to all /crypto routes: authentication, allowed IPs, value format, errors, idempotency and limits.'
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -23,7 +23,7 @@ https://api.xgateglobal.com
 | Header            | Value                 | Description                                                                                  |
 | :---------------- | :-------------------- | :------------------------------------------------------------------------------------------- |
 | `Authorization`   | `Bearer <your_token>` | Token obtained at <a href={useBaseUrl('/docs/authentication/login')}>login</a>.              |
-| `Accept-Language` | `pt-BR` or `en`       | *(Optional)* Language of error messages and of the receipt. Default: `pt-BR`.                |
+| `Accept-Language` | `pt-BR` or `en`       | *(Optional)* Language of error messages. Default: `pt-BR`.                                   |
 
 The company is always the one from the token: there is no company parameter in the routes.
 
@@ -37,19 +37,6 @@ The company must have its list of allowed IPs registered in the XGate dashboard.
 | :------------------------------------- | :---------------------------- |
 | Company without an IP list             | `403 ALLOWED_IPS_REQUIRED`    |
 | Request from an IP outside the list    | `403 CLIENT_IP_NOT_ALLOWED`   |
-
----
-
-## Permissions
-
-The API user's group needs the following permissions:
-
-| Permission       | Grants                                                                 |
-| :--------------- | :--------------------------------------------------------------------- |
-| `CRYPTO.VIEW`    | Query options, estimates, purchases and receipts.                      |
-| `CRYPTO.EXECUTE` | Quote (`POST /crypto/quotes`) and buy (`POST /crypto/purchases`).      |
-
-Without the required permission: `403 PERMISSION_DENIED`.
 
 ---
 
@@ -88,19 +75,6 @@ Every error comes in the same envelope:
 | `traceId` | Protocol to provide to XGate support.                                                     |
 
 The full list is in <a href={useBaseUrl('/docs/buy-sell/errors')}>Error Codes</a>.
-
----
-
-## Pagination
-
-Lists are paginated by cursor:
-
-| Parameter | Description                                                       |
-| :-------- | :---------------------------------------------------------------- |
-| `limit`   | Items per page, from 1 to 100. Default: 20.                       |
-| `cursor`  | The `nextCursor` from the previous page. Omit on the first page.  |
-
-The response contains `{ "items": [...], "nextCursor": "..." }`. `nextCursor: null` indicates the last page.
 
 ---
 

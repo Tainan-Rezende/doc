@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Opciones'
 sidebar_position: 3
-description: 'Devuelve lo que la empresa puede hacer ahora: activos, redes, tarifas, límites de compra y direcciones guardadas.'
+description: 'Devuelve lo que la empresa puede hacer ahora: activos, redes, tarifas, límites de compra, direcciones guardadas y direcciones de venta.'
 sidebar_class_name: 'sidebar-method-get'
 ---
 
@@ -12,8 +12,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 # Consultar Opciones
 
 Devuelve lo que su empresa puede hacer ahora: activos y redes habilitados, tarifas, límites de compra, direcciones guardadas y validez de la cotización. Use esta ruta antes de cotizar o comprar.
-
-- **Permiso:** `CRYPTO.VIEW`
 
 ---
 
@@ -118,7 +116,10 @@ Esta ruta no recibe parámetros.
 | `savedAddressesOnly.enabled`          | `boolean`                  | Bloqueo "solo direcciones guardadas", activado por la empresa en el panel.                                                                                   |
 | `savedAddressesOnly.newAddressHoldHours` | `integer`               | Período de carencia, en horas, de una dirección nueva cuando el bloqueo está activado (24).                                                                  |
 | `quoteTtlSeconds`                     | `integer`                  | Validez de la cotización, en segundos (30).                                                                                                                  |
-| `sale`                                | `object`                   | Reservado para la venta de cripto (disponible próximamente).                                                                                                 |
+| `sale.enabled`                        | `boolean`                  | Venta habilitada para la empresa. Permanece en `false` hasta la habilitación de la venta por la API (noviembre de 2026).                                |
+| `sale.status`                         | `string`                   | `DISABLED` · `PROVISIONING` · `READY`. La primera consulta de una empresa con venta habilitada crea las direcciones: queda en `PROVISIONING` durante algunos minutos y pasa a `READY`. |
+| `sale.minAmount`                      | `object`                   | Venta mínima por activo (`USDT`, `USDC`), en la cantidad del activo.                                                                                    |
+| `sale.depositAddresses[]`             | `array`                    | Dirección fija de la empresa para cada par `asset` × `network` (`asset`, `network`, `address`). Vacío mientras la venta no esté habilitada. Vea <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>. |
 
 :::tip[Bloqueo de direcciones guardadas]
 Con `savedAddressesOnly.enabled = true`, la compra solo acepta direcciones de `buy.addresses[]`, y una dirección recién registrada solo puede usarse después de `activeAt` (carencia de `newAddressHoldHours`).

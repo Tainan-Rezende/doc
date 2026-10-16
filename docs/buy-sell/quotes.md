@@ -13,10 +13,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Duas rotas com o mesmo corpo:
 
-| Rota                            | Permissão        | Uso                                                                                                                                  |
-| :------------------------------ | :--------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
-| `POST /crypto/quotes`           | `CRYPTO.EXECUTE` | Gera uma cotação com `quoteId` e preço **garantido** por `quoteTtlSeconds` (30 s), para usar na compra. Pedir e não usar não custa nada. |
-| `POST /crypto/quotes/estimate`  | `CRYPTO.VIEW`    | Só uma estimativa: não gera `quoteId` e nada é reservado. Serve para mostrar o valor aproximado ("≈") antes de comprar.               |
+| Rota                            | Uso                                                                                                                                  |
+| :------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST /crypto/quotes`           | Gera uma cotação com `quoteId` e preço **garantido** por `quoteTtlSeconds` (30 s), para usar na compra. Pedir e não usar não custa nada. |
+| `POST /crypto/quotes/estimate`  | Só uma estimativa: não gera `quoteId` e nada é reservado. Serve para mostrar o valor aproximado ("≈") antes de comprar.               |
 
 ---
 

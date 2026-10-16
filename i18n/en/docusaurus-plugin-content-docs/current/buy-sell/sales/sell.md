@@ -1,7 +1,6 @@
 ---
-draft: true
 sidebar_label: 'Sell Crypto'
-sidebar_position: 1
+sidebar_position: 6
 description: "Send USDT or USDC to the company's fixed address at XGate and receive the amount in BRL in the balance or via Pix."
 ---
 
@@ -9,13 +8,29 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Sell Crypto
 
-To sell, the company sends USDT or USDC to a **fixed address** that XGate provides. Each transfer confirmed on the network becomes a sale, and the amount in reais is credited to the BRL balance or sent via Pix to an approved beneficiary, according to the company's configuration.
+To sell, the company sends USDT or USDC to a **fixed address** that XGate provides. Each transfer confirmed on the network becomes a sale, and the amount in reais is credited to the BRL balance or sent via Pix to an approved beneficiary, according to the company's configuration in the dashboard.
+
+:::note[Available in November 2026]
+Selling crypto through the API will be released in November 2026. Until then, `sale.enabled` is `false` and `sale.depositAddresses` is empty in `GET /crypto/options`.
+:::
+
+---
+
+## How it works
+
+- **There is no sale order and no `POST`.** XGate gives the company **one fixed address per asset and network**. The company sends USDT or USDC from any wallet to that address, and **each transfer confirmed on the network becomes a sale**, at market price, with no minimum price and no on-chain refund. Ten transfers are ten sales.
+- The price is set at settlement. The fee (XGate + referral) is charged in crypto on the amount received, and the BRL credited is `netCryptoAmount × rate`.
+- Reconcile using the `txHash` of your transfer. The `sourceAddress` helps when the network provides it.
+
+:::danger[Caution when sending]
+Send only the asset and network of the address. **Sending another token, or the right token on the wrong network, results in loss, with no refund.** There is no USDC on `TRON`.
+:::
 
 ---
 
 ## Sale addresses
 
-XGate gives the company **one fixed address per asset × network**, listed in <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a>, in the `sale` block:
+The addresses are returned by <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a>, in the `sale` block:
 
 ```json
 {
@@ -24,39 +39,30 @@ XGate gives the company **one fixed address per asset × network**, listed in <a
     "status": "READY",
     "minAmount": { "USDT": "10.000000", "USDC": "10.000000" },
     "depositAddresses": [
-      { "asset": "USDT", "network": "TRON", "address": "TXg8u3…" },
+      { "asset": "USDT", "network": "TRON", "address": "TXYZopYRdj2D9XRtbG411XZZ3kM5VkAeBf" },
       { "asset": "USDC", "network": "SOLANA", "address": "7mQe1…" }
     ]
   }
 }
 ```
 
-| Field                | Description                                                                                                                  |
-| :------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| `enabled`            | Sale enabled for the company.                                                                                                |
-| `status`             | `DISABLED`, `PROVISIONING` or `READY`. Addresses are created on the first query by a company with sales enabled: the status goes through `PROVISIONING` until `READY`. |
-| `minAmount`          | Minimum sale per asset.                                                                                                      |
-| `depositAddresses[]` | Fixed address for each `asset` × `network` pair.                                                                             |
+| Field                | Type      | Description                                                                                                                                                 |
+| :------------------- | :-------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enabled`            | `boolean` | Sale enabled for the company.                                                                                                                               |
+| `status`             | `string`  | `DISABLED` · `PROVISIONING` · `READY`. The first query by a company with sales enabled triggers the creation of the addresses: the status stays `PROVISIONING` for a few minutes and then becomes `READY`. |
+| `minAmount`          | `object`  | Minimum sale per asset (`USDT`, `USDC`). Transfers below the minimum are put under review (`review.reason = BELOW_MINIMUM`).                                |
+| `depositAddresses[]` | `array`   | Fixed address for each pair: `asset`, `network`, `address`.                                                                                                 |
 
 ---
 
-## How it works
+## Where the BRL goes
 
-- **There is no sale order and no `POST /crypto/sales`.** Every transfer confirmed on the network to a fixed address becomes a market sale, with no minimum price and no on-chain refund. Ten transfers are ten sales.
-- The price is frozen at settlement. The fee (XGate + referral) is charged in crypto on the amount received, and the BRL credited is `netCryptoAmount × rate`.
-- Reconcile using the `txHash` of your transfer. The `sourceAddress` helps when the network provides it.
+The way to receive the BRL from the sale is configured **once, in the XGate dashboard** (Buy/Sell › Settings):
 
-:::danger[Caution when sending]
-Send only the asset and network of the address. **Sending another token or using another network results in loss.** Transfers below `sale.minAmount` are put under review.
-:::
+- The company's **BRL balance**; or
+- **Pix to an approved beneficiary**.
 
----
-
-## Settlement method
-
-The way to receive the BRL from the sale (**BRL balance** or **Pix to an approved beneficiary**) is configured **only in the XGate dashboard**, once per company, with the authenticator. The API does not change this choice: it shows the result in the `settlement` field of each sale.
-
-Pix as a settlement method depends on XGate enabling the feature for your company. Without it, every sale is credited to the balance (`settlement.type = BALANCE`). If the beneficiary is no longer approved or the Pix fails, the sale is credited to the BRL balance: it never gets stuck.
+The API does not change this choice: it shows the result in the `settlement` field of each sale. If the Pix cannot be made (beneficiary not approved, withdrawal refused or failed), the amount is credited to the BRL balance and the sale ends as `SETTLED_TO_BALANCE`, with the reason in `settlement.fallbackReason`. The sale never gets stuck.
 
 ---
 
@@ -67,53 +73,15 @@ RECEIVED ──► SETTLING ──► SETTLED
                      └──► SETTLED_TO_BALANCE
 ```
 
-| Status               | Meaning                                                                                                       |
-| :------------------- | :------------------------------------------------------------------------------------------------------------ |
-| `RECEIVED`           | Crypto received and confirmed, waiting for the price. Includes a sale suspended under review (with `review.reason`). |
-| `SETTLING`           | Being settled.                                                                                                |
-| `SETTLED`            | Settled using the configured method.                                                                          |
-| `SETTLED_TO_BALANCE` | The method was Pix, but the amount was credited to the balance. `settlement.fallbackReason` explains why.     |
+| Status               | Meaning                                                                                                      |
+| :------------------- | :----------------------------------------------------------------------------------------------------------- |
+| `RECEIVED`           | Crypto received and confirmed, waiting for the price. A sale suspended under XGate review appears here, with `review.reason`. |
+| `SETTLING`           | Price frozen, credit in progress.                                                                            |
+| `SETTLED`            | Settled using the configured method. **Final.**                                                              |
+| `SETTLED_TO_BALANCE` | The method was Pix, but the amount was credited to the balance. `settlement.fallbackReason` explains why. **Final.** |
 
 ---
 
-## Sale object {#sale-object}
+## Tracking
 
-The same object is returned by the query and sent in the `data` field of the `sale.*` webhooks.
-
-| Field                     | Type               | Description                                                                                                     |
-| :------------------------ | :----------------- | :-------------------------------------------------------------------------------------------------------------- |
-| `id`                      | `string`           | Sale ID.                                                                                                        |
-| `status`                  | `string`           | `RECEIVED` · `SETTLING` · `SETTLED` · `SETTLED_TO_BALANCE`.                                                     |
-| `asset`, `network`        | `string`           | Asset and network.                                                                                              |
-| `depositAddress`          | `string`           | Company's fixed address that received the funds.                                                                |
-| `sourceAddress`           | `string` \| `null` | Where the crypto came from (when the network provides it).                                                      |
-| `txHash`                  | `string` \| `null` | On-chain hash. Reconciliation key.                                                                              |
-| `cryptoAmount`            | `string`           | Amount received (6 decimals).                                                                                   |
-| `rate`                    | `string` \| `null` | BRL price frozen at settlement (8 decimals).                                                                    |
-| `feeAmount`, `feeAsset`   | `string` \| `null` | Fee in crypto on `cryptoAmount`.                                                                                |
-| `netCryptoAmount`         | `string` \| `null` | `cryptoAmount − feeAmount`.                                                                                     |
-| `grossAmount`, `netAmount`| `string` \| `null` | Amount in BRL credited (`netCryptoAmount × rate`, rounded down).                                                |
-| `settlement`              | `object`           | `type` (`BALANCE` \| `PIX_KEY`), `beneficiaryId`, `withdrawId` (Pix withdrawal created), `fallbackReason` (`PIX_SETTLEMENT_UNAVAILABLE` · `BENEFICIARY_NOT_ELIGIBLE` · `PAYOUT_REJECTED` · `PAYOUT_FAILED` · `PAYOUT_UNAVAILABLE` · `null`). |
-| `review`                  | `object` \| `null` | `reason`: `BELOW_MINIMUM` · `COMPANY_UNAVAILABLE` · `COMPANY_BLOCKED` · `SELL_POLICY_MISSING` · `NET_NOT_POSITIVE` · `CONFIRMATIONS_TIMEOUT` · `CREDIT_REVIEW`. |
-| `receivedAt`, `settledAt`, `createdAt`, `updatedAt` | `string` | ISO 8601 dates. `updatedAt` + `status` sort out-of-order webhooks.                             |
-
----
-
-## Sale webhooks
-
-In the dashboard, select the **Crypto Sales** type (`CRYPTO_SALE`). The envelope is the same as the <a href={useBaseUrl('/docs/buy-sell/webhooks')}>purchase webhooks</a> (`id`, `type`, `createdAt`, `data`), with `data` = sale object.
-
-| Event (`type`)   | Dashboard status                    | When                                                                                       |
-| :--------------- | :---------------------------------- | :----------------------------------------------------------------------------------------- |
-| `sale.received`  | `RECEIVED`                          | Crypto received and confirmed at the fixed address.                                        |
-| `sale.settled`   | `SETTLED` or `SETTLED_TO_BALANCE`   | BRL credited. `data.status` tells which of the two and `data.settlement` shows how.        |
-
----
-
-## What is not available via the API
-
-| Attempt                                             | Response                   |
-| :-------------------------------------------------- | :------------------------- |
-| `POST /crypto/sales`                                | `404 ROUTE_NOT_FOUND`      |
-| Changing the settlement method with an API token    | `403 DASHBOARD_ONLY`       |
-| Registering a beneficiary with an API token         | `403 PERMISSION_DENIED`    |
+Track each sale via <a href={useBaseUrl('/docs/webhooks/sale/status')}>Get Sale</a> or the <a href={useBaseUrl('/docs/webhooks/sale/receive')}>sale webhooks</a> (`sale.*`), in the Webhooks › Sales tab. The description of each field is in <a href={useBaseUrl('/docs/webhooks/sale/status#sale-object')}>Sale object</a>.

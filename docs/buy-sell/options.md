@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Opções'
 sidebar_position: 3
-description: 'Retorna o que a empresa pode fazer agora: ativos, redes, taxas, limites de compra e endereços salvos.'
+description: 'Retorna o que a empresa pode fazer agora: ativos, redes, taxas, limites de compra, endereços salvos e endereços de venda.'
 sidebar_class_name: 'sidebar-method-get'
 ---
 
@@ -12,8 +12,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 # Consultar Opções
 
 Retorna o que a sua empresa pode fazer agora: ativos e redes liberados, taxas, limites de compra, endereços salvos e validade da cotação. Use esta rota antes de cotar ou comprar.
-
-- **Permissão:** `CRYPTO.VIEW`
 
 ---
 
@@ -118,7 +116,10 @@ Esta rota não recebe parâmetros.
 | `savedAddressesOnly.enabled`          | `boolean`                  | Trava "só endereços salvos", ligada pela empresa no painel.                                                                                             |
 | `savedAddressesOnly.newAddressHoldHours` | `integer`               | Carência, em horas, de um endereço novo quando a trava está ligada (24).                                                                                |
 | `quoteTtlSeconds`                     | `integer`                  | Validade da cotação, em segundos (30).                                                                                                                  |
-| `sale`                                | `object`                   | Reservado para a venda de cripto (disponível em breve).                                                                                                 |
+| `sale.enabled`                        | `boolean`                  | Venda liberada para a empresa. Fica `false` até a liberação da venda pela API (novembro de 2026).                                                      |
+| `sale.status`                         | `string`                   | `DISABLED` · `PROVISIONING` · `READY`. A primeira consulta de uma empresa com venda liberada cria os endereços: fica `PROVISIONING` por alguns minutos e passa a `READY`. |
+| `sale.minAmount`                      | `object`                   | Venda mínima por ativo (`USDT`, `USDC`), na quantidade do ativo.                                                                                        |
+| `sale.depositAddresses[]`             | `array`                    | Endereço fixo da empresa para cada par `asset` × `network` (`asset`, `network`, `address`). Vazio enquanto a venda não estiver liberada. Veja <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>. |
 
 :::tip[Trava de endereços salvos]
 Com `savedAddressesOnly.enabled = true`, a compra só aceita endereços de `buy.addresses[]`, e um endereço recém-cadastrado só pode ser usado depois de `activeAt` (carência de `newAddressHoldHours`).

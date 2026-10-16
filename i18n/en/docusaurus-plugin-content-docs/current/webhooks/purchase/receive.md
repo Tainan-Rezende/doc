@@ -1,13 +1,13 @@
 ---
-sidebar_label: 'Purchase Webhooks'
-sidebar_position: 6
+sidebar_label: 'Receive purchase webhooks'
+sidebar_position: 2
 description: 'Events sent by XGate on every status change of a crypto purchase (CRYPTO_PURCHASE type).'
 sidebar_class_name: 'sidebar-method-post'
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Purchase Webhooks
+# Receive Purchase Webhooks
 
 XGate sends an event to your URL on every status change of a crypto purchase.
 
@@ -66,7 +66,7 @@ Crypto events do **not** use the flat format of the deposit and withdrawal webho
 | `id`        | `string` | Unique event ID. Use it to discard repeated deliveries.                                                                       |
 | `type`      | `string` | Event type (table below).                                                                                                     |
 | `createdAt` | `string` | Event creation date (ISO 8601, UTC).                                                                                          |
-| `data`      | `object` | Purchase object, same as in <a href={useBaseUrl('/docs/buy-sell/purchases/list')}>GET /crypto/purchases/&#123;id&#125;</a>.   |
+| `data`      | `object` | Purchase object, same as in <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Get Purchase</a>.                      |
 
 ---
 
@@ -74,10 +74,12 @@ Crypto events do **not** use the flat format of the deposit and withdrawal webho
 
 | Event (`type`)             | Dashboard status   | When                                                                                       |
 | :------------------------- | :----------------- | :----------------------------------------------------------------------------------------- |
+| `purchase.pending_payment` | `PENDING_PAYMENT`  | Only for purchases opened from a deposit: waiting for the Pix payment.                     |
 | `purchase.executing`       | `EXECUTING`        | BRL debited from the balance (usually before the `201` response of the `POST`).            |
 | `purchase.pending_approval`| `PENDING_APPROVAL` | The purchase entered XGate's approval queue.                                               |
 | `purchase.delivered`       | `DELIVERED`        | Crypto confirmed on the network; `data.delivery.txHash` filled in. **Final.**              |
 | `purchase.rejected`        | `REJECTED`         | Purchase not delivered; `data.rejection` contains `reason`, `message` and `refunded`. **Final.** |
+| `purchase.expired`         | `EXPIRED`          | The source deposit was not paid in time. **Final.**                                        |
 
 ---
 

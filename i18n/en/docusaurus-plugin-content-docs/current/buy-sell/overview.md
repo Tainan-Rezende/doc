@@ -17,7 +17,7 @@ There is no crypto balance at XGate: what the company buys goes straight to its 
 :::
 
 :::note[Sales coming soon]
-Selling crypto through the API will be released in November 2026. Until then, this section documents purchases.
+Selling crypto through the API will be released in November 2026. Until then, `sale.enabled` is `false` and `sale.depositAddresses` is empty in `GET /crypto/options`.
 :::
 
 ---
@@ -52,8 +52,15 @@ In addition, the company must have its list of **allowed IPs** registered in the
 1. **Check the options:** <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a> shows assets, networks, fees, limits and saved addresses.
 2. **Quote (optional):** <a href={useBaseUrl('/docs/buy-sell/quotes')}>POST /crypto/quotes</a> locks the price for 30 seconds. To only display an approximate amount, use `POST /crypto/quotes/estimate`.
 3. **Buy:** <a href={useBaseUrl('/docs/buy-sell/purchases/create')}>POST /crypto/purchases</a> with the quote or at market price. The BRL is debited from the balance.
-4. **Track:** <a href={useBaseUrl('/docs/buy-sell/purchases/list')}>GET /crypto/purchases/&#123;id&#125;</a> or the <a href={useBaseUrl('/docs/buy-sell/webhooks')}>purchase webhooks</a>, until `DELIVERED` (crypto confirmed on the network) or `REJECTED` (BRL returned to the balance).
-5. **Receipt:** <a href={useBaseUrl('/docs/buy-sell/purchases/receipt')}>GET /crypto/purchases/&#123;id&#125;/receipt</a>.
+4. **Track:** <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Get Purchase</a> or the <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>purchase webhooks</a> (Webhooks tab › Purchases), until `DELIVERED` (crypto confirmed on the network) or `REJECTED` (BRL returned to the balance).
+
+---
+
+## Sale flow
+
+1. **Get the addresses:** the `sale` block of <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a> contains the company's fixed address for each asset and network.
+2. **Send the crypto:** every transfer confirmed on the network to that address becomes a sale. See <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Sell Crypto</a>.
+3. **Track:** <a href={useBaseUrl('/docs/webhooks/sale/status')}>Get Sale</a> or the <a href={useBaseUrl('/docs/webhooks/sale/receive')}>sale webhooks</a> (Webhooks tab › Sales), until `SETTLED` or `SETTLED_TO_BALANCE`.
 
 ---
 

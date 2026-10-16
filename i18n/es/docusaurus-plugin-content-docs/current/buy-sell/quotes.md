@@ -13,10 +13,10 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Dos rutas con el mismo cuerpo:
 
-| Ruta                            | Permiso          | Uso                                                                                                                                       |
-| :------------------------------ | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
-| `POST /crypto/quotes`           | `CRYPTO.EXECUTE` | Genera una cotización con `quoteId` y precio **garantizado** durante `quoteTtlSeconds` (30 s), para usar en la compra. Solicitarla y no usarla no cuesta nada. |
-| `POST /crypto/quotes/estimate`  | `CRYPTO.VIEW`    | Solo una estimación: no genera `quoteId` y no se reserva nada. Sirve para mostrar el valor aproximado ("≈") antes de comprar.              |
+| Ruta                            | Uso                                                                                                                                       |
+| :------------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| `POST /crypto/quotes`           | Genera una cotización con `quoteId` y precio **garantizado** durante `quoteTtlSeconds` (30 s), para usar en la compra. Solicitarla y no usarla no cuesta nada. |
+| `POST /crypto/quotes/estimate`  | Solo una estimación: no genera `quoteId` y no se reserva nada. Sirve para mostrar el valor aproximado ("≈") antes de comprar.              |
 
 ---
 

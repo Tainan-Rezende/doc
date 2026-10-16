@@ -31,11 +31,12 @@ Follow the steps below to configure notification delivery:
 
 4. **Events:** Select which notifications you want XGate to send to this URL. Events are divided into:
    * **CURRENCY:** Fiat currency transactions (Pix, including approval, rejection, errors, and the full refund/dispute workflow).
-   * **CRYPTO_PURCHASE (Crypto Purchases):** Status changes of crypto purchases. See <a href={useBaseUrl('/docs/buy-sell/webhooks')}>Purchase Webhooks</a>.
+   * **CRYPTO_PURCHASE (Crypto Purchases):** Status changes of crypto purchases. See <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Purchase Webhooks</a>.
+   * **CRYPTO_SALE (Crypto Sales):** Status changes of crypto sales. Available from November 2026, only for companies with sales enabled. See <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Sale Webhooks</a>.
    * **CRYPTOCURRENCY:** Crypto transactions from the legacy flows. **Discontinued on October 29, 2026**: the type is removed from the catalog and is no longer sent.
 
 :::info[Crypto events use a different format]
-`CRYPTO_PURCHASE` events use their own envelope (`id`, `type`, `createdAt`, `data`), different from the flat format described on this page. `CRYPTO_PURCHASE` types only appear for companies with crypto enabled.
+`CRYPTO_PURCHASE` and `CRYPTO_SALE` events use their own envelope (`id`, `type`, `createdAt`, `data`), different from the flat format described on this page. The `CRYPTO_PURCHASE` and `CRYPTO_SALE` types only appear for companies with crypto (and, for sales, selling) enabled.
 :::
 
 :::tip[Integration Tip]

@@ -17,7 +17,7 @@ Não existe saldo cripto na XGate: o que a empresa compra vai direto para a cart
 :::
 
 :::note[Venda em breve]
-A venda de cripto pela API será liberada em novembro de 2026. Até lá, esta seção documenta a compra.
+A venda de cripto pela API será liberada em novembro de 2026. Até lá, `sale.enabled` vem `false` e `sale.depositAddresses` vem vazio em `GET /crypto/options`.
 :::
 
 ---
@@ -52,8 +52,15 @@ Além disso, a empresa precisa ter a lista de **IPs permitidos** cadastrada no p
 1. **Consulte as opções:** <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a> mostra ativos, redes, taxas, limites e endereços salvos.
 2. **Cote (opcional):** <a href={useBaseUrl('/docs/buy-sell/quotes')}>POST /crypto/quotes</a> garante o preço por 30 segundos. Para só mostrar um valor aproximado, use `POST /crypto/quotes/estimate`.
 3. **Compre:** <a href={useBaseUrl('/docs/buy-sell/purchases/create')}>POST /crypto/purchases</a> com a cotação ou a mercado. O BRL é debitado do saldo.
-4. **Acompanhe:** <a href={useBaseUrl('/docs/buy-sell/purchases/list')}>GET /crypto/purchases/&#123;id&#125;</a> ou os <a href={useBaseUrl('/docs/buy-sell/webhooks')}>webhooks de compra</a>, até `DELIVERED` (cripto confirmada na rede) ou `REJECTED` (BRL devolvido ao saldo).
-5. **Comprovante:** <a href={useBaseUrl('/docs/buy-sell/purchases/receipt')}>GET /crypto/purchases/&#123;id&#125;/receipt</a>.
+4. **Acompanhe:** <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar Compra</a> ou os <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>webhooks de compra</a> (aba Webhooks › Compras Webhook), até `DELIVERED` (cripto confirmada na rede) ou `REJECTED` (BRL devolvido ao saldo).
+
+---
+
+## Fluxo de venda
+
+1. **Pegue os endereços:** o bloco `sale` de <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a> traz o endereço fixo da empresa para cada ativo e rede.
+2. **Envie a cripto:** cada envio confirmado na rede para esse endereço vira uma venda. Veja <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>.
+3. **Acompanhe:** <a href={useBaseUrl('/docs/webhooks/sale/status')}>Consultar Venda</a> ou os <a href={useBaseUrl('/docs/webhooks/sale/receive')}>webhooks de venda</a> (aba Webhooks › Vendas Webhook), até `SETTLED` ou `SETTLED_TO_BALANCE`.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Options'
 sidebar_position: 3
-description: 'Returns what the company can do right now: assets, networks, fees, purchase limits and saved addresses.'
+description: 'Returns what the company can do right now: assets, networks, fees, purchase limits, saved addresses and sale addresses.'
 sidebar_class_name: 'sidebar-method-get'
 ---
 
@@ -12,8 +12,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 # Get Options
 
 Returns what your company can do right now: enabled assets and networks, fees, purchase limits, saved addresses and quote validity. Use this route before quoting or buying.
-
-- **Permission:** `CRYPTO.VIEW`
 
 ---
 
@@ -118,7 +116,10 @@ This route takes no parameters.
 | `savedAddressesOnly.enabled`          | `boolean`                  | "Saved addresses only" lock, enabled by the company in the dashboard.                                                                                   |
 | `savedAddressesOnly.newAddressHoldHours` | `integer`               | Hold period, in hours, for a new address when the lock is enabled (24).                                                                                 |
 | `quoteTtlSeconds`                     | `integer`                  | Quote validity, in seconds (30).                                                                                                                        |
-| `sale`                                | `object`                   | Reserved for crypto sales (coming soon).                                                                                                                |
+| `sale.enabled`                        | `boolean`                  | Sale enabled for the company. Stays `false` until sales via API are released (November 2026).                                                         |
+| `sale.status`                         | `string`                   | `DISABLED` · `PROVISIONING` · `READY`. The first query by a company with sales enabled creates the addresses: it stays `PROVISIONING` for a few minutes and then becomes `READY`. |
+| `sale.minAmount`                      | `object`                   | Minimum sale per asset (`USDT`, `USDC`), in the asset amount.                                                                                           |
+| `sale.depositAddresses[]`             | `array`                    | Company's fixed address for each `asset` × `network` pair (`asset`, `network`, `address`). Empty while sales are not enabled. See <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Sell Crypto</a>. |
 
 :::tip[Saved addresses lock]
 With `savedAddressesOnly.enabled = true`, purchases only accept addresses from `buy.addresses[]`, and a newly registered address can only be used after `activeAt` (hold period of `newAddressHoldHours`).
