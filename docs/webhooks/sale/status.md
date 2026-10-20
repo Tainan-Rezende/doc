@@ -13,10 +13,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Consulta uma venda de cripto pelo ID. Cada envio confirmado para o endereço fixo da empresa vira uma venda (veja <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>); o `id` chega no <a href={useBaseUrl('/docs/webhooks/sale/receive')}>webhook de venda</a>.
 
-:::note[Disponível em novembro de 2026]
-A venda de cripto pela API será liberada em novembro de 2026.
-:::
-
 ---
 
 ## Endpoint
@@ -75,8 +71,9 @@ https://api.xgateglobal.com/crypto/sales/{id}
 
 ### Objeto da venda {#sale-object}
 
-O mesmo objeto é enviado no campo `data` dos <a href={useBaseUrl('/docs/webhooks/sale/receive')}>webhooks de venda</a>.
+O webhook de venda traz só um resumo deste objeto.
 
+<div className="tabela-nowrap">
 | Campo                      | Tipo               | Descrição                                                                                                                                                                       |
 | :------------------------- | :----------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `id`                       | `string`           | ID da venda.                                                                                                                                                                    |
@@ -93,6 +90,7 @@ O mesmo objeto é enviado no campo `data` dos <a href={useBaseUrl('/docs/webhook
 | `settlement`               | `object`           | `type` (`BALANCE` \| `PIX_KEY`), `beneficiaryId`, `withdrawId` (saque Pix criado), `fallbackReason` (`PIX_SETTLEMENT_UNAVAILABLE` · `BENEFICIARY_NOT_ELIGIBLE` · `PAYOUT_REJECTED` · `PAYOUT_FAILED` · `PAYOUT_UNAVAILABLE` · `null`). |
 | `review`                   | `object` \| `null` | Venda em análise da XGate. `reason`: `BELOW_MINIMUM` · `COMPANY_UNAVAILABLE` · `COMPANY_BLOCKED` · `SELL_POLICY_MISSING` · `NET_NOT_POSITIVE` · `CONFIRMATIONS_TIMEOUT` · `CREDIT_REVIEW`. |
 | `receivedAt`, `settledAt`, `createdAt`, `updatedAt` | `string` | Datas ISO 8601 (UTC). `updatedAt` e `status` ordenam webhooks que chegam fora de ordem.                                                                |
+</div>
 
 ### Erros Comuns
 

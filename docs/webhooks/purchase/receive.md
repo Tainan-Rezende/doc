@@ -38,36 +38,44 @@ Os eventos de cripto **não** usam o formato plano dos webhooks de depósito e s
     "id": "6710c2f4a1b2c3d4e5f60718",
     "externalId": "pedido-7781",
     "status": "DELIVERED",
-    "channel": "API",
     "asset": "USDT",
     "network": "TRON",
     "address": "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE",
     "amount": "1500.00",
-    "rate": "5.45400000",
-    "cryptoAmount": "275.027502",
-    "feeAmount": "4.125414",
-    "feeAsset": "USDT",
-    "networkFee": "0.012000",
     "deliveredAmount": "270.890088",
-    "quoteId": "l3m8Qm1n0pV2cXk5dY9sTg4hWz7aB6eR1uJ0oK2qF3i",
-    "depositId": null,
-    "approval": { "required": true, "decision": "APPROVED", "decidedAt": "2026-10-13T14:08:02.000Z" },
-    "delivery": { "status": "CONFIRMED", "txHash": "9f2c1e7b0a…", "confirmedAt": "2026-10-13T14:11:39.000Z" },
+    "txHash": "9f2c1e7b0a…",
     "rejection": null,
-    "executedAt": "2026-10-13T14:03:40.512Z",
-    "createdAt": "2026-10-13T14:03:40.204Z",
     "updatedAt": "2026-10-13T14:11:40.031Z"
   }
 }
 ```
 
-| Campo       | Tipo     | Descrição                                                                                                                     |
-| :---------- | :------- | :---------------------------------------------------------------------------------------------------------------------------- |
-| `id`        | `string` | ID único do evento. Use para descartar entregas repetidas.                                                                    |
-| `type`      | `string` | Tipo do evento (tabela abaixo).                                                                                               |
-| `createdAt` | `string` | Data de criação do evento (ISO 8601, UTC).                                                                                    |
-| `data`      | `object` | Objeto da compra, igual ao de <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar Compra</a>.               |
+### Envelope do evento
 
+| Campo       | Tipo     | Descrição                                                                                                                                           |
+| :---------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | `string` | ID único do evento. Use para descartar entregas repetidas.                                                                                          |
+| `type`      | `string` | Tipo do evento (tabela abaixo).                                                                                                                     |
+| `createdAt` | `string` | Data de criação do evento (ISO 8601, UTC).                                                                                                          |
+| `data`      | `object` | Resumo da compra (tabela abaixo). O objeto completo está em <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar Compra</a>.            |
+
+### Campos de `data` (resumo da compra)
+
+<div className="tabela-nowrap">
+| Campo             | Tipo               | Descrição                                                                                     |
+| :---------------- | :----------------- | :-------------------------------------------------------------------------------------------- |
+| `id`              | `string`           | Id da compra na XGate. Use em `GET /crypto/purchases/{id}`.                                   |
+| `externalId`      | `string`           | Id do pedido no sistema do integrador.                                                        |
+| `status`          | `string`           | `PENDING_PAYMENT` · `EXECUTING` · `PENDING_APPROVAL` · `DELIVERED` · `REJECTED` · `EXPIRED`.   |
+| `asset`           | `string`           | Ativo comprado.                                                                               |
+| `network`         | `string`           | Rede de entrega.                                                                              |
+| `address`         | `string`           | Carteira de destino.                                                                          |
+| `amount`          | `string`           | BRL debitado.                                                                                 |
+| `deliveredAmount` | `string` \| `null` | Quantidade entregue (ou a entregar) na carteira. `null` antes da execução.                    |
+| `txHash`          | `string` \| `null` | Hash on-chain em `DELIVERED`. `null` antes.                                                   |
+| `rejection`       | `object` \| `null` | Só em `REJECTED`: `{ reason, refunded }`. `null` nos demais.                                 |
+| `updatedAt`       | `string` (ISO)     | Última alteração; use com `status` para ordenar eventos fora de ordem.                       |
+</div>
 ---
 
 ## Eventos
@@ -77,8 +85,8 @@ Os eventos de cripto **não** usam o formato plano dos webhooks de depósito e s
 | `purchase.pending_payment` | `PENDING_PAYMENT`  | Só em compra aberta a partir de um depósito: aguardando o pagamento do Pix.                |
 | `purchase.executing`       | `EXECUTING`        | BRL debitado do saldo (em geral antes da resposta `201` do `POST`).                        |
 | `purchase.pending_approval`| `PENDING_APPROVAL` | A compra entrou na fila de aprovação da XGate.                                             |
-| `purchase.delivered`       | `DELIVERED`        | Cripto confirmada na rede; `data.delivery.txHash` preenchido. **Final.**                   |
-| `purchase.rejected`        | `REJECTED`         | Compra não entregue; `data.rejection` traz `reason`, `message` e `refunded`. **Final.**    |
+| `purchase.delivered`       | `DELIVERED`        | Cripto confirmada na rede; `data.txHash` preenchido. **Final.**                            |
+| `purchase.rejected`        | `REJECTED`         | Compra não entregue; `data.rejection` traz `reason` e `refunded`. **Final.**                |
 | `purchase.expired`         | `EXPIRED`          | O depósito de origem não foi pago no prazo. **Final.**                                     |
 
 ---

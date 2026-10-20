@@ -97,29 +97,31 @@ Esta rota não recebe parâmetros.
 
 #### Descrição dos Campos
 
-| Campo                                 | Tipo                       | Descrição                                                                                                                                               |
-| :------------------------------------ | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `assets[].asset`                      | `USDT` \| `USDC`           | Ativo.                                                                                                                                                  |
-| `assets[].feeRate`                    | `string` \| `null`         | Taxa de compra (XGate + indicação) sobre a quantidade cripto. É a base de `feeAmount`.                                                                  |
-| `assets[].spreadRate`                 | `string` \| `null`         | Margem do par embutida no `rate` (`rate = ask × (1 + spreadRate)`).                                                                                     |
-| `assets[].networks[].network`         | `string`                   | Rede disponível para o ativo (`POLYGON`, `ETHEREUM`, `TRON`, `SOLANA`).                                                                                 |
-| `assets[].networks[].networkFee`      | `string` \| `null`         | Gás estimado da rede, no próprio ativo (6 casas), descontado da entrega. `null` quando indisponível ou quando a regra da empresa é percentual.           |
-| `assets[].networks[].networkFeeAsset` | `USDT` \| `USDC`           | Ativo em que o gás é cobrado.                                                                                                                           |
-| `buy.enabled`                         | `boolean`                  | Compra liberada para a empresa.                                                                                                                         |
-| `buy.minAmount`                       | `string`                   | Compra mínima, em BRL.                                                                                                                                  |
-| `buy.maxAmountPerTx`                  | `string` \| `null`         | Máximo por compra, em BRL.                                                                                                                              |
-| `buy.dailyCap`                        | `string` \| `null`         | Teto diário de compra, em BRL.                                                                                                                          |
-| `buy.dailyRemaining`                  | `string` \| `null`         | Quanto ainda resta do teto diário, em BRL.                                                                                                              |
-| `buy.totpThreshold`                   | `string` \| `null`         | Usado só no painel. Não se aplica à API.                                                                                                                |
-| `buy.autoApproval`                    | `boolean`                  | `true` = a compra não passa pela fila de aprovação da XGate.                                                                                            |
-| `buy.addresses[]`                     | `array`                    | Endereços salvos da empresa: `addressId`, `alias`, `address`, `network`, `source` (`MANUAL` \| `CARD`), `addedAt`, `activeAt`. O `addressId` pode ser usado como destino na compra. |
-| `savedAddressesOnly.enabled`          | `boolean`                  | Trava "só endereços salvos", ligada pela empresa no painel.                                                                                             |
-| `savedAddressesOnly.newAddressHoldHours` | `integer`               | Carência, em horas, de um endereço novo quando a trava está ligada (24).                                                                                |
-| `quoteTtlSeconds`                     | `integer`                  | Validade da cotação, em segundos (30).                                                                                                                  |
-| `sale.enabled`                        | `boolean`                  | Venda liberada para a empresa. Fica `false` até a liberação da venda pela API (novembro de 2026).                                                      |
-| `sale.status`                         | `string`                   | `DISABLED` · `PROVISIONING` · `READY`. A primeira consulta de uma empresa com venda liberada cria os endereços: fica `PROVISIONING` por alguns minutos e passa a `READY`. |
-| `sale.minAmount`                      | `object`                   | Venda mínima por ativo (`USDT`, `USDC`), na quantidade do ativo.                                                                                        |
-| `sale.depositAddresses[]`             | `array`                    | Endereço fixo da empresa para cada par `asset` × `network` (`asset`, `network`, `address`). Vazio enquanto a venda não estiver liberada. Veja <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>. |
+<div className="tabela-nowrap">
+| Campo                                    | Tipo               | Descrição                                                                                                                                                                                                        |
+| :--------------------------------------- | :----------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assets[].asset`                         | `USDT` \| `USDC`   | Ativo.                                                                                                                                                                                                           |
+| `assets[].feeRate`                       | `string` \| `null` | Taxa de compra (XGate + indicação) sobre a quantidade cripto. É a base de `feeAmount`.                                                                                                                           |
+| `assets[].spreadRate`                    | `string` \| `null` | Margem do par embutida no `rate` (`rate = ask × (1 + spreadRate)`).                                                                                                                                              |
+| `assets[].networks[].network`            | `string`           | Rede disponível para o ativo (`POLYGON`, `ETHEREUM`, `TRON`, `SOLANA`).                                                                                                                                          |
+| `assets[].networks[].networkFee`         | `string` \| `null` | Gás estimado da rede, no próprio ativo (6 casas), descontado da entrega. `null` quando indisponível ou quando a regra da empresa é percentual.                                                                   |
+| `assets[].networks[].networkFeeAsset`    | `USDT` \| `USDC`   | Ativo em que o gás é cobrado.                                                                                                                                                                                    |
+| `buy.enabled`                            | `boolean`          | Compra liberada para a empresa.                                                                                                                                                                                  |
+| `buy.minAmount`                          | `string`           | Compra mínima, em BRL.                                                                                                                                                                                           |
+| `buy.maxAmountPerTx`                     | `string` \| `null` | Máximo por compra, em BRL.                                                                                                                                                                                       |
+| `buy.dailyCap`                           | `string` \| `null` | Teto diário de compra, em BRL.                                                                                                                                                                                   |
+| `buy.dailyRemaining`                     | `string` \| `null` | Quanto ainda resta do teto diário, em BRL.                                                                                                                                                                       |
+| `buy.totpThreshold`                      | `string` \| `null` | Usado só no painel. Não se aplica à API.                                                                                                                                                                         |
+| `buy.autoApproval`                       | `boolean`          | `true` = a compra não passa pela fila de aprovação da XGate.                                                                                                                                                     |
+| `buy.addresses[]`                        | `array`            | Endereços salvos da empresa: `addressId`, `alias`, `address`, `network`, `source` (`MANUAL` \| `CARD`), `addedAt`, `activeAt`. O `addressId` pode ser usado como destino na compra.                              |
+| `savedAddressesOnly.enabled`             | `boolean`          | Trava "só endereços salvos", ligada pela empresa no painel.                                                                                                                                                      |
+| `savedAddressesOnly.newAddressHoldHours` | `integer`          | Carência, em horas, de um endereço novo quando a trava está ligada (24).                                                                                                                                         |
+| `quoteTtlSeconds`                        | `integer`          | Validade da cotação, em segundos (30).                                                                                                                                                                           |
+| `sale.enabled`                           | `boolean`          | Venda liberada para a empresa pela XGate.                                                                                                                                                                        |
+| `sale.status`                            | `string`           | `DISABLED` · `PROVISIONING` · `READY`. A primeira consulta de uma empresa com venda liberada cria os endereços: fica `PROVISIONING` por alguns minutos e passa a `READY`.                                        |
+| `sale.minAmount`                         | `object`           | Venda mínima por ativo (`USDT`, `USDC`), na quantidade do ativo.                                                                                                                                                 |
+| `sale.depositAddresses[]`                | `array`            | Endereço fixo da empresa para cada par `asset` × `network` (`asset`, `network`, `address`). Vazio enquanto `sale.enabled` for `false`. Veja <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>. |
+</div>
 
 :::tip[Trava de endereços salvos]
 Com `savedAddressesOnly.enabled = true`, a compra só aceita endereços de `buy.addresses[]`, e um endereço recém-cadastrado só pode ser usado depois de `activeAt` (carência de `newAddressHoldHours`).
@@ -127,12 +129,12 @@ Com `savedAddressesOnly.enabled = true`, a compra só aceita endereços de `buy.
 
 ### Erros Comuns
 
-| Status  | Reason                                                                                                                                  |
-| :------ | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| **400** | `VALIDATION_FAILED`                                                                                                                     |
-| **401** | `UNAUTHORIZED`                                                                                                                          |
+| Status  | Reason                                                                                                                                                |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **400** | `VALIDATION_FAILED`                                                                                                                                   |
+| **401** | `UNAUTHORIZED`                                                                                                                                        |
 | **403** | `PERMISSION_DENIED`, `COMPANY_MISMATCH`, `COMPANY_BLOCKED`, `ALLOWED_IPS_REQUIRED`, `CLIENT_IP_NOT_ALLOWED`, `CRYPTO_DISABLED`, `CRYPTO_API_DISABLED` |
-| **503** | `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                       |
+| **503** | `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                                     |
 
 Veja o significado de cada código em <a href={useBaseUrl('/docs/buy-sell/errors')}>Códigos de Erro</a>.
 

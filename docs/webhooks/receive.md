@@ -31,9 +31,9 @@ Siga os passos abaixo para configurar o envio das notificações:
 
 4. **Eventos:** Selecione quais notificações você deseja que a XGate envie para esta URL. Os eventos são divididos em:
    * **CURRENCY:** Transações via Moeda Fiduciária (Pix, incluindo aprovação, rejeição, erros, e toda a esteira de estornos/contestações).
-   * **CRYPTO_PURCHASE (Compras de Cripto):** Mudanças de status das compras de cripto. Veja <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Compras Webhook</a>.
-   * **CRYPTO_SALE (Vendas de Cripto):** Mudanças de status das vendas de cripto. Disponível a partir de novembro de 2026, só para empresas com venda liberada. Veja <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Vendas Webhook</a>.
-   * **CRYPTOCURRENCY:** Transações via Crypto dos fluxos legados. **Descontinuado em 29/10/2026**: o tipo sai do catálogo e deixa de ser enviado.
+   * **CRYPTO_PURCHASE (Compras de Cripto):** Mudanças de status das compras de cripto. Veja <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Compras Cripto Webhook</a>.
+   * **CRYPTO_SALE (Vendas de Cripto):** Mudanças de status das vendas de cripto. Só aparece para empresas com venda liberada. Veja <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Vendas Cripto Webhook</a>.
+   * **CRYPTOCURRENCY:** Transações via Crypto dos fluxos legados. **Descontinuado em 29/10/2026**: deixa de ser enviado.
 
 :::info[Eventos de cripto usam outro formato]
 Os eventos `CRYPTO_PURCHASE` e `CRYPTO_SALE` usam um envelope próprio (`id`, `type`, `createdAt`, `data`), diferente do formato plano descrito nesta página. Os tipos `CRYPTO_PURCHASE` e `CRYPTO_SALE` só aparecem para empresas com cripto (e, no caso da venda, venda) liberada.
@@ -198,4 +198,3 @@ Seu sistema deve estar preparado para processar os status de fluxo normal e os s
 | <span className="badge badge--danger">EXPIRED_DISPUTE</span>             | O prazo para enviar as provas de contestação do estorno expirou.                  | Registrar perda da disputa.                          |
 | <span className="badge badge--success">REFUND_CANCELED</span>            | O estorno foi cancelado pelo banco (você ganhou a disputa).                       | O valor retido é devolvido à sua conta.              |
 | <span className="badge badge--danger">REFUND_APPROVED</span>             | O estorno foi aprovado pelo banco (você perdeu a disputa).                        | O valor é devolvido ao cliente final em definitivo.  |
-

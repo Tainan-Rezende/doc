@@ -819,19 +819,50 @@
     "message": "detailing exactly what caused the failure."
   },
   "cryptoDeprecation.title": {
-    "message": "Discontinued on October 29, 2026",
-    "description": "Title of the deprecation notice shown on legacy crypto pages"
+    "message": "Discontinued on October 29, 2026"
   },
   "cryptoDeprecation.body": {
-    "message": "This crypto flow ends at the October 29, 2026 cutoff (October 30 at 03:00 UTC). From that date on, XGate no longer holds crypto for companies and the routes of this flow respond 410 FEATURE_DISCONTINUED.",
-    "description": "Body of the deprecation notice shown on legacy crypto pages"
+    "message": "This crypto flow ends at the October 29, 2026 cutoff (October 30 at 03:00 UTC). From that date on, XGate no longer holds crypto for companies and the routes of this flow respond 410 FEATURE_DISCONTINUED."
   },
   "cryptoDeprecation.replacement": {
-    "message": "To obtain USDT or USDC, use the new",
-    "description": "Text before the link to the new Crypto Buy & Sell API in the deprecation notice"
+    "message": "To obtain USDT or USDC, use the new"
   },
   "cryptoDeprecation.link": {
-    "message": "Crypto Buy & Sell API",
-    "description": "Link label to the new Crypto Buy & Sell API in the deprecation notice"
+    "message": "Crypto Buy & Sell API"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Search results for \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Search the documentation",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "Everywhere"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "1 document found|{count} documents found",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "No documents were found",
+    "description": "The paragraph for empty search result"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "No results"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "See all results outside \"{context}\""
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "See all results within \"{context}\""
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "See all results"
+  },
+  "theme.SearchBar.label": {
+    "message": "Search",
+    "description": "The ARIA label and placeholder for search button"
   }
 }

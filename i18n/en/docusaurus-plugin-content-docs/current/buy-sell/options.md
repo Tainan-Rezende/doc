@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Options'
 sidebar_position: 3
-description: 'Returns what the company can do right now: assets, networks, fees, purchase limits, saved addresses and sale addresses.'
+description: 'Returns what the company can do now: assets, networks, fees, purchase limits, saved addresses, and sale addresses.'
 sidebar_class_name: 'sidebar-method-get'
 ---
 
@@ -11,7 +11,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Get Options
 
-Returns what your company can do right now: enabled assets and networks, fees, purchase limits, saved addresses and quote validity. Use this route before quoting or buying.
+Returns what your company can do now: enabled assets and networks, fees, purchase limits, saved addresses, and quote validity. Use this endpoint before requesting a quote or making a purchase.
 
 ---
 
@@ -28,11 +28,11 @@ https://api.xgateglobal.com/crypto/options
 
 #### Required Headers
 
-| Header          | Value                 | Description                      |
-| :-------------- | :-------------------- | :------------------------------- |
-| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
+| Header          | Value                | Description                    |
+| :-------------- | :------------------- | :--------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained during login. |
 
-This route takes no parameters.
+This endpoint does not accept parameters.
 
 ---
 
@@ -72,7 +72,7 @@ This route takes no parameters.
     "addresses": [
       {
         "addressId": "66f1a2b3c4d5e6f708192a3b",
-        "alias": "Treasury wallet",
+        "alias": "Carteira tesouraria",
         "address": "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE",
         "network": "TRON",
         "source": "MANUAL",
@@ -95,44 +95,46 @@ This route takes no parameters.
 }
 ```
 
-#### Field Description
+#### Field Descriptions
 
-| Field                                 | Type                       | Description                                                                                                                                             |
-| :------------------------------------ | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `assets[].asset`                      | `USDT` \| `USDC`           | Asset.                                                                                                                                                  |
-| `assets[].feeRate`                    | `string` \| `null`         | Purchase fee (XGate + referral) on the crypto amount. It is the basis for `feeAmount`.                                                                  |
-| `assets[].spreadRate`                 | `string` \| `null`         | Pair margin embedded in the `rate` (`rate = ask × (1 + spreadRate)`).                                                                                   |
-| `assets[].networks[].network`         | `string`                   | Network available for the asset (`POLYGON`, `ETHEREUM`, `TRON`, `SOLANA`).                                                                              |
-| `assets[].networks[].networkFee`      | `string` \| `null`         | Estimated network gas, in the asset itself (6 decimals), deducted from the delivery. `null` when unavailable or when the company's rule is percentage-based. |
-| `assets[].networks[].networkFeeAsset` | `USDT` \| `USDC`           | Asset in which the gas is charged.                                                                                                                      |
-| `buy.enabled`                         | `boolean`                  | Purchase enabled for the company.                                                                                                                       |
-| `buy.minAmount`                       | `string`                   | Minimum purchase, in BRL.                                                                                                                               |
-| `buy.maxAmountPerTx`                  | `string` \| `null`         | Maximum per purchase, in BRL.                                                                                                                           |
-| `buy.dailyCap`                        | `string` \| `null`         | Daily purchase cap, in BRL.                                                                                                                             |
-| `buy.dailyRemaining`                  | `string` \| `null`         | Amount remaining of the daily cap, in BRL.                                                                                                              |
-| `buy.totpThreshold`                   | `string` \| `null`         | Used only in the dashboard. Does not apply to the API.                                                                                                  |
-| `buy.autoApproval`                    | `boolean`                  | `true` = the purchase does not go through XGate's approval queue.                                                                                       |
-| `buy.addresses[]`                     | `array`                    | Company's saved addresses: `addressId`, `alias`, `address`, `network`, `source` (`MANUAL` \| `CARD`), `addedAt`, `activeAt`. The `addressId` can be used as the destination of a purchase. |
-| `savedAddressesOnly.enabled`          | `boolean`                  | "Saved addresses only" lock, enabled by the company in the dashboard.                                                                                   |
-| `savedAddressesOnly.newAddressHoldHours` | `integer`               | Hold period, in hours, for a new address when the lock is enabled (24).                                                                                 |
-| `quoteTtlSeconds`                     | `integer`                  | Quote validity, in seconds (30).                                                                                                                        |
-| `sale.enabled`                        | `boolean`                  | Sale enabled for the company. Stays `false` until sales via API are released (November 2026).                                                         |
-| `sale.status`                         | `string`                   | `DISABLED` · `PROVISIONING` · `READY`. The first query by a company with sales enabled creates the addresses: it stays `PROVISIONING` for a few minutes and then becomes `READY`. |
-| `sale.minAmount`                      | `object`                   | Minimum sale per asset (`USDT`, `USDC`), in the asset amount.                                                                                           |
-| `sale.depositAddresses[]`             | `array`                    | Company's fixed address for each `asset` × `network` pair (`asset`, `network`, `address`). Empty while sales are not enabled. See <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Sell Crypto</a>. |
+<div className="tabela-nowrap">
+| Field                                    | Type               | Description                                                                                                                                                                                                        |
+| :--------------------------------------- | :----------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assets[].asset`                         | `USDT` \| `USDC`   | Asset.                                                                                                                                                                                                           |
+| `assets[].feeRate`                       | `string` \| `null` | Purchase fee (XGate + referral) charged on the crypto amount. This is the basis for `feeAmount`.                                                                                                                           |
+| `assets[].spreadRate`                    | `string` \| `null` | Pair margin included in `rate` (`rate = ask × (1 + spreadRate)`).                                                                                                                                              |
+| `assets[].networks[].network`            | `string`           | Network available for the asset (`POLYGON`, `ETHEREUM`, `TRON`, `SOLANA`).                                                                                                                                          |
+| `assets[].networks[].networkFee`         | `string` \| `null` | Estimated network gas in the asset itself (6 decimal places), deducted from the delivery amount. `null` when unavailable or when the company’s fee rule is percentage-based.                                                                   |
+| `assets[].networks[].networkFeeAsset`    | `USDT` \| `USDC`   | Asset in which the gas fee is charged.                                                                                                                                                                                    |
+| `buy.enabled`                            | `boolean`          | Whether purchases are enabled for the company.                                                                                                                                                                                  |
+| `buy.minAmount`                          | `string`           | Minimum purchase amount in BRL.                                                                                                                                                                                           |
+| `buy.maxAmountPerTx`                     | `string` \| `null` | Maximum amount per purchase in BRL.                                                                                                                                                                                       |
+| `buy.dailyCap`                           | `string` \| `null` | Daily purchase cap in BRL.                                                                                                                                                                                   |
+| `buy.dailyRemaining`                     | `string` \| `null` | Remaining amount under the daily cap, in BRL.                                                                                                                                                                       |
+| `buy.totpThreshold`                      | `string` \| `null` | Used only in the Dashboard. Not applicable to the API.                                                                                                                                                                         |
+| `buy.autoApproval`                       | `boolean`          | `true` = the purchase does not go through XGate’s approval queue.                                                                                                                                                     |
+| `buy.addresses[]`                        | `array`            | The company’s saved addresses: `addressId`, `alias`, `address`, `network`, `source` (`MANUAL` \| `CARD`), `addedAt`, `activeAt`. `addressId` can be used as the destination for a purchase.                              |
+| `savedAddressesOnly.enabled`             | `boolean`          | “Saved addresses only” restriction, enabled by the company in the Dashboard.                                                                                                                                                      |
+| `savedAddressesOnly.newAddressHoldHours` | `integer`          | Hold period, in hours, for a new address when the restriction is enabled (24).                                                                                                                                         |
+| `quoteTtlSeconds`                        | `integer`          | Quote validity period, in seconds (30).                                                                                                                                                                           |
+| `sale.enabled`                           | `boolean`          | Whether XGate has enabled selling for the company.                                                                                                                                                                        |
+| `sale.status`                            | `string`           | `DISABLED` · `PROVISIONING` · `READY`. The first request for a company with selling enabled creates the addresses: the status remains `PROVISIONING` for a few minutes, then changes to `READY`.                                        |
+| `sale.minAmount`                         | `object`           | Minimum sale amount per asset (`USDT`, `USDC`), expressed in the asset.                                                                                                                                                 |
+| `sale.depositAddresses[]`                | `array`            | The company’s fixed address for each `asset` × `network` pair (`asset`, `network`, `address`). Empty while `sale.enabled` is `false`. See <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Sell Crypto</a>. |
+</div>
 
-:::tip[Saved addresses lock]
-With `savedAddressesOnly.enabled = true`, purchases only accept addresses from `buy.addresses[]`, and a newly registered address can only be used after `activeAt` (hold period of `newAddressHoldHours`).
+:::tip[Saved address restriction]
+When `savedAddressesOnly.enabled = true`, purchases accept only addresses in `buy.addresses[]`, and a newly added address can be used only after `activeAt` (the `newAddressHoldHours` hold period).
 :::
 
 ### Common Errors
 
-| Status  | Reason                                                                                                                                  |
-| :------ | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| **400** | `VALIDATION_FAILED`                                                                                                                     |
-| **401** | `UNAUTHORIZED`                                                                                                                          |
+| Status  | Reason                                                                                                                                                |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **400** | `VALIDATION_FAILED`                                                                                                                                   |
+| **401** | `UNAUTHORIZED`                                                                                                                                        |
 | **403** | `PERMISSION_DENIED`, `COMPANY_MISMATCH`, `COMPANY_BLOCKED`, `ALLOWED_IPS_REQUIRED`, `CLIENT_IP_NOT_ALLOWED`, `CRYPTO_DISABLED`, `CRYPTO_API_DISABLED` |
-| **503** | `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                       |
+| **503** | `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                                     |
 
 See the meaning of each code in <a href={useBaseUrl('/docs/buy-sell/errors')}>Error Codes</a>.
 
@@ -142,14 +144,14 @@ See the meaning of each code in <a href={useBaseUrl('/docs/buy-sell/errors')}>Er
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    The integration example uses the <code>Axios</code> library in Node.js.
+    This integration example uses the <code>Axios</code> library in Node.js.
 
     **Installing `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **JavaScript Example:**
+    **JavaScript example:**
     ```js
     const axios = require("axios");
 

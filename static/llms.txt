@@ -1,76 +1,70 @@
-# XGate Global
+XGATE GLOBAL - API CONTEXT AND DOCUMENTATION FOR AI
 
-> XGate Global é uma plataforma de pagamentos via API. Permite criar fluxos de Cash-in (Depósitos) e Cash-out (Saques) em BRL via Pix e comprar USDT/USDC com o saldo em reais, com entrega na carteira da empresa. Oferece gestão de sub-contas, controle de saldo, webhooks e cotações em tempo real. Os fluxos legados de cripto (conversão no depósito/saque, saque cripto e carteira de customer) são descontinuados em 29/10/2026 e passam a responder 410 FEATURE_DISCONTINUED. Toda a API usa REST + JSON e autenticação via Bearer Token. Base URL: `https://api.xgateglobal.com`.
+Overview:
+XGate Global is a payment platform API. It allows creating Cash-in (Deposits) and Cash-out (Withdrawals) flows in BRL via Pix, as well as buying and selling USDT/USDC using BRL balance, with direct delivery to or receiving from the company's wallet. It offers sub-account management, balance control, webhooks, and real-time quotes. Legacy crypto routes (conversion on deposit/withdrawal, crypto withdrawals, and customer wallets) stop working on 2026-10-29 and respond with 410 FEATURE_DISCONTINUED. The entire API uses REST + JSON with Bearer Token authentication.
 
-Notas importantes:
+API Base URL: https://api.xgateglobal.com/
 
-- Autenticação: todas as requisições precisam do header `Authorization: Bearer <seu-token-jwt>`.
-- Moedas: BRL (via Pix). Cripto apenas pela API de compra: USDT em POLYGON, ETHEREUM, TRON e SOLANA; USDC em POLYGON, ETHEREUM e SOLANA.
-- API de cripto (/crypto/*): valores monetários sempre como string decimal ("1500.00"); erros no envelope { reason, message, traceId }; exige lista de IPs permitidos; idempotência da compra por externalId.
-- Clientes: Únicos por documento. Use `customerId` (existente) ou o objeto `customer` (criação on-the-fly) em ordens de depósito. Nunca envie ambos.
-- Idempotência: Use `externalId` em todas as transações financeiras para evitar duplicidade.
-- Webhooks: Notificações enviadas via POST. Recomenda-se validar a procedência e usar os endpoints de reenvio em caso de falha na recepção.
-- Saldos: Após 29/10/2026 a empresa só tem saldo em BRL; a cripto comprada vai direto para a carteira da empresa.
+Important Notes:
+- Authentication: all requests require the header Authorization: Bearer <your-jwt-token>.
+- Currencies: BRL (via Pix). Crypto via the Buy & Sell API: USDT on POLYGON, ETHEREUM, TRON, and SOLANA; USDC on POLYGON, ETHEREUM, and SOLANA.
+- Crypto API (/crypto/*): monetary values always formatted as decimal strings ("1500.00"); error envelope { reason, message, traceId }; requires IP allowlist; purchase idempotency via externalId.
+- Customers: Unique by tax/national document (CPF/CNPJ). Use customerId (existing) or the customer object (on-the-fly creation) in deposit orders. Never send both.
+- Idempotency: Use externalId across all financial transactions to prevent duplicate operations.
+- Webhooks: Notifications sent via POST. Crypto events use envelope { id, type, createdAt, data } with transaction summary data. Always validate origin IP and use resend endpoints if reception fails.
+- Balances: After 2026-10-29, companies hold balances in BRL only; purchased crypto goes directly to the company wallet and crypto sales settle into BRL balance or via Pix.
 
-## Autenticação
+Authentication
+- POST /auth/token: Generates the JWT token. Required: email, password. Validity: 15 days.
 
-- [POST /auth/token](https://tainan-rezende.github.io/doc/docs/authentication/login): Gera o token JWT. Obrigatórios: `email`, `password`. Validade: 15 dias.
+Customers
+- POST /customer: Creates a customer. Required: name, document.
+- GET /customer/{id}: Retrieves full customer details by ID.
+- PUT /customer/{id}: Updates customer profile information.
 
-## Clientes (Customers)
+Pix Keys
+- POST /pix/customer/{clientId}/key: Registers a new Pix key (CPF, CNPJ, EMAIL, PHONE, RANDOM).
+- GET /pix/customer/{clientId}/key: Lists active Pix keys for a customer.
+- DELETE /pix/customer/{clientId}/key/remove/{keyId}: Deletes a Pix key.
 
-- [Referência de Clientes](https://tainan-rezende.github.io/doc/docs/customer/create): Gestão do cadastro de usuários finais.
-- [POST /customer](https://tainan-rezende.github.io/doc/docs/customer/create): Cria um cliente. Obrigatórios: `name`, `document`.
-- [GET /customer/{id}](https://tainan-rezende.github.io/doc/docs/customer/search): Recupera os dados completos de um cliente pelo ID.
-- [PUT /customer/{id}](https://tainan-rezende.github.io/doc/docs/customer/update): Atualiza informações cadastrais.
+Deposits (Cash-in)
+- POST /deposit: Creates a Pix deposit intent. Returns QR Code copy-and-paste payload (code).
+  - Fiat -> Fiat: Requires currency object (BRL).
+  - Fiat -> Crypto (discontinued on 2026-10-29): Requires currency (BRL) and cryptocurrency (USDT) objects.
+- GET /crypto/customer/{clientId}/wallet (discontinued on 2026-10-29): Returns fixed publicKey address for direct USDT deposits.
 
-## Chaves Pix
+Withdrawals (Cash-out)
+- POST /withdraw: Processes withdrawals. Initial status: PENDING.
+  - Fiat -> Fiat: Pix withdrawal. Requires pixKey object.
+  - Crypto -> Fiat (discontinued on 2026-10-29): Converts USDT to BRL and sends via Pix.
+  - Crypto -> Wallet (discontinued on 2026-10-29): Sends funds to an external wallet.
 
-- [Referência de Chaves Pix](https://tainan-rezende.github.io/doc/docs/fiat/pix/keys): Gestão de chaves para saques BRL.
-- [POST /pix/customer/{clientId}/key](https://tainan-rezende.github.io/doc/docs/fiat/pix/add): Cadastra nova chave (CPF, CNPJ, EMAIL, PHONE, RANDOM).
-- [GET /pix/customer/{clientId}/key](https://tainan-rezende.github.io/doc/docs/fiat/pix/keys): Lista chaves ativas de um cliente.
-- [DELETE /pix/customer/{clientId}/key/remove/{keyId}](https://tainan-rezende.github.io/doc/docs/fiat/pix/delete): Remove uma chave.
+Crypto Buy and Sell
+- Overview: Buy and sell USDT/USDC using BRL balance; supported assets and networks.
+- Conventions: Authentication, allowed IPs, CRYPTO.VIEW and CRYPTO.EXECUTE permissions, string values, errors, cursor-based pagination, limits.
+- GET /crypto/options: Assets, networks, fees, purchase limits, saved addresses, and deposit addresses for sales.
+- POST /crypto/quotes and POST /crypto/quotes/estimate: Quote with quoteId (valid for 30s) or estimate without price lock. Body: asset, network, amount (BRL string).
+- POST /crypto/purchases: Buy using quoteId or at market price (asset, network, amount). Required: externalId and address or addressId.
+- GET /crypto/purchases and GET /crypto/purchases/{id}: Paginated list and purchase query.
+- GET /crypto/purchases/{id}/receipt: HTML receipt for DELIVERED purchase.
+- Sell Crypto: Send USDT/USDC to the company's fixed address (sale.depositAddresses[]). Each confirmed on-chain transfer automatically triggers a sale settled into BRL balance or via Pix.
+- GET /crypto/sales/{id}: Retrieves full details of a sale.
+- Error Codes: Reasons by HTTP status and purchase rejection reasons.
 
-## Depósitos (Cash-in)
+Company and Sub-accounts
+- GET /company/balance: Checks available balances (BRL) of the master account.
+- POST /company/sub-account: Creates and manages sub-accounts for balance isolation.
+- POST /company/sub-account/webhook: Sets dedicated webhook URL for sub-accounts.
+- POST /company/sub-account/ip: Configures IP allowlist for transactions via sub-account.
 
-- [POST /deposit](https://tainan-rezende.github.io/doc/docs/fiat/deposit/create): Cria intenção de depósito Pix. Retorna `code` (copia-e-cola).
-  - [Fiat -> Fiat](https://tainan-rezende.github.io/doc/docs/fiat/deposit/create): Exige objeto `currency` (BRL).
-  - [Fiat -> Crypto](https://tainan-rezende.github.io/doc/docs/crypto/deposit/create): Exige objetos `currency` (BRL) e `cryptocurrency` (USDT).
-- [GET /crypto/customer/{clientId}/wallet](https://tainan-rezende.github.io/doc/docs/crypto/customer/wallet): Retorna endereço `publicKey` fixo para depósitos diretos em USDT.
+Webhooks
+- Receiving Webhooks: Overview of notification delivery, official static IP (107.23.39.46), and standard payload.
+- Crypto Purchase Webhook (CRYPTO_PURCHASE): purchase.* events with purchase summary.
+- Crypto Sale Webhook (CRYPTO_SALE): sale.* events with sale summary.
+- POST /webhooks/withdraw/resend: Triggers resending a withdrawal notification by transaction ID.
+- POST /webhooks/deposit/resend: Triggers resending a deposit notification by transaction ID.
 
-## Saques (Cash-out)
-
-- [POST /withdraw](https://tainan-rezende.github.io/doc/docs/fiat/withdraw/create): Processa retiradas. Status inicial: `PENDING`.
-  - [Fiat -> Fiat](https://tainan-rezende.github.io/doc/docs/fiat/withdraw/create): Saque via Pix. Exige objeto `pixKey`.
-  - [Crypto -> Fiat](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/create): Converte USDT para BRL e envia via Pix. Exige `pixKey` e `cryptocurrency`.
-  - [Crypto -> Wallet](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/create-external): Envio para carteira externa. Exige `wallet` (address) e `blockchainNetwork`.
-
-## Compra e Venda de Cripto
-
-- [Visão geral](https://tainan-rezende.github.io/doc/docs/buy-sell/overview): Compra de USDT/USDC com o saldo BRL; ativos, redes e habilitação.
-- [Convenções](https://tainan-rezende.github.io/doc/docs/buy-sell/conventions): Autenticação, IPs permitidos, permissões CRYPTO.VIEW/CRYPTO.EXECUTE, valores em string, erros, paginação por cursor, limites.
-- [GET /crypto/options](https://tainan-rezende.github.io/doc/docs/buy-sell/options): Ativos, redes, taxas, limites de compra, endereços salvos, validade da cotação.
-- [POST /crypto/quotes e /crypto/quotes/estimate](https://tainan-rezende.github.io/doc/docs/buy-sell/quotes): Cotação com quoteId (30 s) ou estimativa sem reserva. Body: asset, network, amount (BRL string).
-- [POST /crypto/purchases](https://tainan-rezende.github.io/doc/docs/buy-sell/purchases/create): Compra com quoteId ou a mercado (asset, network, amount). Obrigatórios: externalId e address ou addressId.
-- [GET /crypto/purchases e /crypto/purchases/{id}](https://tainan-rezende.github.io/doc/docs/buy-sell/purchases/list): Lista paginada e consulta de compras.
-- [GET /crypto/purchases/{id}/receipt](https://tainan-rezende.github.io/doc/docs/buy-sell/purchases/receipt): Comprovante HTML de compra DELIVERED.
-- [Webhooks de Compra](https://tainan-rezende.github.io/doc/docs/buy-sell/webhooks): Tipo CRYPTO_PURCHASE, envelope { id, type, createdAt, data }, eventos purchase.*.
-- [Códigos de Erro](https://tainan-rezende.github.io/doc/docs/buy-sell/errors): Reasons por status HTTP e motivos de recusa da compra.
-
-## Empresa e Sub-contas (Company)
-
-- [GET /company/balance](https://tainan-rezende.github.io/doc/docs/company/get-balance): Consulta saldos disponíveis (BRL/USDT) da conta principal.
-- [POST /company/sub-account](https://tainan-rezende.github.io/doc/docs/company/sub-account): Cria e gere sub-contas para isolamento de saldo.
-- [POST /company/sub-account/webhook](https://tainan-rezende.github.io/doc/docs/company/sub-account-webhook): Configura URL de notificação específica para sub-contas.
-- [POST /company/sub-account/ip](https://tainan-rezende.github.io/doc/docs/company/sub-account-ip): Whitelist de IPs permitidos para transações via sub-conta.
-
-## Webhooks
-
-- [Referência de Webhooks](https://tainan-rezende.github.io/doc/docs/webhooks/receive): Notificações de eventos de pagamento e transferência.
-- [POST /webhooks/withdraw/resend](https://tainan-rezende.github.io/doc/docs/webhooks/withdraw/resend): Força o reenvio de uma notificação de saque pelo ID da transação.
-- [POST /webhooks/deposit/resend](https://tainan-rezende.github.io/doc/docs/webhooks/deposit/resend): Força o reenvio de uma notificação de depósito pelo ID da transação.
-
-## Cotações e Apoio
-
-- [GET /deposit/company/currencies](https://tainan-rezende.github.io/doc/docs/fiat/deposit/currency): Lista moedas fiat suportadas.
-- [GET /withdraw/company/blockchain-networks](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/network): Lista redes (BEP-20, etc) e suas taxas.
-- [POST /withdraw/transaction/crypto/amount](https://tainan-rezende.github.io/doc/docs/crypto/withdraw/price-external): Simula valor líquido de saque crypto após taxas de rede.
+Quotes and Support
+- GET /deposit/company/currencies: Lists supported fiat currencies.
+- GET /withdraw/company/blockchain-networks: Lists networks and network fees.
+- POST /withdraw/transaction/crypto/amount: Simulates net crypto withdrawal amount after network fees.

@@ -1,7 +1,7 @@
 ---
-sidebar_label: 'Comprar Cripto'
+sidebar_label: 'Comprar cripto'
 sidebar_position: 1
-description: 'Compra USDT o USDC con el saldo en BRL de la empresa y envía la cripto a la billetera de destino de la empresa.'
+description: 'Compra USDT o USDC con el saldo en BRL de la empresa y envía las criptomonedas a la billetera de destino de la empresa.'
 sidebar_class_name: 'sidebar-method-post'
 ---
 
@@ -9,16 +9,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Comprar Cripto
+# Comprar cripto
 
-Compra USDT o USDC usando el saldo en BRL de la empresa. XGate envía la cripto a la billetera de destino indicada, que debe ser **de la propia empresa**.
+Compra USDT o USDC con el saldo en BRL de la empresa. XGate envía las criptomonedas a la billetera de destino indicada, que debe pertenecer **a la propia empresa**.
 
 ---
 
 ## Endpoint
 - **Método:** <span className="badge badge--info">POST</span>
 
-```bash title="URL del Endpoint"
+```bash title="URL del endpoint"
 https://api.xgateglobal.com/crypto/purchases
 ```
 
@@ -28,17 +28,17 @@ https://api.xgateglobal.com/crypto/purchases
 
 #### Encabezados obligatorios
 
-| Encabezado      | Valor               | Descripción                              |
-| :-------------- | :------------------ | :--------------------------------------- |
+| Encabezado | Valor | Descripción |
+| :-------------- | :------------------- | :--------------------------- |
 | `Authorization` | `Bearer <tu_token>` | El token JWT obtenido al iniciar sesión. |
 
-#### Formas de compra
+#### Modalidades de compra
 
-Existen dos formas. **No mezcle los campos** de una con los de la otra.
+Hay dos modalidades. **No mezcle los campos** de una con los de la otra.
 
 <Tabs>
   <TabItem value="quote" label="Con cotización" default>
-  Usa el precio garantizado de una <a href={useBaseUrl('/docs/buy-sell/quotes')}>cotización</a> (`quoteId`) aún válida. El activo, la red y el monto provienen de la cotización.
+  Usa el precio garantizado de una <a href={useBaseUrl('/docs/buy-sell/quotes')}>cotización</a> (`quoteId`) que aún esté vigente. El activo, la red y el monto se obtienen de la cotización.
 
 ```json
 {
@@ -48,8 +48,8 @@ Existen dos formas. **No mezcle los campos** de una con los de la otra.
 }
 ```
   </TabItem>
-  <TabItem value="market" label="A mercado">
-  Compra al precio del instante de la ejecución. `asset`, `network` y `amount` son obligatorios.
+  <TabItem value="market" label="A precio de mercado">
+  Compra al precio disponible en el momento de la ejecución. `asset`, `network` y `amount` son obligatorios.
 
 ```json
 {
@@ -63,29 +63,29 @@ Existen dos formas. **No mezcle los campos** de una con los de la otra.
   </TabItem>
 </Tabs>
 
-#### Cuerpo (request body)
+#### Cuerpo de la solicitud
 
-| Campo                        | Tipo     | Obligatorio | Descripción                                                                                                                                                                     |
+| Campo | Tipo | Obligatorio | Descripción |
 | :--------------------------- | :------- | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `externalId`                 | `string` |   **Sí**    | Identificador de la compra en su sistema. De 1 a 128 caracteres ASCII imprimibles, sin `/` y sin comenzar con `$`. Único por empresa.                                           |
-| `address`                    | `string` |  **Uno de los dos**  | Billetera de destino declarada de la empresa, válida en la red, sin memo/tag.                                                                                          |
-| `addressId`                  | `string` |  **Uno de los dos**  | Dirección guardada (`buy.addresses[].addressId` de <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a>).                                            |
-| `quoteId`                    | `string` |   Forma con cotización   | Cotización válida. No puede enviarse junto con `asset`, `network` o `amount` (`400 CONFLICTING_FIELDS`).                                                         |
-| `asset`, `network`, `amount` | `string` |   Forma a mercado     | Activo, red y total en BRL (string con 2 decimales). Los tres son obligatorios cuando no hay `quoteId`.                                                                 |
+| `externalId` | `string` | **Sí** | Identificador de la compra en su sistema. De 1 a 128 caracteres ASCII imprimibles; no puede contener `/` ni comenzar con `$`. Debe ser único por empresa. |
+| `address` | `string` | **Uno de los dos** | Billetera de destino declarada por la empresa, válida en la red y sin memo/tag. |
+| `addressId` | `string` | **Uno de los dos** | Dirección guardada (`buy.addresses[].addressId` de <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a>). |
+| `quoteId` | `string` | Modalidad con cotización | Cotización vigente. No se puede enviar junto con `asset`, `network` o `amount` (`400 CONFLICTING_FIELDS`). |
+| `asset`, `network`, `amount` | `string` | Modalidad a precio de mercado | Activo, red y monto total en BRL (cadena con 2 decimales). Los tres campos son obligatorios si no se proporciona `quoteId`. |
 
-:::tip[Idempotencia por el externalId]
-- Mismo `externalId` + mismo cuerpo → **200 OK** con la compra ya creada (ninguna compra nueva).
-- Mismo `externalId` + cuerpo diferente → `409 EXTERNAL_ID_CONFLICT`.
-- Una compra rechazada queda registrada con el `externalId`. Para intentarlo de nuevo, **use otro `externalId`**.
+:::tip[Idempotencia con externalId]
+- El mismo `externalId` + el mismo cuerpo → **200 OK** con la compra ya creada (no se crea una compra nueva).
+- El mismo `externalId` + un cuerpo diferente → `409 EXTERNAL_ID_CONFLICT`.
+- Una compra rechazada queda registrada con el `externalId` utilizado. Para volver a intentarlo, **use otro `externalId`**.
 :::
 
 ---
 
 ## Respuestas
 
-### Éxito (201 Created)
+### Correcta (201 Created)
 
-La respuesta llega después de que el precio y el débito del BRL fueron fijados (status `EXECUTING`).
+La respuesta se devuelve después de fijar el precio y el débito en BRL (estado `EXECUTING`).
 
 ```json
 {
@@ -122,44 +122,44 @@ EXECUTING ──► PENDING_APPROVAL ──► DELIVERED
     └────────────────┴──────────► REJECTED
 ```
 
-- **Sin aprobación automática** (`buy.autoApproval = false`): la compra entra en la cola de aprobación de XGate (`PENDING_APPROVAL`). El precio ya está fijado y no cambia.
-- **Con aprobación automática:** la compra avanza directamente hasta `DELIVERED`.
-- En `DELIVERED`, `delivery.txHash` trae el hash de la transacción en la red.
-- En `REJECTED`, `rejection.refunded = true` indica que el BRL volvió íntegramente al saldo, comisión incluida.
+- **Sin aprobación automática** (`buy.autoApproval = false`): la compra entra en la cola de aprobación de XGate (`PENDING_APPROVAL`). El precio ya está fijado y no cambiará.
+- **Con aprobación automática:** la compra continúa directamente hasta `DELIVERED`.
+- En `DELIVERED`, `delivery.txHash` contiene el hash de la transacción en la red.
+- En `REJECTED`, `rejection.refunded = true` indica que el importe total en BRL, incluidas las tarifas, se devolvió al saldo.
 
-Haga el seguimiento mediante <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar Compra</a> o mediante los <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>webhooks de compra</a>.
+Haga el seguimiento mediante <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Consultar compra</a> o los <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>webhooks de compra</a> (pestaña Webhooks › Webhook de compra de cripto).
 
-:::info[Seguridad en la API]
-En la API no hay código del autenticador (TOTP). La protección es el token, la lista de IPs permitidas y la cola de aprobación de XGate.
+:::info[Seguridad de la API]
+La API no utiliza un código de autenticación (TOTP). La protección se basa en el token, la lista de IP permitidas y la cola de aprobación de XGate.
 :::
 
-### Objeto de la compra {#purchase-object}
+### Objeto de compra {#purchase-object}
 
-El mismo objeto se devuelve en la consulta y se envía en el campo `data` de los webhooks.
+Consultar compra devuelve el mismo objeto; el webhook solo incluye un resumen.
 
-| Campo                    | Tipo               | Descripción                                                                                                                                     |
+| Campo | Tipo | Descripción |
 | :----------------------- | :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                     | `string`           | ID de la compra en XGate.                                                                                                                       |
-| `externalId`             | `string`           | ID de la compra en su sistema.                                                                                                                  |
-| `status`                 | `string`           | `PENDING_PAYMENT` · `EXECUTING` · `PENDING_APPROVAL` · `DELIVERED` · `REJECTED` · `EXPIRED`.                                                    |
-| `channel`                | `string`           | Origen de la compra: `API`, `DASHBOARD` o `DEPOSIT`.                                                                                            |
-| `asset`, `network`, `address` | `string`      | Destino de la cripto.                                                                                                                           |
-| `amount`                 | `string` \| `null` | Total en BRL debitado del saldo.                                                                                                                |
-| `rate`                   | `string` \| `null` | Precio de 1 unidad en BRL (8 decimales), fijado en `executedAt`.                                                                                |
-| `cryptoAmount`           | `string` \| `null` | `amount ÷ rate` (6 decimales).                                                                                                                  |
-| `feeAmount`, `feeAsset`  | `string` \| `null` | Comisión de XGate + referido, cobrada en cripto (`feeAsset` = el activo).                                                                       |
-| `networkFee`             | `string` \| `null` | Gas descontado de la entrega.                                                                                                                   |
-| `deliveredAmount`        | `string` \| `null` | Cantidad que llega a la billetera.                                                                                                              |
-| `quoteId`                | `string` \| `null` | Cotización utilizada. `null` en la compra a mercado.                                                                                            |
-| `depositId`              | `string` \| `null` | Depósito de origen, cuando `channel = DEPOSIT`.                                                                                                 |
-| `approval`               | `object`           | `required` (`boolean`), `decision` (`APPROVED` \| `REJECTED` \| `AUTO` \| `null`), `decidedAt`.                                                 |
-| `delivery`               | `object`           | `status` (`WAITING_APPROVAL` · `QUEUED` · `SUBMITTED` · `CONFIRMING` · `CONFIRMED` · `UNDER_REVIEW` · `null`), `txHash`, `confirmedAt`.         |
-| `rejection`              | `object` \| `null` | En `REJECTED`: `reason` (consulte los <a href={useBaseUrl('/docs/buy-sell/errors#rejection-reasons')}>motivos de rechazo</a>), `message` (en el idioma del `Accept-Language`), `refunded`. |
-| `executedAt`, `createdAt`, `updatedAt` | `string` | Fechas ISO 8601 (UTC).                                                                                                                 |
+| `id` | `string` | ID de la compra en XGate. |
+| `externalId` | `string` | ID de la compra en su sistema. |
+| `status` | `string` | `PENDING_PAYMENT` · `EXECUTING` · `PENDING_APPROVAL` · `DELIVERED` · `REJECTED` · `EXPIRED`. |
+| `channel` | `string` | Origen de la compra: `API`, `DASHBOARD` o `DEPOSIT`. |
+| `asset`, `network`, `address` | `string` | Destino de las criptomonedas. |
+| `amount` | `string` \| `null` | Importe total en BRL debitado del saldo. |
+| `rate` | `string` \| `null` | Precio de una unidad en BRL (8 decimales), fijado en `executedAt`. |
+| `cryptoAmount` | `string` \| `null` | `amount ÷ rate` (6 decimales). |
+| `feeAmount`, `feeAsset` | `string` \| `null` | Tarifa de XGate más la comisión por referido, cobrada en cripto (`feeAsset` = el activo). |
+| `networkFee` | `string` \| `null` | Gas de red descontado del importe entregado. |
+| `deliveredAmount` | `string` \| `null` | Cantidad que se recibe en la billetera. |
+| `quoteId` | `string` \| `null` | Cotización utilizada. `null` en una compra a precio de mercado. |
+| `depositId` | `string` \| `null` | Depósito de origen, cuando `channel = DEPOSIT`. |
+| `approval` | `object` | `required` (`boolean`), `decision` (`APPROVED` \| `REJECTED` \| `AUTO` \| `null`), `decidedAt`. |
+| `delivery` | `object` | `status` (`WAITING_APPROVAL` · `QUEUED` · `SUBMITTED` · `CONFIRMING` · `CONFIRMED` · `UNDER_REVIEW` · `null`), `txHash`, `confirmedAt`. |
+| `rejection` | `object` \| `null` | En `REJECTED`: `reason` (consulte <a href={useBaseUrl('/docs/buy-sell/errors#rejection-reasons')}>los motivos de rechazo</a>), `message` (en el idioma indicado por `Accept-Language`), `refunded`. |
+| `executedAt`, `createdAt`, `updatedAt` | `string` | Fechas ISO 8601 (UTC). |
 
 ### Errores comunes
 
-| Status  | Reason                                                                                                                                                                                                                                                                       |
+| Estado  | Motivo                                                                                                                                                                                                                                                                       |
 | :------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **400** | `VALIDATION_FAILED`, `AMOUNT_MUST_BE_STRING`, `CONFLICTING_FIELDS`                                                                                                                                                                                                           |
 | **401** | `UNAUTHORIZED`                                                                                                                                                                                                                                                               |
@@ -170,11 +170,11 @@ El mismo objeto se devuelve en la consulta y se envía en el campo `data` de los
 | **429** | `RATE_LIMITED`, `DAILY_CAP_EXCEEDED`, `OUTFLOW_HOURLY_CAP_EXCEEDED`                                                                                                                                                                                                          |
 | **503** | `PRICE_STALE`, `NETWORK_FEE_UNAVAILABLE`, `CRYPTO_TEMPORARILY_UNAVAILABLE`, `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                                                                                |
 
-:::warning[Rechazo en la ejecución]
-Cuando la compra es rechazada en la ejecución (saldo insuficiente, límites, precio, cotización vencida), la API responde con el error **y** la compra queda registrada como `REJECTED`, con el `externalId` utilizado. En ese caso se envía el webhook `purchase.rejected`.
+:::warning[Rechazo durante la ejecución]
+Si la compra se rechaza durante la ejecución (por saldo insuficiente, límites, precio o cotización vencida), la API devuelve un error **y** registra la compra como `REJECTED` con el `externalId` utilizado. En este caso, se envía el webhook `purchase.rejected`.
 :::
 
-Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/errors')}>Códigos de Error</a>.
+Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/errors')}>Códigos de error</a>.
 
 ---
 
@@ -182,7 +182,7 @@ Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/e
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    **Ejemplo en JavaScript (cotización + compra):**
+    **Ejemplo de JavaScript (cotización + compra):**
     ```js
     const axios = require("axios");
 
@@ -195,14 +195,14 @@ Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/e
         const login = await axios.post(`${url_api}/auth/token`, { email, password });
         const headers = { "Authorization": `Bearer ${login.data.token}` };
 
-        // 1. Cotizar (precio garantizado por 30 segundos)
+        // 1. Cotar (preço garantido por 30 segundos)
         const quote = await axios.post(`${url_api}/crypto/quotes`, {
             asset: "USDT",
             network: "TRON",
-            amount: "1500.00" // siempre string
+            amount: "1500.00" // sempre string
         }, { headers });
 
-        // 2. Comprar con la cotización
+        // 2. Comprar com a cotação
         const { data } = await axios.post(`${url_api}/crypto/purchases`, {
             externalId: "pedido-7781",
             quoteId: quote.data.quoteId,

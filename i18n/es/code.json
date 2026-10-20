@@ -81,7 +81,7 @@
   },
   "theme.docs.tagDocListPageTitle.nDocsTagged": {
     "message": "Un documento etiquetado|{count} documentos etiquetados",
-    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see [https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html](https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html))"
+    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.docs.tagDocListPageTitle": {
     "message": "{nDocsTagged} con \"{tagName}\"",
@@ -212,7 +212,7 @@
   },
   "theme.blog.post.readingTime.plurals": {
     "message": "Un min de lectura|{readingTime} min de lectura",
-    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see [https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html](https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html))"
+    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.CodeBlock.copy": {
     "message": "Copiar",
@@ -276,7 +276,7 @@
   },
   "theme.blog.post.plurals": {
     "message": "Un post|{count} posts",
-    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see [https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html](https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html))"
+    "description": "Pluralized label for \"{count} posts\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
   },
   "theme.blog.tagTitle": {
     "message": "{nPosts} etiquetados con \"{tagName}\"",
@@ -819,19 +819,50 @@
     "message": "detallando exactamente qué causó el fallo."
   },
   "cryptoDeprecation.title": {
-    "message": "Descontinuado el 29/10/2026",
-    "description": "Title of the crypto deprecation notice on legacy crypto pages"
+    "message": "Descontinuado el 29/10/2026"
   },
   "cryptoDeprecation.body": {
-    "message": "Este flujo de cripto deja de existir en el corte del 29/10/2026 (30/10 a las 03:00 UTC). A partir de esa fecha, XGate ya no custodia cripto de empresas y las rutas de este flujo pasan a responder 410 FEATURE_DISCONTINUED.",
-    "description": "Body of the crypto deprecation notice"
+    "message": "Este flujo de cripto deja de existir en el corte del 29/10/2026 (30/10 a las 03:00 UTC). A partir de esa fecha, XGate ya no custodia cripto de empresas y las rutas de este flujo pasan a responder 410 FEATURE_DISCONTINUED."
   },
   "cryptoDeprecation.replacement": {
-    "message": "Para obtener USDT o USDC, utilice la nueva API de",
-    "description": "Text before the link to the new buy/sell crypto API"
+    "message": "Para obtener USDT o USDC, utilice la nueva API de"
   },
   "cryptoDeprecation.link": {
-    "message": "Compra y Venta de Cripto",
-    "description": "Link label to the buy/sell crypto API overview"
+    "message": "Compra y Venta de Cripto"
+  },
+  "theme.SearchBar.noResultsText": {
+    "message": "No hay resultados"
+  },
+  "theme.SearchBar.seeAllOutsideContext": {
+    "message": "Ver todos los resultados fuera de \"{context}\""
+  },
+  "theme.SearchBar.searchInContext": {
+    "message": "Ver todos los resultados dentro de \"{context}\""
+  },
+  "theme.SearchBar.seeAll": {
+    "message": "Ver todos los resultados"
+  },
+  "theme.SearchBar.label": {
+    "message": "Buscar",
+    "description": "The ARIA label and placeholder for search button"
+  },
+  "theme.SearchPage.existingResultsTitle": {
+    "message": "Resultados de búsqueda para \"{query}\"",
+    "description": "The search page title for non-empty query"
+  },
+  "theme.SearchPage.emptyResultsTitle": {
+    "message": "Buscar en la documentación",
+    "description": "The search page title for empty query"
+  },
+  "theme.SearchPage.searchContext.everywhere": {
+    "message": "En todas partes"
+  },
+  "theme.SearchPage.documentsFound.plurals": {
+    "message": "1 documento encontrado|{count} documentos encontrados",
+    "description": "Pluralized label for \"{count} documents found\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.SearchPage.noResultsText": {
+    "message": "No se encontraron documentos",
+    "description": "The paragraph for empty search result"
   }
 }

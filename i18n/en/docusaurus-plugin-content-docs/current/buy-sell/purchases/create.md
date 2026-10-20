@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Buy Crypto'
 sidebar_position: 1
-description: "Buys USDT or USDC with the company's BRL balance and sends the crypto to the company's destination wallet."
+description: 'Buy USDT or USDC using the company’s BRL balance and send the crypto to the company’s destination wallet.'
 sidebar_class_name: 'sidebar-method-post'
 ---
 
@@ -11,7 +11,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 # Buy Crypto
 
-Buys USDT or USDC using the company's BRL balance. XGate sends the crypto to the specified destination wallet, which must be **owned by the company itself**.
+Buy USDT or USDC using the company’s BRL balance. XGate sends the crypto to the specified destination wallet, which must **belong to the company**.
 
 ---
 
@@ -28,32 +28,32 @@ https://api.xgateglobal.com/crypto/purchases
 
 #### Required Headers
 
-| Header          | Value                 | Description                      |
-| :-------------- | :-------------------- | :------------------------------- |
-| `Authorization` | `Bearer <your_token>` | The JWT token obtained at login. |
+| Header          | Value                | Description                    |
+| :-------------- | :------------------- | :--------------------------- |
+| `Authorization` | `Bearer <your_token>` | The JWT token obtained during login. |
 
-#### Purchase forms
+#### Purchase methods
 
-There are two forms. **Do not mix the fields** of one with those of the other.
+There are two methods. **Do not mix fields** from one method with those of the other.
 
 <Tabs>
-  <TabItem value="quote" label="With quote" default>
-  Uses the guaranteed price of a still-valid <a href={useBaseUrl('/docs/buy-sell/quotes')}>quote</a> (`quoteId`). Asset, network and amount come from the quote.
+  <TabItem value="quote" label="With a quote" default>
+  Uses the guaranteed price from a valid <a href={useBaseUrl('/docs/buy-sell/quotes')}>quote</a> (`quoteId`). The asset, network, and amount are taken from the quote.
 
 ```json
 {
-  "externalId": "order-7781",
+  "externalId": "pedido-7781",
   "quoteId": "l3m8Qm1n0pV2cXk5dY9sTg4hWz7aB6eR1uJ0oK2qF3i",
   "address": "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE"
 }
 ```
   </TabItem>
   <TabItem value="market" label="At market">
-  Buys at the price at the moment of execution. `asset`, `network` and `amount` are required.
+  Purchases at the price available at execution time. `asset`, `network`, and `amount` are required.
 
 ```json
 {
-  "externalId": "order-7782",
+  "externalId": "pedido-7782",
   "asset": "USDT",
   "network": "TRON",
   "amount": "1500.00",
@@ -63,20 +63,20 @@ There are two forms. **Do not mix the fields** of one with those of the other.
   </TabItem>
 </Tabs>
 
-#### Body (Request Body)
+#### Request Body
 
-| Field                        | Type     | Required | Description                                                                                                                                                                     |
-| :--------------------------- | :------- | :------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `externalId`                 | `string` | **Yes**  | Purchase identifier in your system. 1 to 128 printable ASCII characters, no `/` and not starting with `$`. Unique per company.                                                   |
-| `address`                    | `string` | **One of the two** | Company's declared destination wallet, valid on the network, without memo/tag.                                                                                  |
-| `addressId`                  | `string` | **One of the two** | Saved address (`buy.addresses[].addressId` from <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a>).                                         |
-| `quoteId`                    | `string` | Quote form         | Valid quote. Cannot be sent together with `asset`, `network` or `amount` (`400 CONFLICTING_FIELDS`).                                                             |
-| `asset`, `network`, `amount` | `string` | Market form        | Asset, network and total in BRL (string with 2 decimals). All three are required when there is no `quoteId`.                                                     |
+| Field                        | Type     | Required | Description                                                                                                                                                                       |
+| :--------------------------- | :------- | :---------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `externalId`                 | `string` |   **Yes**   | Purchase identifier in your system. 1 to 128 printable ASCII characters, cannot contain `/` or start with `$`. Must be unique per company.                                                  |
+| `address`                    | `string` |  **One of the two**  | The company’s declared destination wallet, valid on the network and without a memo/tag.                                                                                                   |
+| `addressId`                  | `string` |  **One of the two**  | Saved address (`buy.addresses[].addressId` from <a href={useBaseUrl('/docs/buy-sell/options')}>GET /crypto/options</a>).                                                   |
+| `quoteId`                    | `string` |   Quote-based method   | A valid quote. Cannot be sent together with `asset`, `network`, or `amount` (`400 CONFLICTING_FIELDS`).                                                                        |
+| `asset`, `network`, `amount` | `string` |   Market method     | Asset, network, and total in BRL (a string with 2 decimal places). All three are required when `quoteId` is not provided.                                                                      |
 
-:::tip[Idempotency via externalId]
-- Same `externalId` + same body → **200 OK** with the already created purchase (no new purchase).
+:::tip[Idempotency with externalId]
+- Same `externalId` + same body → **200 OK** with the purchase that was already created (no new purchase).
 - Same `externalId` + different body → `409 EXTERNAL_ID_CONFLICT`.
-- A rejected purchase stays recorded with its `externalId`. To try again, **use another `externalId`**.
+- A rejected purchase remains registered with its `externalId`. To try again, **use a different `externalId`**.
 :::
 
 ---
@@ -85,12 +85,12 @@ There are two forms. **Do not mix the fields** of one with those of the other.
 
 ### Success (201 Created)
 
-The response arrives after the price and the BRL debit have been locked in (status `EXECUTING`).
+The response is returned after the price and BRL debit have been locked (status `EXECUTING`).
 
 ```json
 {
   "id": "6710c2f4a1b2c3d4e5f60718",
-  "externalId": "order-7781",
+  "externalId": "pedido-7781",
   "status": "EXECUTING",
   "channel": "API",
   "asset": "USDT",
@@ -122,39 +122,39 @@ EXECUTING ──► PENDING_APPROVAL ──► DELIVERED
     └────────────────┴──────────► REJECTED
 ```
 
-- **Without automatic approval** (`buy.autoApproval = false`): the purchase enters XGate's approval queue (`PENDING_APPROVAL`). The price is already locked and does not change.
-- **With automatic approval:** the purchase goes straight to `DELIVERED`.
-- On `DELIVERED`, `delivery.txHash` contains the transaction hash on the network.
-- On `REJECTED`, `rejection.refunded = true` indicates that the BRL was fully returned to the balance, fee included.
+- **Without automatic approval** (`buy.autoApproval = false`): the purchase enters XGate’s approval queue (`PENDING_APPROVAL`). The price is already locked and will not change.
+- **With automatic approval:** the purchase proceeds directly to `DELIVERED`.
+- In `DELIVERED`, `delivery.txHash` contains the transaction hash on the network.
+- In `REJECTED`, `rejection.refunded = true` indicates that the full BRL amount, including fees, was returned to the balance.
 
-Track it via <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Get Purchase</a> or the <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>purchase webhooks</a>.
+Track the purchase using <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Get Purchase</a> or the <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>purchase webhooks</a> (Webhooks tab › Crypto Purchase Webhook).
 
 :::info[API security]
-There is no authenticator code (TOTP) in the API. Protection comes from the token, the allowed IP list and XGate's approval queue.
+The API does not use an authenticator code (TOTP). Protection is provided by the token, the allowed IP list, and XGate’s approval queue.
 :::
 
 ### Purchase object {#purchase-object}
 
-The same object is returned by the query and sent in the `data` field of the webhooks.
+The same object is returned by Get Purchase; the webhook contains only a summary.
 
-| Field                    | Type               | Description                                                                                                                                     |
+| Field                    | Type               | Description                                                                                                                                       |
 | :----------------------- | :----------------- | :---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                     | `string`           | Purchase ID at XGate.                                                                                                                           |
-| `externalId`             | `string`           | Purchase ID in your system.                                                                                                                     |
+| `id`                     | `string`           | Purchase ID in XGate.                                                                                                                          |
+| `externalId`             | `string`           | Purchase ID in your system.                                                                                                                    |
 | `status`                 | `string`           | `PENDING_PAYMENT` · `EXECUTING` · `PENDING_APPROVAL` · `DELIVERED` · `REJECTED` · `EXPIRED`.                                                    |
-| `channel`                | `string`           | Origin of the purchase: `API`, `DASHBOARD` or `DEPOSIT`.                                                                                        |
-| `asset`, `network`, `address` | `string`      | Crypto destination.                                                                                                                             |
-| `amount`                 | `string` \| `null` | Total in BRL debited from the balance.                                                                                                          |
-| `rate`                   | `string` \| `null` | Price of 1 unit in BRL (8 decimals), locked at `executedAt`.                                                                                    |
-| `cryptoAmount`           | `string` \| `null` | `amount ÷ rate` (6 decimals).                                                                                                                   |
+| `channel`                | `string`           | Purchase source: `API`, `DASHBOARD`, or `DEPOSIT`.                                                                                              |
+| `asset`, `network`, `address` | `string`      | Crypto destination.                                                                                                                              |
+| `amount`                 | `string` \| `null` | Total BRL amount debited from the balance.                                                                                                                 |
+| `rate`                   | `string` \| `null` | Price per unit in BRL (8 decimal places), locked at `executedAt`.                                                                                    |
+| `cryptoAmount`           | `string` \| `null` | `amount ÷ rate` (6 decimal places).                                                                                                                      |
 | `feeAmount`, `feeAsset`  | `string` \| `null` | XGate + referral fee, charged in crypto (`feeAsset` = the asset).                                                                               |
-| `networkFee`             | `string` \| `null` | Gas deducted from the delivery.                                                                                                                 |
-| `deliveredAmount`        | `string` \| `null` | Amount that arrives in the wallet.                                                                                                              |
-| `quoteId`                | `string` \| `null` | Quote used. `null` for market purchases.                                                                                                        |
-| `depositId`              | `string` \| `null` | Source deposit, when `channel = DEPOSIT`.                                                                                                       |
+| `networkFee`             | `string` \| `null` | Network gas deducted from the delivery amount.                                                                                                                      |
+| `deliveredAmount`        | `string` \| `null` | Amount delivered to the wallet.                                                                                                               |
+| `quoteId`                | `string` \| `null` | Quote used. `null` for a market purchase.                                                                                                      |
+| `depositId`              | `string` \| `null` | Source deposit, when `channel = DEPOSIT`.                                                                                                 |
 | `approval`               | `object`           | `required` (`boolean`), `decision` (`APPROVED` \| `REJECTED` \| `AUTO` \| `null`), `decidedAt`.                                                 |
 | `delivery`               | `object`           | `status` (`WAITING_APPROVAL` · `QUEUED` · `SUBMITTED` · `CONFIRMING` · `CONFIRMED` · `UNDER_REVIEW` · `null`), `txHash`, `confirmedAt`.         |
-| `rejection`              | `object` \| `null` | On `REJECTED`: `reason` (see <a href={useBaseUrl('/docs/buy-sell/errors#rejection-reasons')}>rejection reasons</a>), `message` (in the `Accept-Language` language), `refunded`. |
+| `rejection`              | `object` \| `null` | In `REJECTED`: `reason` (see <a href={useBaseUrl('/docs/buy-sell/errors#rejection-reasons')}>rejection reasons</a>), `message` (in the language specified by `Accept-Language`), `refunded`. |
 | `executedAt`, `createdAt`, `updatedAt` | `string` | ISO 8601 dates (UTC).                                                                                                                  |
 
 ### Common Errors
@@ -170,8 +170,8 @@ The same object is returned by the query and sent in the `data` field of the web
 | **429** | `RATE_LIMITED`, `DAILY_CAP_EXCEEDED`, `OUTFLOW_HOURLY_CAP_EXCEEDED`                                                                                                                                                                                                          |
 | **503** | `PRICE_STALE`, `NETWORK_FEE_UNAVAILABLE`, `CRYPTO_TEMPORARILY_UNAVAILABLE`, `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                                                                                |
 
-:::warning[Rejection at execution]
-When the purchase is rejected at execution (insufficient balance, limits, price, expired quote), the API returns the error **and** the purchase is recorded as `REJECTED`, with the `externalId` used. In this case the `purchase.rejected` webhook is sent.
+:::warning[Execution rejection]
+If a purchase is rejected during execution (insufficient balance, limits, price, or expired quote), the API returns an error **and** the purchase is recorded as `REJECTED` with the `externalId` that was used. The `purchase.rejected` webhook is sent in this case.
 :::
 
 See the meaning of each code in <a href={useBaseUrl('/docs/buy-sell/errors')}>Error Codes</a>.
@@ -182,7 +182,7 @@ See the meaning of each code in <a href={useBaseUrl('/docs/buy-sell/errors')}>Er
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    **JavaScript Example (quote + purchase):**
+    **JavaScript example (quote + purchase):**
     ```js
     const axios = require("axios");
 
@@ -195,16 +195,16 @@ See the meaning of each code in <a href={useBaseUrl('/docs/buy-sell/errors')}>Er
         const login = await axios.post(`${url_api}/auth/token`, { email, password });
         const headers = { "Authorization": `Bearer ${login.data.token}` };
 
-        // 1. Quote (price guaranteed for 30 seconds)
+        // 1. Get a quote (price guaranteed for 30 seconds)
         const quote = await axios.post(`${url_api}/crypto/quotes`, {
             asset: "USDT",
             network: "TRON",
             amount: "1500.00" // always a string
         }, { headers });
 
-        // 2. Buy with the quote
+        // 2. Purchase using the quote
         const { data } = await axios.post(`${url_api}/crypto/purchases`, {
-            externalId: "order-7781",
+            externalId: "pedido-7781",
             quoteId: quote.data.quoteId,
             address: "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE"
         }, { headers });

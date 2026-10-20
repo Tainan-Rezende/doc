@@ -51,8 +51,18 @@ body {
 .ai-btn-wrapper {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   margin-top: -3.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 5;
+}
+
+/* Proteção: se o botão vier logo após um alerta/admonition, não puxa para cima */
+div[class*='admonition'] + .ai-btn-wrapper,
+.theme-admonition + .ai-btn-wrapper {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .ai-btn-wrapper button:not(.copied):hover {
@@ -182,4 +192,9 @@ html[data-theme='dark'] body kbd.searchHint_iIMx {
   .markdown>h1:first-child {
     padding-right: 0;
   }
+}
+
+.tabela-nowrap td:nth-child(2),
+.tabela-nowrap th:nth-child(2) {
+  white-space: nowrap;
 }

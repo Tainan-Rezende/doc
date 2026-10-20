@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Opciones'
 sidebar_position: 3
-description: 'Devuelve lo que la empresa puede hacer ahora: activos, redes, tarifas, límites de compra, direcciones guardadas y direcciones de venta.'
+description: 'Devuelve las operaciones disponibles para la empresa: activos, redes, tarifas, límites de compra, direcciones guardadas y direcciones de venta.'
 sidebar_class_name: 'sidebar-method-get'
 ---
 
@@ -9,16 +9,16 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-# Consultar Opciones
+# Consultar opciones
 
-Devuelve lo que su empresa puede hacer ahora: activos y redes habilitados, tarifas, límites de compra, direcciones guardadas y validez de la cotización. Use esta ruta antes de cotizar o comprar.
+Devuelve las operaciones disponibles para su empresa: activos y redes habilitados, tarifas, límites de compra, direcciones guardadas y vigencia de las cotizaciones. Utilice este endpoint antes de solicitar una cotización o realizar una compra.
 
 ---
 
 ## Endpoint
 - **Método:** <span className="badge badge--success">GET</span>
 
-```bash title="URL del Endpoint"
+```bash title="URL del endpoint"
 https://api.xgateglobal.com/crypto/options
 ```
 
@@ -28,17 +28,17 @@ https://api.xgateglobal.com/crypto/options
 
 #### Encabezados obligatorios
 
-| Encabezado      | Valor               | Descripción                                |
-| :-------------- | :------------------ | :----------------------------------------- |
-| `Authorization` | `Bearer <tu_token>` | El token JWT obtenido al iniciar sesión.   |
+| Encabezado      | Valor                | Descripción                    |
+| :-------------- | :------------------- | :--------------------------- |
+| `Authorization` | `Bearer <tu_token>` | El token JWT obtenido al iniciar sesión. |
 
-Esta ruta no recibe parámetros.
+Este endpoint no recibe parámetros.
 
 ---
 
-## Respuestas (Responses)
+## Respuestas
 
-### Éxito (200 OK)
+### Correcta (200 OK)
 
 ```json
 {
@@ -72,7 +72,7 @@ Esta ruta no recibe parámetros.
     "addresses": [
       {
         "addressId": "66f1a2b3c4d5e6f708192a3b",
-        "alias": "Billetera de tesorería",
+        "alias": "Carteira tesouraria",
         "address": "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE",
         "network": "TRON",
         "source": "MANUAL",
@@ -97,44 +97,46 @@ Esta ruta no recibe parámetros.
 
 #### Descripción de los campos
 
-| Campo                                 | Tipo                       | Descripción                                                                                                                                                  |
-| :------------------------------------ | :------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `assets[].asset`                      | `USDT` \| `USDC`           | Activo.                                                                                                                                                      |
-| `assets[].feeRate`                    | `string` \| `null`         | Tarifa de compra (XGate + referido) sobre la cantidad cripto. Es la base de `feeAmount`.                                                                     |
-| `assets[].spreadRate`                 | `string` \| `null`         | Margen del par incluido en el `rate` (`rate = ask × (1 + spreadRate)`).                                                                                      |
-| `assets[].networks[].network`         | `string`                   | Red disponible para el activo (`POLYGON`, `ETHEREUM`, `TRON`, `SOLANA`).                                                                                     |
-| `assets[].networks[].networkFee`      | `string` \| `null`         | Gas estimado de la red, en el propio activo (6 decimales), descontado de la entrega. `null` cuando no está disponible o cuando la regla de la empresa es porcentual. |
-| `assets[].networks[].networkFeeAsset` | `USDT` \| `USDC`           | Activo en el que se cobra el gas.                                                                                                                            |
-| `buy.enabled`                         | `boolean`                  | Compra habilitada para la empresa.                                                                                                                           |
-| `buy.minAmount`                       | `string`                   | Compra mínima, en BRL.                                                                                                                                       |
-| `buy.maxAmountPerTx`                  | `string` \| `null`         | Máximo por compra, en BRL.                                                                                                                                   |
-| `buy.dailyCap`                        | `string` \| `null`         | Tope diario de compra, en BRL.                                                                                                                               |
-| `buy.dailyRemaining`                  | `string` \| `null`         | Cuánto resta aún del tope diario, en BRL.                                                                                                                    |
-| `buy.totpThreshold`                   | `string` \| `null`         | Se usa solo en el panel. No aplica a la API.                                                                                                                 |
-| `buy.autoApproval`                    | `boolean`                  | `true` = la compra no pasa por la cola de aprobación de XGate.                                                                                               |
-| `buy.addresses[]`                     | `array`                    | Direcciones guardadas de la empresa: `addressId`, `alias`, `address`, `network`, `source` (`MANUAL` \| `CARD`), `addedAt`, `activeAt`. El `addressId` puede usarse como destino en la compra. |
-| `savedAddressesOnly.enabled`          | `boolean`                  | Bloqueo "solo direcciones guardadas", activado por la empresa en el panel.                                                                                   |
-| `savedAddressesOnly.newAddressHoldHours` | `integer`               | Período de carencia, en horas, de una dirección nueva cuando el bloqueo está activado (24).                                                                  |
-| `quoteTtlSeconds`                     | `integer`                  | Validez de la cotización, en segundos (30).                                                                                                                  |
-| `sale.enabled`                        | `boolean`                  | Venta habilitada para la empresa. Permanece en `false` hasta la habilitación de la venta por la API (noviembre de 2026).                                |
-| `sale.status`                         | `string`                   | `DISABLED` · `PROVISIONING` · `READY`. La primera consulta de una empresa con venta habilitada crea las direcciones: queda en `PROVISIONING` durante algunos minutos y pasa a `READY`. |
-| `sale.minAmount`                      | `object`                   | Venta mínima por activo (`USDT`, `USDC`), en la cantidad del activo.                                                                                    |
-| `sale.depositAddresses[]`             | `array`                    | Dirección fija de la empresa para cada par `asset` × `network` (`asset`, `network`, `address`). Vacío mientras la venta no esté habilitada. Vea <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender Cripto</a>. |
+<div className="tabela-nowrap">
+| Campo                                    | Tipo               | Descripción                                                                                                                                                                                                        |
+| :--------------------------------------- | :----------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `assets[].asset`                         | `USDT` \| `USDC`   | Activo. |
+| `assets[].feeRate`                       | `string` \| `null` | Tarifa de compra (XGate + comisión por referido) aplicada sobre la cantidad de cripto. Es la base de `feeAmount`. |
+| `assets[].spreadRate`                    | `string` \| `null` | Margen del par incluido en `rate` (`rate = ask × (1 + spreadRate)`). |
+| `assets[].networks[].network`            | `string`           | Red disponible para el activo (`POLYGON`, `ETHEREUM`, `TRON`, `SOLANA`). |
+| `assets[].networks[].networkFee`         | `string` \| `null` | Gas de red estimado, expresado en el propio activo (6 decimales) y descontado del importe entregado. `null` cuando no está disponible o cuando la regla de tarifas de la empresa es porcentual. |
+| `assets[].networks[].networkFeeAsset`    | `USDT` \| `USDC`   | Activo en el que se cobra el gas. |
+| `buy.enabled`                            | `boolean`          | Indica si las compras están habilitadas para la empresa. |
+| `buy.minAmount`                          | `string`           | Importe mínimo de compra en BRL. |
+| `buy.maxAmountPerTx`                     | `string` \| `null` | Importe máximo por compra, en BRL. |
+| `buy.dailyCap`                           | `string` \| `null` | Límite diario de compra, en BRL. |
+| `buy.dailyRemaining`                     | `string` \| `null` | Importe restante del límite diario, en BRL. |
+| `buy.totpThreshold`                      | `string` \| `null` | Se utiliza únicamente en el Dashboard. No se aplica a la API. |
+| `buy.autoApproval`                       | `boolean`          | `true` = la compra no pasa por la cola de aprobación de XGate. |
+| `buy.addresses[]`                        | `array`            | Direcciones guardadas de la empresa: `addressId`, `alias`, `address`, `network`, `source` (`MANUAL` \| `CARD`), `addedAt`, `activeAt`. Se puede utilizar `addressId` como destino de la compra. |
+| `savedAddressesOnly.enabled`             | `boolean`          | Restricción «solo direcciones guardadas», habilitada por la empresa en el Dashboard. |
+| `savedAddressesOnly.newAddressHoldHours` | `integer`          | Período de espera, en horas, para una dirección nueva cuando la restricción está habilitada (24). |
+| `quoteTtlSeconds`                        | `integer`          | Vigencia de la cotización, en segundos (30). |
+| `sale.enabled`                           | `boolean`          | Indica si XGate habilitó las ventas para la empresa. |
+| `sale.status`                            | `string`           | `DISABLED` · `PROVISIONING` · `READY`. La primera consulta de una empresa con las ventas habilitadas inicia la creación de las direcciones: el estado permanece en `PROVISIONING` durante unos minutos y luego pasa a `READY`. |
+| `sale.minAmount`                         | `object`           | Importe mínimo de venta por activo (`USDT`, `USDC`), expresado en el activo correspondiente. |
+| `sale.depositAddresses[]`                | `array`            | Dirección fija de la empresa para cada par `asset` × `network` (`asset`, `network`, `address`). Está vacío mientras `sale.enabled` sea `false`. Consulte <a href={useBaseUrl('/docs/buy-sell/sales/sell')}>Vender cripto</a>. |
+</div>
 
-:::tip[Bloqueo de direcciones guardadas]
-Con `savedAddressesOnly.enabled = true`, la compra solo acepta direcciones de `buy.addresses[]`, y una dirección recién registrada solo puede usarse después de `activeAt` (carencia de `newAddressHoldHours`).
+:::tip[Restricción de direcciones guardadas]
+Cuando `savedAddressesOnly.enabled = true`, las compras solo aceptan direcciones de `buy.addresses[]`, y una dirección recién agregada solo se puede utilizar después de `activeAt` (el período de espera indicado por `newAddressHoldHours`).
 :::
 
 ### Errores comunes
 
-| Estado  | Reason                                                                                                                                  |
-| :------ | :-------------------------------------------------------------------------------------------------------------------------------------- |
-| **400** | `VALIDATION_FAILED`                                                                                                                     |
-| **401** | `UNAUTHORIZED`                                                                                                                          |
+| Status  | Reason                                                                                                                                                |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **400** | `VALIDATION_FAILED`                                                                                                                                   |
+| **401** | `UNAUTHORIZED`                                                                                                                                        |
 | **403** | `PERMISSION_DENIED`, `COMPANY_MISMATCH`, `COMPANY_BLOCKED`, `ALLOWED_IPS_REQUIRED`, `CLIENT_IP_NOT_ALLOWED`, `CRYPTO_DISABLED`, `CRYPTO_API_DISABLED` |
-| **503** | `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                       |
+| **503** | `CONFIGURATION_UNAVAILABLE`, `SERVICE_OVERLOADED`                                                                                                     |
 
-Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/errors')}>Códigos de Error</a>.
+Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/errors')}>Códigos de error</a>.
 
 ---
 
@@ -142,14 +144,14 @@ Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/e
 
 <Tabs groupId="sdk-examples">
   <TabItem value="js" label="Node.js">
-    El ejemplo de integración utiliza la librería <code>Axios</code> en Node.js.
+    Este ejemplo de integración utiliza la biblioteca <code>Axios</code> en Node.js.
 
-    **Instalando `Axios`:**
+    **Instalación de `Axios`:**
     ```bash
     npm install axios
     ```
 
-    **Ejemplo en JavaScript:**
+    **Ejemplo de JavaScript:**
     ```js
     const axios = require("axios");
 
@@ -163,7 +165,7 @@ Consulte el significado de cada código en <a href={useBaseUrl('/docs/buy-sell/e
         const { data } = await axios.get(`${url_api}/crypto/options`, {
             headers: { "Authorization": `Bearer ${login.data.token}` }
         });
-        console.log(data.assets, data.buy); // Respuesta
+        console.log(data.assets, data.buy); // Response
     } catch (error) {
         console.log(error.response.data.reason, error.response.data.message); // Error
     }

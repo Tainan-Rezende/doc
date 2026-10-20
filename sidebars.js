@@ -90,10 +90,22 @@ const sidebars = {
         'buy-sell/overview',
         'buy-sell/conventions',
         'buy-sell/options',
-        'buy-sell/quotes',
-        'buy-sell/purchases/create',
-        // 'buy-sell/purchases/from-deposit' (draft: publicar quando o canal for ligado)
-        'buy-sell/sales/sell',
+        {
+          type: 'category',
+          label: 'Compra',
+          items: [
+            'buy-sell/quotes',
+            'buy-sell/purchases/create',
+            // 'buy-sell/purchases/from-deposit' (draft: publicar quando o canal for ligado)
+          ]
+        },
+        {
+          type: 'category',
+          label: 'Venda',
+          items: [
+            'buy-sell/sales/sell'
+          ]
+        },
         'buy-sell/errors'
       ]
     },
@@ -114,12 +126,12 @@ const sidebars = {
         },
         {
           type: 'category',
-          label: 'Compras Webhook',
+          label: 'Compras Cripto Webhook',
           items: ['webhooks/purchase/status', 'webhooks/purchase/receive']
         },
         {
           type: 'category',
-          label: 'Vendas Webhook',
+          label: 'Vendas Cripto Webhook',
           items: ['webhooks/sale/status', 'webhooks/sale/receive']
         }
       ]

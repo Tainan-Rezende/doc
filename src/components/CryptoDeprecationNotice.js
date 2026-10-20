@@ -1,31 +1,46 @@
 import React from 'react';
 import Admonition from '@theme/Admonition';
 import Link from '@docusaurus/Link';
-import Translate from '@docusaurus/Translate';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+
+const translations = {
+  'pt-br': {
+    title: 'Descontinuado em 29/10/2026',
+    body: 'Esta rota deixa de funcionar em 29/10/2026. A partir dessa data ela responde',
+    replacement: 'Use a',
+    link: 'Compra e Venda de Cripto',
+  },
+  en: {
+    title: 'Discontinued on 2026-10-29',
+    body: 'This route stops working on 2026-10-29. After this date it responds with',
+    replacement: 'Use',
+    link: 'Crypto Buy and Sell',
+  },
+  es: {
+    title: 'Descontinuado el 29/10/2026',
+    body: 'Esta ruta deja de funcionar el 29/10/2026. A partir de esa fecha responderá con',
+    replacement: 'Utilice la',
+    link: 'Compra y Venta de Cripto',
+  },
+};
 
 export default function CryptoDeprecationNotice() {
+  const { i18n } = useDocusaurusContext();
+  const locale = (i18n?.currentLocale || 'pt-br').toLowerCase();
+
+  const currentLang = locale.startsWith('en')
+    ? 'en'
+    : locale.startsWith('es')
+    ? 'es'
+    : 'pt-br';
+
+  const t = translations[currentLang] || translations['pt-br'];
+
   return (
-    <Admonition
-      type="danger"
-      title={
-        <Translate id="cryptoDeprecation.title">
-          Descontinuado em 29/10/2026
-        </Translate>
-      }
-    >
-      <p>
-        <Translate id="cryptoDeprecation.body">
-          Este fluxo de cripto deixa de existir no corte de 29/10/2026 (30/10 às 03:00 UTC). A partir dessa data, a XGate não guarda mais cripto de empresas e as rotas deste fluxo passam a responder 410 FEATURE_DISCONTINUED.
-        </Translate>
-      </p>
-      <p>
-        <Translate id="cryptoDeprecation.replacement">
-          Para obter USDT ou USDC, use a nova API de
-        </Translate>{' '}
-        <Link to="/docs/buy-sell/overview">
-          <Translate id="cryptoDeprecation.link">Compra e Venda de Cripto</Translate>
-        </Link>
-        .
+    <Admonition type="danger" title={t.title}>
+      <p style={{ margin: 0, lineHeight: 1.6 }}>
+        {t.body} <code>410 FEATURE_DISCONTINUED</code>. {t.replacement}{' '}
+        <Link to="/docs/buy-sell/overview">{t.link}</Link>.
       </p>
     </Admonition>
   );

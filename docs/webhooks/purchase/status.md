@@ -44,7 +44,7 @@ https://api.xgateglobal.com/crypto/purchases/{id}
 
 ### Sucesso (200 OK)
 
-Retorna o objeto da compra, o mesmo enviado no campo `data` dos <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>webhooks de compra</a>.
+Retorna o objeto completo da compra. O webhook de compra traz só um resumo dele.
 
 ```json
 {

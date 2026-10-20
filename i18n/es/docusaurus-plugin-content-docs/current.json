@@ -1,11 +1,11 @@
 {
   "version.label": {
     "message": "Siguiente",
-    "description": "La etiqueta para la versión actual"
+    "description": "The label for version current"
   },
   "sidebar.tutorialSidebar.category.Autenticação": {
     "message": "Autenticación",
-    "description": "La etiqueta para la categoría 'Autenticación' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Autenticação' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.FIAT": {
     "message": "FIAT",
@@ -41,59 +41,59 @@
   },
   "sidebar.tutorialSidebar.category.Clientes": {
     "message": "Clientes",
-    "description": "La etiqueta para la categoría 'Clientes' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Clientes' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Webhooks": {
     "message": "Webhooks",
-    "description": "La etiqueta para la categoría 'Webhooks' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Webhooks' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Saques Webhook": {
     "message": "Retiros",
-    "description": "La etiqueta para la categoría 'Saques Webhook' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Saques Webhook' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Depósitos Webhook": {
     "message": "Depósitos",
-    "description": "La etiqueta para la categoría 'Depósitos Webhook' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Depósitos Webhook' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Empresa": {
     "message": "Empresa",
-    "description": "La etiqueta para la categoría 'Empresa' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Empresa' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Chaves Pix": {
     "message": "Claves Pix",
-    "description": "La etiqueta para la categoría 'Chaves Pix' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Chaves Pix' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Carteiras Crypto": {
     "message": "Billeteras cripto",
-    "description": "La etiqueta para la categoría 'Carteiras Crypto' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Carteiras Crypto' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Depósitos": {
     "message": "Depósitos",
-    "description": "La etiqueta para la categoría 'Depósitos' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Depósitos' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.depositos-fiat": {
     "message": "FIAT",
-    "description": "La etiqueta para la categoría 'FIAT' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'FIAT' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.depositos-crypto": {
     "message": "Cripto (con conversión)",
-    "description": "La etiqueta para la categoría 'Crypto (com Conversión)' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Crypto (com Conversão)' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.Saques": {
     "message": "Retiros",
-    "description": "La etiqueta para la categoría 'Saques' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Saques' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.saques-fiat": {
     "message": "FIAT",
-    "description": "La etiqueta para la categoría 'FIAT' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'FIAT' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.saques-crypto-conversao": {
     "message": "Cripto (con conversión)",
-    "description": "La etiqueta para la categoría 'Crypto (com Conversión)' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Crypto (com Conversão)' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.saques-crypto-wallet": {
     "message": "Cripto (wallet)",
-    "description": "La etiqueta para la categoría 'Crypto (Wallet)' en la barra lateral 'tutorialSidebar'"
+    "description": "The label for category 'Crypto (Wallet)' in sidebar 'tutorialSidebar'"
   },
   "sidebar.tutorialSidebar.category.compra-venda-cripto": {
     "message": "Compra y Venta de Cripto",
@@ -106,5 +106,21 @@
   "sidebar.tutorialSidebar.category.Vendas Webhook": {
     "message": "Ventas",
     "description": "The label for category 'Vendas Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Compra": {
+    "message": "Compra",
+    "description": "The label for category 'Compra' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Venda": {
+    "message": "Venda",
+    "description": "The label for category 'Venda' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Compras Cripto Webhook": {
+    "message": "Compras Cripto Webhook",
+    "description": "The label for category 'Compras Cripto Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Vendas Cripto Webhook": {
+    "message": "Vendas Cripto Webhook",
+    "description": "The label for category 'Vendas Cripto Webhook' in sidebar 'tutorialSidebar'"
   }
 }

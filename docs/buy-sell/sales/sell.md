@@ -10,10 +10,6 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 Para vender, a empresa envia USDT ou USDC para um **endereço fixo** que a XGate dá a ela. Cada envio confirmado na rede vira uma venda, e o valor em reais é creditado no saldo BRL ou enviado por Pix para um beneficiário aprovado, conforme a configuração da empresa no painel.
 
-:::note[Disponível em novembro de 2026]
-A venda de cripto pela API será liberada em novembro de 2026. Até lá, `sale.enabled` vem `false` e `sale.depositAddresses` vem vazio em `GET /crypto/options`.
-:::
-
 ---
 
 ## Como funciona
@@ -84,4 +80,4 @@ RECEIVED ──► SETTLING ──► SETTLED
 
 ## Acompanhamento
 
-Acompanhe cada venda por <a href={useBaseUrl('/docs/webhooks/sale/status')}>Consultar Venda</a> ou pelos <a href={useBaseUrl('/docs/webhooks/sale/receive')}>webhooks de venda</a> (`sale.*`), na aba Webhooks › Vendas Webhook. A descrição de cada campo está em <a href={useBaseUrl('/docs/webhooks/sale/status#sale-object')}>Objeto da venda</a>.
+Acompanhe cada venda por <a href={useBaseUrl('/docs/webhooks/sale/status')}>Consultar Venda</a> ou pelos <a href={useBaseUrl('/docs/webhooks/sale/receive')}>webhooks de venda</a> (`sale.*`), na aba Webhooks › Vendas Cripto Webhook. A descrição de cada campo está em <a href={useBaseUrl('/docs/webhooks/sale/status#sale-object')}>Objeto da venda</a>.

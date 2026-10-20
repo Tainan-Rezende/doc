@@ -106,5 +106,21 @@
   "sidebar.tutorialSidebar.category.Vendas Webhook": {
     "message": "Sales",
     "description": "The label for category 'Vendas Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Compra": {
+    "message": "Compra",
+    "description": "The label for category 'Compra' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Venda": {
+    "message": "Venda",
+    "description": "The label for category 'Venda' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Compras Cripto Webhook": {
+    "message": "Compras Cripto Webhook",
+    "description": "The label for category 'Compras Cripto Webhook' in sidebar 'tutorialSidebar'"
+  },
+  "sidebar.tutorialSidebar.category.Vendas Cripto Webhook": {
+    "message": "Vendas Cripto Webhook",
+    "description": "The label for category 'Vendas Cripto Webhook' in sidebar 'tutorialSidebar'"
   }
 }
