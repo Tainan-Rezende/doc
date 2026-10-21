@@ -33,7 +33,7 @@ Siga os passos abaixo para configurar o envio das notificações:
    * **CURRENCY:** Transações via Moeda Fiduciária (Pix, incluindo aprovação, rejeição, erros, e toda a esteira de estornos/contestações).
    * **CRYPTO_PURCHASE (Compras de Cripto):** Mudanças de status das compras de cripto. Veja <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Compras Cripto Webhook</a>.
    * **CRYPTO_SALE (Vendas de Cripto):** Mudanças de status das vendas de cripto. Só aparece para empresas com venda liberada. Veja <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Vendas Cripto Webhook</a>.
-   * **CRYPTOCURRENCY:** Transações via Crypto dos fluxos legados. **Descontinuado em 29/10/2026**: deixa de ser enviado.
+   * **CRYPTOCURRENCY:** Transações das rotas antigas de cripto. **Descontinuado em 29/10/2026**: deixa de ser enviado.
 
 :::info[Eventos de cripto usam outro formato]
 Os eventos `CRYPTO_PURCHASE` e `CRYPTO_SALE` usam um envelope próprio (`id`, `type`, `createdAt`, `data`), diferente do formato plano descrito nesta página. Os tipos `CRYPTO_PURCHASE` e `CRYPTO_SALE` só aparecem para empresas com cripto (e, no caso da venda, venda) liberada.
@@ -83,7 +83,7 @@ Seu servidor **DEVE** retornar o status HTTP `200` (OK) imediatamente após rece
 O formato do Payload varia ligeiramente dependendo se a transação envolve apenas Fiat (Pix) ou Criptomoedas (USDT).
 
 :::warning[Exemplos de cripto descontinuados em 29/10/2026]
-Os exemplos 2 a 5 abaixo pertencem aos fluxos legados de cripto (conversão, saque e depósito cripto), descontinuados em 29/10/2026. A partir dessa data, o payload deste formato passa a ser apenas o de Pix em BRL (exemplo 1).
+Os exemplos 2 a 5 abaixo pertencem às rotas antigas de cripto (conversão, saque e depósito cripto), descontinuados em 29/10/2026. A partir dessa data, o payload deste formato passa a ser apenas o de Pix em BRL (exemplo 1).
 :::
 
 - **Método:** <span className="badge badge--info">POST</span>
@@ -195,6 +195,6 @@ Seu sistema deve estar preparado para processar os status de fluxo normal e os s
 | :----------------------------------------------------------------------- | :-------------------------------------------------------------------------------- | :--------------------------------------------------- |
 | <span className="badge badge--warning">AWAITING_REFUND_CONTESTION</span> | O cliente final abriu uma solicitação de estorno no banco dele. O saldo é retido. | Congelar o saldo/serviço do cliente preventivamente. |
 | <span className="badge badge--warning">AWAITING_BANK_VEREDICT</span>     | Você enviou a defesa da contestação e estamos aguardando o banco julgar.          | Aguardar resolução.                                  |
-| <span className="badge badge--danger">EXPIRED_DISPUTE</span>             | O prazo para enviar as provas de contestação do estorno expirou.                  | Registrar perda da disputa.                          |
-| <span className="badge badge--success">REFUND_CANCELED</span>            | O estorno foi cancelado pelo banco (você ganhou a disputa).                       | O valor retido é devolvido à sua conta.              |
-| <span className="badge badge--danger">REFUND_APPROVED</span>             | O estorno foi aprovado pelo banco (você perdeu a disputa).                        | O valor é devolvido ao cliente final em definitivo.  |
+| <span className="badge badge--warning">EXPIRED_DISPUTE</span>             | O prazo para enviar as provas de contestação do estorno expirou.                  | Registrar perda da disputa.                          |
+| <span className="badge badge--danger">REFUND_CANCELED</span>            | O estorno foi cancelado pelo banco (você ganhou a disputa).                       | O valor retido é devolvido à sua conta.              |
+| <span className="badge badge--success">REFUND_APPROVED</span>             | O estorno foi aprovado pelo banco (você perdeu a disputa).                        | O valor é devolvido ao cliente final em definitivo.  |

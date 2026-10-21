@@ -23,12 +23,11 @@ The `CRYPTO_PURCHASE` type only appears for companies with crypto enabled.
 
 ## Event format
 
-:::warning[Envelope differs from the legacy one]
+:::warning[Envelope differs from deposit and withdrawal webhooks]
 Crypto events do **not** use the flat format of the deposit and withdrawal webhooks (`id`, `status`, `amount`, `operation`...). They come in an envelope with `id`, `type`, `createdAt` and `data`.
 :::
 
 - **Method:** <span className="badge badge--info">POST</span>
-
 ```json
 {
   "id": "evt_6710c5a2f0e1d2c3b4a59687",
@@ -38,55 +37,63 @@ Crypto events do **not** use the flat format of the deposit and withdrawal webho
     "id": "6710c2f4a1b2c3d4e5f60718",
     "externalId": "order-7781",
     "status": "DELIVERED",
-    "channel": "API",
     "asset": "USDT",
     "network": "TRON",
     "address": "TQn9Y2khEsLJW1ChVWFMSMeRDow5KcbLSE",
     "amount": "1500.00",
-    "rate": "5.45400000",
-    "cryptoAmount": "275.027502",
-    "feeAmount": "4.125414",
-    "feeAsset": "USDT",
-    "networkFee": "0.012000",
     "deliveredAmount": "270.890088",
-    "quoteId": "l3m8Qm1n0pV2cXk5dY9sTg4hWz7aB6eR1uJ0oK2qF3i",
-    "depositId": null,
-    "approval": { "required": true, "decision": "APPROVED", "decidedAt": "2026-10-13T14:08:02.000Z" },
-    "delivery": { "status": "CONFIRMED", "txHash": "9f2c1e7b0a…", "confirmedAt": "2026-10-13T14:11:39.000Z" },
+    "txHash": "9f2c1e7b0a…",
     "rejection": null,
-    "executedAt": "2026-10-13T14:03:40.512Z",
-    "createdAt": "2026-10-13T14:03:40.204Z",
     "updatedAt": "2026-10-13T14:11:40.031Z"
   }
 }
 ```
+### Event envelope
 
-| Field       | Type     | Description                                                                                                                   |
-| :---------- | :------- | :---------------------------------------------------------------------------------------------------------------------------- |
-| `id`        | `string` | Unique event ID. Use it to discard repeated deliveries.                                                                       |
-| `type`      | `string` | Event type (table below).                                                                                                     |
-| `createdAt` | `string` | Event creation date (ISO 8601, UTC).                                                                                          |
-| `data`      | `object` | Purchase object, same as in <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Get Purchase</a>.                      |
+| Field       | Type     | Description                                                                                                                                   |
+| :---------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`        | `string` | Unique event ID. Use to discard duplicate deliveries.                                                                                         |
+| `type`      | `string` | Event type (table below).                                                                                                                     |
+| `createdAt` | `string` | Event creation date (ISO 8601, UTC).                                                                                                          |
+| `data`      | `object` | Purchase summary (table below). The full object is in <a href={useBaseUrl('/docs/webhooks/purchase/status')}>Get Purchase</a>.               |
+
+### Fields in `data` (purchase summary)
+
+<div className="tabela-nowrap">
+| Field             | Type                | Description                                                                                   |
+| :---------------- | :------------------ | :-------------------------------------------------------------------------------------------- |
+| `id`              | `string`            | Purchase ID at XGate. Use in `GET /crypto/purchases/{id}`.                                     |
+| `externalId`      | `string`            | Order ID in the integrator's system.                                                          |
+| `status`          | `string`            | `PENDING_PAYMENT` · `EXECUTING` · `PENDING_APPROVAL` · `DELIVERED` · `REJECTED` · `EXPIRED`.  |
+| `asset`           | `string`            | Purchased asset.                                                                              |
+| `network`         | `string`            | Delivery network.                                                                             |
+| `address`         | `string`            | Destination wallet.                                                                           |
+| `amount`          | `string`            | Debited BRL amount.                                                                           |
+| `deliveredAmount` | `string` \| `null`  | Quantity delivered (or to be delivered) to the wallet. `null` before execution.               |
+| `txHash`          | `string` \| `null`  | On-chain hash in `DELIVERED`. `null` before delivery.                                          |
+| `rejection`       | `object` \| `null`  | Only in `REJECTED`: `{ reason, refunded }`. `null` in other statuses.                         |
+| `updatedAt`       | `string` (ISO)      | Last update; use with `status` to sort out-of-order events.                                    |
+</div>
 
 ---
 
 ## Events
 
-| Event (`type`)             | Dashboard status   | When                                                                                       |
-| :------------------------- | :----------------- | :----------------------------------------------------------------------------------------- |
-| `purchase.pending_payment` | `PENDING_PAYMENT`  | Only for purchases opened from a deposit: waiting for the Pix payment.                     |
-| `purchase.executing`       | `EXECUTING`        | BRL debited from the balance (usually before the `201` response of the `POST`).            |
-| `purchase.pending_approval`| `PENDING_APPROVAL` | The purchase entered XGate's approval queue.                                               |
-| `purchase.delivered`       | `DELIVERED`        | Crypto confirmed on the network; `data.delivery.txHash` filled in. **Final.**              |
-| `purchase.rejected`        | `REJECTED`         | Purchase not delivered; `data.rejection` contains `reason`, `message` and `refunded`. **Final.** |
-| `purchase.expired`         | `EXPIRED`          | The source deposit was not paid in time. **Final.**                                        |
+| Event (`type`)              | Dashboard status    | When                                                                                            |
+| :-------------------------- | :------------------ | :---------------------------------------------------------------------------------------------- |
+| `purchase.pending_payment`  | `PENDING_PAYMENT`   | Only in purchases opened from a deposit: awaiting Pix payment.                                  |
+| `purchase.executing`        | `EXECUTING`         | BRL debited from balance (usually before the `201` response of `POST`).                         |
+| `purchase.pending_approval` | `PENDING_APPROVAL`  | Purchase entered XGate's approval queue.                                                        |
+| `purchase.delivered`        | `DELIVERED`         | Crypto confirmed on the network; `data.txHash` populated. **Final.**                            |
+| `purchase.rejected`         | `REJECTED`          | Purchase not delivered; `data.rejection` provides `reason` and `refunded`. **Final.**           |
+| `purchase.expired`          | `EXPIRED`           | Source deposit was not paid in time. **Final.**                                                 |
 
 ---
 
 ## Rules for the integrator
 
-- **One event per status change**, sent once. Internal changes within `EXECUTING` do not generate an event.
+- **One event per status change**, sent once. Internal transitions within `EXECUTING` do not trigger events.
 - **At-least-once delivery:** the same event may arrive more than once. Handle idempotency using the event `id`.
 - **Order:** events may arrive out of order. Sort by `data.updatedAt` and `data.status`.
 - **Respond `200` quickly**, as with the other webhooks.
-- A purchase refused before the debit (`422` error on the `POST`) generates only the `purchase.rejected` event.
+- A purchase rejected before debit (`422` error on `POST`) generates only the `purchase.rejected` event.

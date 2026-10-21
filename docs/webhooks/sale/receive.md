@@ -23,7 +23,7 @@ O tipo `CRYPTO_SALE` só aparece para empresas com venda liberada.
 
 ## Formato do evento
 
-:::warning[Envelope diferente do legado]
+:::warning[Envelope diferente dos webhooks de depósito e saque]
 Os eventos de cripto **não** usam o formato plano dos webhooks de depósito e saque (`id`, `status`, `amount`, `operation`...). Eles vêm em um envelope com `id`, `type`, `createdAt` e `data`, o mesmo dos <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>webhooks de compra</a>.
 :::
 

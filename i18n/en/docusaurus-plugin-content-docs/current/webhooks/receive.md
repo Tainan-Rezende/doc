@@ -31,9 +31,9 @@ Follow the steps below to configure notification delivery:
 
 4. **Events:** Select which notifications you want XGate to send to this URL. Events are divided into:
    * **CURRENCY:** Fiat currency transactions (Pix, including approval, rejection, errors, and the full refund/dispute workflow).
-   * **CRYPTO_PURCHASE (Crypto Purchases):** Status changes of crypto purchases. See <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Purchase Webhooks</a>.
-   * **CRYPTO_SALE (Crypto Sales):** Status changes of crypto sales. Available from November 2026, only for companies with sales enabled. See <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Sale Webhooks</a>.
-   * **CRYPTOCURRENCY:** Crypto transactions from the legacy flows. **Discontinued on October 29, 2026**: the type is removed from the catalog and is no longer sent.
+   * **CRYPTO_PURCHASE (Crypto Purchases):** Status changes of crypto purchases. See <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Crypto Purchase Webhooks</a>.
+   * **CRYPTO_SALE (Crypto Sales):** Status changes of crypto sales. Only appears for companies with sales enabled. See <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Crypto Sale Webhooks</a>.
+   * **CRYPTOCURRENCY:** Transactions from old crypto routes. **Discontinued on October 29, 2026**: no longer sent.
 
 :::info[Crypto events use a different format]
 `CRYPTO_PURCHASE` and `CRYPTO_SALE` events use their own envelope (`id`, `type`, `createdAt`, `data`), different from the flat format described on this page. The `CRYPTO_PURCHASE` and `CRYPTO_SALE` types only appear for companies with crypto (and, for sales, selling) enabled.
@@ -83,7 +83,7 @@ Your server **MUST** return HTTP status `200` (OK) immediately after receiving t
 The payload format varies slightly depending on whether the transaction involves only Fiat (Pix) or Cryptocurrencies (USDT).
 
 :::warning[Crypto examples discontinued on October 29, 2026]
-Examples 2 to 5 below belong to the legacy crypto flows (conversion, crypto withdrawal and crypto deposit), discontinued on October 29, 2026. From that date on, the payload in this format will only be the BRL Pix one (example 1).
+Examples 2 to 5 below belong to the old crypto routes (conversion, crypto withdrawal and crypto deposit), discontinued on October 29, 2026. From that date on, the payload in this format will only be the BRL Pix one (example 1).
 :::
 
 - **Method:** <span className="badge badge--info">POST</span>
@@ -92,7 +92,6 @@ Examples 2 to 5 below belong to the legacy crypto flows (conversion, crypto with
 
 **1. Standard Transaction (Pix BRL):**
 Returns the `type` field specifying the method.
-
 ```json
 {
     "id": "676071f1*************",
@@ -104,10 +103,8 @@ Returns the `type` field specifying the method.
     "operation": "DEPOSIT"
 }
 ```
-
 **2. Withdrawal (USDT converted to Pix):**
 The `type` field is omitted in operations that involve crypto balances.
-
 ```json
 {
     "id": "676070dc*************",
@@ -118,9 +115,7 @@ The `type` field is omitted in operations that involve crypto balances.
     "operation": "WITHDRAW"
 }
 ```
-
 **3. Deposit (Pix converted to Crypto):**
-
 ```json
 {
     "id": "676070*************",
@@ -131,9 +126,7 @@ The `type` field is omitted in operations that involve crypto balances.
     "operation": "DEPOSIT"
 }
 ```
-
 **4. Withdrawal (Crypto to Crypto)**
-
 ```json
 {
   "id": "6a3a844fe2**************",
@@ -145,9 +138,7 @@ The `type` field is omitted in operations that involve crypto balances.
   "txHash": "54vpJgzQ8C2ktDj7************************"
 }
 ```
-
 **5. Deposit (Crypto to Crypto)**
-
 ```json
 {
   "id": "6a3da45e116****************",
@@ -159,7 +150,6 @@ The `type` field is omitted in operations that involve crypto balances.
   "txHash": "mtVZznAKV6m1eEjWrWaX****************"
 }
 ```
-
 ### Field Description
 
 | Field | Type | Description |
@@ -195,7 +185,6 @@ Your system should be prepared to process normal flow statuses and dispute/refun
 | :----------------------------------------------------------------------- | :-------------------------------------------------------------------------------- | :--------------------------------------------------- |
 | <span className="badge badge--warning">AWAITING_REFUND_CONTESTION</span> | The end customer opened a refund dispute with their bank. The balance is held. | Freeze the customer balance/service preventively. |
 | <span className="badge badge--warning">AWAITING_BANK_VEREDICT</span>     | You submitted the dispute defense and we are waiting for the bank to judge.          | Wait for resolution.                                  |
-| <span className="badge badge--danger">EXPIRED_DISPUTE</span>             | The deadline to submit dispute evidence has expired.                  | Record the dispute as lost.                          |
-| <span className="badge badge--success">REFUND_CANCELED</span>            | The refund was canceled by the bank (you won the dispute).                       | The held amount is returned to your account.              |
-| <span className="badge badge--danger">REFUND_APPROVED</span>             | The refund was approved by the bank (you lost the dispute).                        | The amount is returned to the end customer definitively.  |
-
+| <span className="badge badge--warning">EXPIRED_DISPUTE</span>             | The deadline to submit dispute evidence has expired.                  | Record the dispute as lost.                          |
+| <span className="badge badge--danger">REFUND_CANCELED</span>            | The refund was canceled by the bank (you won the dispute).                       | The held amount is returned to your account.              |
+| <span className="badge badge--success">REFUND_APPROVED</span>             | The refund was approved by the bank (you lost the dispute).                        | The amount is returned to the end customer definitively.  |

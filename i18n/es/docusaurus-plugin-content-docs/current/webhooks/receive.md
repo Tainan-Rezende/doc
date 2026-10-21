@@ -31,9 +31,9 @@ Siga los pasos a continuación para configurar la entrega de notificaciones:
 
 4. **Events:** Seleccione qué notificaciones desea que XGate envíe a esta URL. Los eventos se dividen en:
    * **CURRENCY:** Transacciones en moneda fiduciaria (Pix, incluyendo aprobación, rechazo, errores y todo el flujo de reembolso y disputa).
-   * **CRYPTO_PURCHASE (Compras de Cripto):** Cambios de estado de las compras de cripto. Vea <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Webhooks de Compra</a>.
-   * **CRYPTO_SALE (Ventas de Cripto):** Cambios de estado de las ventas de cripto. Disponible a partir de noviembre de 2026, solo para empresas con venta habilitada. Vea <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Webhooks de Venta</a>.
-   * **CRYPTOCURRENCY:** Transacciones en criptomonedas de los flujos heredados. **Descontinuado el 29/10/2026**: el tipo sale del catálogo y deja de enviarse.
+   * **CRYPTO_PURCHASE (Compras de Cripto):** Cambios de estado de las compras de cripto. Vea <a href={useBaseUrl('/docs/webhooks/purchase/receive')}>Webhooks de Compra Cripto</a>.
+   * **CRYPTO_SALE (Ventas de Cripto):** Cambios de estado de las ventas de cripto. Solo aparece para empresas con venta habilitada. Vea <a href={useBaseUrl('/docs/webhooks/sale/receive')}>Webhooks de Venta Cripto</a>.
+   * **CRYPTOCURRENCY:** Transacciones de las rutas antiguas de cripto. **Descontinuado el 29/10/2026**: deja de enviarse.
 
 :::info[Los eventos de cripto usan otro formato]
 Los eventos `CRYPTO_PURCHASE` y `CRYPTO_SALE` usan un envoltorio propio (`id`, `type`, `createdAt`, `data`), diferente del formato plano descrito en esta página. Los tipos `CRYPTO_PURCHASE` y `CRYPTO_SALE` solo aparecen para empresas con cripto (y, en el caso de la venta, venta) habilitada.
@@ -83,7 +83,7 @@ Su servidor **DEBE** devolver el estado HTTP `200` (OK) inmediatamente después 
 El formato del payload varía ligeramente según si la transacción involucra solo Fiat (Pix) o criptomonedas (USDT).
 
 :::warning[Ejemplos de cripto descontinuados el 29/10/2026]
-Los ejemplos 2 a 5 a continuación pertenecen a los flujos heredados de cripto (conversión, retiro y depósito cripto), descontinuados el 29/10/2026. A partir de esa fecha, el payload de este formato pasa a ser solo el de Pix en BRL (ejemplo 1).
+Los ejemplos 2 a 5 a continuación pertenecen a las rutas antiguas de cripto (conversión, retiro y depósito cripto), descontinuados el 29/10/2026. A partir de esa fecha, el payload de este formato pasa a ser solo el de Pix en BRL (ejemplo 1).
 :::
 
 - **Método:** <span className="badge badge--info">POST</span>
@@ -92,7 +92,6 @@ Los ejemplos 2 a 5 a continuación pertenecen a los flujos heredados de cripto (
 
 **1. Transacción estándar (Pix BRL):**
 Devuelve el campo `type` que especifica el método.
-
 ```json
 {
     "id": "676071f1*************",
@@ -104,10 +103,8 @@ Devuelve el campo `type` que especifica el método.
     "operation": "DEPOSIT"
 }
 ```
-
 **2. Retiro (USDT convertido a Pix):**
 El campo `type` se omite en operaciones que involucran saldos en criptomonedas.
-
 ```json
 {
     "id": "676070dc*************",
@@ -118,9 +115,7 @@ El campo `type` se omite en operaciones que involucran saldos en criptomonedas.
     "operation": "WITHDRAW"
 }
 ```
-
 **3. Depósito (Pix convertido a Cripto):**
-
 ```json
 {
     "id": "676070*************",
@@ -131,9 +126,7 @@ El campo `type` se omite en operaciones que involucran saldos en criptomonedas.
     "operation": "DEPOSIT"
 }
 ```
-
 **4. Retiro (Cripto a Cripto)**
-
 ```json
 {
   "id": "6a3a844fe2**************",
@@ -145,9 +138,7 @@ El campo `type` se omite en operaciones que involucran saldos en criptomonedas.
   "txHash": "54vpJgzQ8C2ktDj7************************"
 }
 ```
-
 **5. Depósito (Cripto a Cripto)**
-
 ```json
 {
   "id": "6a3da45e116****************",
@@ -159,7 +150,6 @@ El campo `type` se omite en operaciones que involucran saldos en criptomonedas.
   "txHash": "mtVZznAKV6m1eEjWrWaX****************"
 }
 ```
-
 ### Descripción de los campos
 
 | Campo | Tipo | Descripción |
@@ -195,7 +185,6 @@ Su sistema debe estar preparado para procesar los estados del flujo normal y los
 | :--- | :--- | :--- |
 | <span className="badge badge--warning">AWAITING_REFUND_CONTESTION</span> | El cliente final abrió una disputa de reembolso con su banco. El saldo queda retenido. | Congelar preventivamente el saldo/servicio del cliente. |
 | <span className="badge badge--warning">AWAITING_BANK_VEREDICT</span> | Se presentó la defensa de la disputa y estamos esperando que el banco la juzgue. | Esperar la resolución. |
-| <span className="badge badge--danger">EXPIRED_DISPUTE</span> | El plazo para presentar la evidencia de la disputa ha expirado. | Registrar la disputa como perdida. |
-| <span className="badge badge--success">REFUND_CANCELED</span> | El reembolso fue cancelado por el banco (ganó la disputa). | El monto retenido vuelve a su cuenta. |
-| <span className="badge badge--danger">REFUND_APPROVED</span> | El reembolso fue aprobado por el banco (perdió la disputa). | El monto se devuelve al cliente final de forma definitiva. |
-
+| <span className="badge badge--warning">EXPIRED_DISPUTE</span> | El plazo para presentar la evidencia de la disputa ha expirado. | Registrar la disputa como perdida. |
+| <span className="badge badge--danger">REFUND_CANCELED</span> | El reembolso fue cancelado por el banco (ganó la disputa). | El monto retenido vuelve a su cuenta. |
+| <span className="badge badge--success">REFUND_APPROVED</span> | El reembolso fue aprobado por el banco (perdió la disputa). | El monto se devuelve al cliente final de forma definitiva. |
