@@ -44,9 +44,9 @@ XGate does not custody crypto for companies: purchased crypto is sent directly t
 
 ---
 
-## Legacy crypto routes
+## Old crypto routes
 
-Legacy crypto routes (customer wallet, deposits with conversion, crypto withdrawals, and withdrawals with conversion) return `410 FEATURE_DISCONTINUED` starting 29/10/2026. The table below shows the current alternatives:
+Old crypto routes (customer wallet, deposits with conversion, crypto withdrawals, and withdrawals with conversion) stop working on 29/10/2026 and return `410 FEATURE_DISCONTINUED`. The table below shows what to use instead:
 
 | Previous                                                | Current alternative                                                                    |
 | :--------------------------------------------------- | :----------------------------------------------------------------------- |

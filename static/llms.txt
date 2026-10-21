@@ -1,7 +1,7 @@
 XGATE GLOBAL - API CONTEXT AND DOCUMENTATION FOR AI
 
 Overview:
-XGate Global is a payment platform API. It allows creating Cash-in (Deposits) and Cash-out (Withdrawals) flows in BRL via Pix, as well as buying and selling USDT/USDC using BRL balance, with direct delivery to or receiving from the company's wallet. It offers sub-account management, balance control, webhooks, and real-time quotes. Legacy crypto routes (conversion on deposit/withdrawal, crypto withdrawals, and customer wallets) stop working on 2026-10-29 and respond with 410 FEATURE_DISCONTINUED. The entire API uses REST + JSON with Bearer Token authentication.
+XGate Global is a payment platform API. It allows creating Cash-in (Deposits) and Cash-out (Withdrawals) flows in BRL via Pix, as well as buying and selling USDT/USDC using BRL balance, with direct delivery to or receiving from the company's wallet. It offers sub-account management, balance control, webhooks, and real-time quotes. Old crypto routes (conversion on deposit/withdrawal, crypto withdrawals, and customer wallets) stop working on 2026-10-29 and respond with 410 FEATURE_DISCONTINUED. The entire API uses REST + JSON with Bearer Token authentication.
 
 API Base URL: https://api.xgateglobal.com/
 
